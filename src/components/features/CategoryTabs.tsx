@@ -157,8 +157,10 @@ export default function CategoryTabs({ onCreateCollection, onEditCollection }: C
             feature="Unlimited Collections" 
             variant="limit" 
             limitCurrent={collections.length} 
-            limitMax={FREE_LIMIT} 
-          />
+            limitMax={FREE_LIMIT}
+          >
+            <div />
+          </PremiumGate>
         </div>
       )}
 

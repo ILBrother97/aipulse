@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Minimize2, Maximize2, Trash2, Zap, ExternalLink } from 'lucide-react';
+import { X, Send, Minimize2, Maximize2, Trash2, Zap, ExternalLink, Sparkles } from 'lucide-react';
 import { useToolsStore } from '../../stores/toolsStore';
+import { usePremium } from '@/hooks/usePremium';
 import { cn } from '../../utils/cn';
 import type { AITool } from '../../types/index';
 
@@ -1567,21 +1568,34 @@ const SUGGESTIONS = [
 export default function AIAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
       role: 'assistant',
-      text: "Hi! I'm your AIPulse assistant. I can help you with tools, features, navigation, and getting the most out of AIPulse. Ask me anything! 👋",
+      text: "Hello! I'm your AIPulse Assistant. I can help you find the perfect AI tools, organize your collection, and optimize your workflow. What would you like to explore?",
       tools: [],
       timestamp: Date.now(),
     },
   ]);
-  const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const { tools, recentlyUsed, recordUsage } = useToolsStore();
+  const { tools, recordUsage, recentlyUsed } = useToolsStore();
+  const { isPremium, openUpgradeModal } = usePremium();
+
+  // Free query tracking
+  const getFreeQueryKey = () => `aipulse_free_queries_${new Date().toISOString().split('T')[0]}`;
+  const getFreeQueriesUsed = () => {
+    const key = getFreeQueryKey();
+    return parseInt(localStorage.getItem(key) || '0');
+  };
+  const incrementFreeQueries = () => {
+    const key = getFreeQueryKey();
+    const current = getFreeQueriesUsed();
+    localStorage.setItem(key, (current + 1).toString());
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -1595,9 +1609,28 @@ export default function AIAssistant() {
     }
   }, [isOpen]);
 
-  const handleSend = async (text?: string) => {
-    const query = (text || input).trim();
+  const handleSend = async () => {
+    const query = input.trim();
     if (!query) return;
+
+    // Check free query limit for non-premium users
+    if (!isPremium) {
+      const freeQueriesUsed = getFreeQueriesUsed();
+      if (freeQueriesUsed >= 1) {
+        // Show limit message instead of processing
+        const limitMsg: Message = {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          text: "You've used your free daily query — Upgrade for unlimited AI assistance!\n\nGet personalized tool recommendations, smart search, and workflow suggestions based on your usage patterns.",
+          tools: [],
+          timestamp: Date.now(),
+        };
+        setMessages((prev) => [...prev, limitMsg]);
+        setInput('');
+        return;
+      }
+      incrementFreeQueries();
+    }
 
     setInput('');
     const userMsg: Message = {
@@ -1644,6 +1677,79 @@ export default function AIAssistant() {
 
   const chatWidth = isExpanded ? 'w-[480px]' : 'w-[360px]';
   const chatHeight = isExpanded ? 'max-h-[80vh] min-h-[400px]' : 'max-h-[75vh] min-h-[500px]';
+
+  // Show teaser for free users, full assistant for premium
+  if (!isPremium && isOpen) {
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 20, scale: 0.95 }}
+          transition={{ type: 'spring', bounce: 0.25, duration: 0.4 }}
+          className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50 w-[380px] bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl shadow-2xl overflow-hidden sm:right-6 max-sm:right-2 max-sm:left-2 max-sm:w-auto"
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-border bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-violet-600 flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-900 dark:text-text-primary">✨ AI Assistant — Premium</p>
+                <p className="text-xs text-violet-600 dark:text-violet-400">Upgrade to unlock</p>
+              </div>
+            </div>
+            <button onClick={() => setIsOpen(false)} className="p-1.5 rounded-lg text-gray-500 dark:text-text-muted hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-100 dark:hover:bg-background-card transition-colors">
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Body */}
+          <div className="px-4 py-4">
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
+              Get AI-powered tool recommendations, smart search, and workflow suggestions based on your usage patterns.
+            </p>
+
+            {/* Feature previews */}
+            <div className="space-y-3 mb-6">
+              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-6 h-6 rounded bg-gray-200 dark:bg-gray-700 blur-sm" />
+                  <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Find me the best tool for image generation</p>
+                </div>
+                <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-lg blur-sm" />
+              </div>
+              
+              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-6 h-6 rounded bg-gray-200 dark:bg-gray-700 blur-sm" />
+                  <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">What tools haven't I used in 30 days?</p>
+                </div>
+                <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-lg blur-sm" />
+              </div>
+            </div>
+
+            {/* CTA buttons */}
+            <div className="space-y-2">
+              <button
+                onClick={openUpgradeModal}
+                className="w-full bg-violet-600 hover:bg-violet-700 text-white font-medium py-3 px-4 rounded-xl transition-colors text-sm"
+              >
+                Unlock AI Assistant →
+              </button>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-full text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium py-2 px-4 rounded-xl transition-colors text-sm"
+              >
+                Maybe later
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
 
   return (
     <>
@@ -1811,13 +1917,20 @@ export default function AIAssistant() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className={cn(
-          'fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center transition-all duration-300',
+          'fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center transition-all duration-300 relative',
           isOpen
             ? 'bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border text-gray-900 dark:text-text-primary'
             : 'bg-primary text-black shadow-primary/40'
         )}
         aria-label="Open AI Assistant"
       >
+        {/* PRO badge for free users */}
+        {!isPremium && !isOpen && (
+          <div className="absolute -top-1 -right-1 bg-violet-600 text-white text-xs px-1.5 py-0.5 rounded-full font-bold">
+            ✨ PRO
+          </div>
+        )}
+        
         <AnimatePresence mode="wait">
           {isOpen ? (
             <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
