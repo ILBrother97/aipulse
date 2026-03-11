@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "deployment": "2025-03-11T13:56:00Z",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
