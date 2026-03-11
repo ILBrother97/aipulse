@@ -57,16 +57,16 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={currentAnimation}
-      className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-background-dark/80 backdrop-blur-xl border-b border-border-light dark:border-border overflow-x-hidden"
+      className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-background-dark/80 backdrop-blur-xl border-b border-border-light dark:border-border"
     >
-      <div className="w-full px-3 sm:px-4 lg:px-6 xl:px-8">
-        <div className="flex items-center justify-between h-16 gap-2 min-w-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 gap-4">
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1, ...currentAnimation }}
-            className="flex items-center gap-2 sm:gap-3 flex-shrink-0"
+            className="flex items-center gap-3 flex-shrink-0"
           >
             <button
               onClick={() => {
@@ -83,7 +83,7 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
             </button>
 
             {/* Nav links — desktop */}
-            <nav className="hidden lg:flex items-center gap-1 min-w-0 flex-1 justify-center">
+            <nav className="hidden md:flex items-center gap-1 ml-2">
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -96,14 +96,14 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
                     }
                   }}
                   className={cn(
-                    'flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap',
+                    'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200',
                     (!isResourcePage && currentPage === item.id)
                       ? 'text-primary bg-primary/10'
                       : 'text-text-secondary dark:text-text-mutedDark hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-100 dark:hover:bg-background-card'
                   )}
                 >
-                  <item.icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                  <span className="hidden sm:inline">{item.label}</span>
+                  <item.icon className="w-4 h-4" />
+                  {item.label}
                 </button>
               ))}
               
