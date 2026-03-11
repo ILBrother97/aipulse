@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Crown, 
@@ -48,31 +48,6 @@ export default function UserMenu({
   }, []);
 
   const [isSigningOut, setIsSigningOut] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState<'right' | 'left'>('right');
-
-  // Check viewport and adjust dropdown position
-  const updateDropdownPosition = useCallback(() => {
-    if (!menuRef.current) return;
-    
-    const rect = menuRef.current.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    const dropdownWidth = 288; // w-72 = 18rem = 288px
-    
-    // If dropdown would go off right edge, align to left
-    if (rect.right + dropdownWidth > viewportWidth) {
-      setDropdownPosition('left');
-    } else {
-      setDropdownPosition('right');
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isOpen) {
-      updateDropdownPosition();
-      window.addEventListener('resize', updateDropdownPosition);
-      return () => window.removeEventListener('resize', updateDropdownPosition);
-    }
-  }, [isOpen, updateDropdownPosition]);
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
@@ -161,13 +136,11 @@ export default function UserMenu({
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
             transition={{ duration: 0.2 }}
             className={cn(
-              'absolute top-full mt-3 w-72',
+              'absolute right-0 top-full mt-3 w-72',
               'bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl',
               'rounded-2xl shadow-2xl shadow-black/10 dark:shadow-black/40',
               'border border-gray-200/50 dark:border-gray-700/50',
-              'z-50 overflow-hidden',
-              'max-h-[80vh] overflow-y-auto',
-              dropdownPosition === 'left' ? 'right-0' : 'left-0'
+              'z-50 overflow-hidden'
             )}
           >
             {/* User Info Header */}
