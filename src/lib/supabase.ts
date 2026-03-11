@@ -1,20 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
 /**
- * Type declarations for Vite environment variables
- */
-declare global {
-  interface ImportMetaEnv {
-    VITE_SUPABASE_URL: string;
-    VITE_SUPABASE_ANON_KEY: string;
-  }
-
-  interface ImportMeta {
-    readonly env: ImportMetaEnv;
-  }
-}
-
-/**
  * Supabase client type definition
  */
 export type SupabaseClient = ReturnType<typeof createClient>;

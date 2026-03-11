@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Modal, Button } from '../ui';
 import type { AITool } from '../../types/index';
 import { useToolsStore } from '../../stores/toolsStore';

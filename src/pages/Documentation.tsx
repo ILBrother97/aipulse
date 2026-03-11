@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Search, ChevronRight, Clock, Bookmark, FileText, Layers, Zap, ArrowLeft } from 'lucide-react';
+import { BookOpen, Search, ChevronRight, ExternalLink, Clock, Bookmark, FileText, Layers, Zap, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Documentation() {
@@ -133,7 +133,7 @@ export default function Documentation() {
             { title: 'Getting Started', desc: 'New to AIPulse? Start here!', icon: Zap },
             { title: 'Tutorials', desc: 'Step-by-step guides', icon: Bookmark },
             { title: 'FAQ', desc: 'Common questions answered', icon: FileText },
-          ].map((item) => (
+          ].map((item, i) => (
             <motion.button
               key={item.title}
               whileHover={{ scale: 1.02, y: -2 }}

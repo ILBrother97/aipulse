@@ -7,8 +7,6 @@ import type {
   Collection,
   UsageEvent,
   Workflow,
-  WorkflowExecution,
-  WorkflowStep,
   AppSettings,
   ActivityEntry,
   ToolsState,
@@ -99,7 +97,8 @@ function calcStats(events: UsageEvent[], tools: AITool[], days: number): UsageSt
     dailyTimeline.push({ date: key, count: dayMap[key] || 0 });
   }
 
-  // unused tools (not accessed in 30 days)
+  // accessed tool ids
+  const accessedIds = new Set(events.map((e) => e.toolId));
   const thirtyDaysAgo = now - 30 * 86_400_000;
   const unusedTools = tools.filter(
     (t) => !t.lastAccessed || t.lastAccessed < thirtyDaysAgo
@@ -393,28 +392,20 @@ export const useToolsStore = create<ToolsState>()(
       setStepOutput: (stepId: string, output: string) => {
         set((state) => {
           if (!state.activeExecution) return state;
-          const step = get().workflows
-            .find((w) => w.id === state.activeExecution?.workflowId)
-            ?.steps.find((s) => s.id === stepId);
-          const varName = step?.outputVar || `step${state.activeExecution.currentStepIndex + 1}`;
           return {
             activeExecution: {
               ...state.activeExecution,
-              variables: { ...state.activeExecution.variables, [varName]: output },
+              variables: { ...state.activeExecution.variables, [stepId]: output },
               completedSteps: [...state.activeExecution.completedSteps, stepId],
             },
           };
         });
       },
       getStepInput: (step: WorkflowStep) => {
-        const exec = get().activeExecution;
-        if (!exec || !step.inputVar) return '';
-        // Parse {{variableName}} syntax
-        const match = step.inputVar.match(/\{\{(\w+)\}\}/);
-        if (match) {
-          return exec.variables[match[1]] || '';
-        }
-        return exec.variables[step.inputVar] || '';
+        const { activeExecution } = get();
+        if (!activeExecution || !step.inputVar) return '';
+        const varName = step.inputVar.replace('{{', '').replace('}}', '');
+        return activeExecution.variables[varName] || '';
       },
       endWorkflowExecution: () => set({ activeExecution: null }),
 

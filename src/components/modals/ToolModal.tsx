@@ -4,6 +4,7 @@ import type { AITool, ToolFormData } from '../../types/index';
 import { useToolsStore } from '../../stores/toolsStore';
 import { iconOptions } from '../../constants/defaultTools';
 import * as LucideIcons from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 interface ToolModalProps {
   isOpen: boolean;
@@ -120,6 +121,11 @@ export default function ToolModal({ isOpen, onClose, tool }: ToolModalProps) {
     ...categories.map((cat) => ({ value: cat.name, label: cat.name })),
     { value: 'new', label: '+ Create new category' },
   ];
+
+  const iconSelectOptions = iconOptions.map((icon) => ({
+    value: icon,
+    label: icon,
+  }));
 
   const isFormValid = formData.name.trim() && formData.url.trim() && formData.category.trim();
 
