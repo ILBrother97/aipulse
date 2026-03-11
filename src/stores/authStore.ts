@@ -180,17 +180,23 @@ export const useAuthStore = create<AuthStore>()(
         console.log('Auth store: sign out called');
         set({ isLoading: true, error: null });
         try {
+          console.log('Calling supabase.auth.signOut()...');
           const { error } = await supabase.auth.signOut();
           console.log('Supabase sign out result:', { error });
-          if (error) throw error;
+          
+          if (error) {
+            console.error('Supabase sign out error:', error);
+            throw error;
+          }
 
+          console.log('Clearing auth state...');
           set({
             user: null,
             isPremium: false,
             isLoading: false,
             error: null,
           });
-          console.log('Auth store: state cleared');
+          console.log('Auth store: state cleared successfully');
         } catch (error) {
           console.error('Auth store: sign out error:', error);
           const authError = error as AuthError;
@@ -268,15 +274,26 @@ export const useAuthStore = create<AuthStore>()(
  */
 export const initializeAuthListener = () => {
   const { setUser, fetchProfile } = useAuthStore.getState();
+  let isManualSignOut = false;
 
   // Set initial user
   supabase.auth.getUser().then(({ data: { user } }: any) => {
-    setUser(user);
+    if (!isManualSignOut) {
+      setUser(user);
+    }
   });
 
   // Listen for auth state changes
   const { data: subscription } = supabase.auth.onAuthStateChange(
     async (_event: any, session: any) => {
+      console.log('Auth state change:', { _event, session: !!session });
+      
+      // Don't interfere if this is a manual sign out
+      if (_event === 'SIGNED_OUT' || isManualSignOut) {
+        console.log('Manual sign out detected, not updating user state');
+        return;
+      }
+      
       const currentUser = session?.user ?? null;
       setUser(currentUser);
       
@@ -291,7 +308,7 @@ export const initializeAuthListener = () => {
   // Check initial session
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
-    if (session?.user) {
+    if (session?.user && !isManualSignOut) {
       setUser(session.user);
       const { fetchProfile } = useAuthStore.getState();
       await fetchProfile();
