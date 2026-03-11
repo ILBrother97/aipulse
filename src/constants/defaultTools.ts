@@ -1,4 +1,4 @@
-import type { AITool, Category } from '@types/index';
+import type { AITool, Category } from '../types/index';
 
 export const defaultCategories: Category[] = [
   { id: 'text-writing', name: 'Text & Writing', color: '#00D9FF' },
