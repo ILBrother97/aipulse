@@ -47,9 +47,18 @@ export default function UserMenu({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
   const handleSignOut = async () => {
-    await signOut();
-    setIsOpen(false);
+    setIsSigningOut(true);
+    try {
+      await signOut();
+      setIsOpen(false);
+    } catch (error) {
+      // Error handled by auth store
+    } finally {
+      setIsSigningOut(false);
+    }
   };
 
   const userEmail = user?.email || 'User';
@@ -135,15 +144,26 @@ export default function UserMenu({
 
               <button
                 onClick={handleSignOut}
+                disabled={isSigningOut}
                 className={cn(
                   'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg',
                   'text-red-600 dark:text-red-400',
                   'hover:bg-red-50 dark:hover:bg-red-900/20',
-                  'transition-colors duration-150'
+                  'transition-colors duration-150',
+                  'disabled:opacity-50 disabled:cursor-not-allowed'
                 )}
               >
-                <LogOut className="w-4 h-4" />
-                <span className="text-sm font-medium">Sign Out</span>
+                {isSigningOut ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+                    <span className="text-sm font-medium">Signing out...</span>
+                  </>
+                ) : (
+                  <>
+                    <LogOut className="w-4 h-4" />
+                    <span className="text-sm font-medium">Sign Out</span>
+                  </>
+                )}
               </button>
             </div>
           </motion.div>

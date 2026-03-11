@@ -93,12 +93,43 @@ export default function AuthModal({
       setLocalError('Please enter your password');
       return false;
     }
-    if (activeTab === 'signup' && password.length < 6) {
-      setLocalError('Password must be at least 6 characters');
+    if (password.length < 6) {
+      setLocalError('Password must be at least 6 characters long');
       return false;
     }
+    setLocalError(null);
     return true;
-  }, [email, password, activeTab]);
+  }, [email, password]);
+
+  const getErrorMessage = useCallback((error: string | null) => {
+    if (!error) return null;
+    
+    // Common error patterns and user-friendly messages
+    if (error.includes('email_rate_limit')) {
+      return 'Too many sign-in attempts. Please wait a few minutes or try Google Sign In.';
+    }
+    if (error.includes('Invalid login credentials')) {
+      return 'Incorrect email or password. Please try again.';
+    }
+    if (error.includes('User already registered')) {
+      return 'This email is already registered. Try signing in instead.';
+    }
+    if (error.includes('Email not confirmed')) {
+      return 'Please check your email and confirm your account.';
+    }
+    if (error.includes('weak_password')) {
+      return 'Password is too weak. Please choose a stronger password.';
+    }
+    if (error.includes('network')) {
+      return 'Network error. Please check your connection and try again.';
+    }
+    if (error.includes('timeout')) {
+      return 'Request timed out. Please try again.';
+    }
+    
+    // Return original error if no pattern matches
+    return error;
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -128,7 +159,7 @@ export default function AuthModal({
     }
   };
 
-  const displayError = localError || error;
+  const displayError = getErrorMessage(localError || error);
 
   if (!isOpen) return null;
 
@@ -243,10 +274,11 @@ export default function AuthModal({
 
             {/* Google OAuth */}
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              type="button"
               onClick={handleGoogleSignIn}
               disabled={isLoading}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               className={cn(
                 'w-full flex items-center justify-center gap-3 px-4 py-3 mb-4',
                 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700',
@@ -257,8 +289,17 @@ export default function AuthModal({
                 'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none'
               )}
             >
-              <Chrome className="w-5 h-5" />
-              Continue with Google
+              {isLoading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                  Connecting...
+                </>
+              ) : (
+                <>
+                  <Chrome className="w-5 h-5" />
+                  Continue with Google
+                </>
+              )}
             </motion.button>
 
             {/* Divider */}
