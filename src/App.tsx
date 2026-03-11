@@ -18,6 +18,8 @@ import CollectionModal from './components/modals/CollectionModal';
 import AddToCollectionModal from './components/modals/AddToCollectionModal';
 import KeyboardShortcutsModal from './components/modals/KeyboardShortcutsModal';
 import ActivityLogModal from './components/modals/ActivityLogModal';
+import { UpgradeModal } from './components/premium';
+import { useUpgradeModal } from '@/hooks/useUpgradeModal';
 import { ToastContainer } from './components/ui';
 import type { AITool, Collection } from './types/index';
 import { useToolsStore, accentColors } from './stores/toolsStore';
@@ -39,6 +41,7 @@ function App() {
   const [toolForCollection, setToolForCollection] = useState<AITool | null>(null);
 
   const { isDarkMode, settings, currentPage, setCurrentPage, updateSettings } = useToolsStore();
+  const { closeUpgradeModal } = useUpgradeModal();
 
   // Generate dynamic CSS for accent color only
   const dynamicStyles = useMemo(() => {
@@ -128,9 +131,10 @@ function App() {
         setIsAddToCollectionOpen(false);
         setIsShortcutsOpen(false);
         setIsActivityOpen(false);
+        closeUpgradeModal();
       }
     },
-    [setCurrentPage, updateSettings]
+    [setCurrentPage, updateSettings, closeUpgradeModal]
   );
 
   useEffect(() => {
@@ -287,6 +291,9 @@ function App() {
 
         {/* Toast Notifications */}
         <ToastContainer />
+
+        {/* Upgrade Modal */}
+        <UpgradeModal />
 
         {/* ── Modals ────────────────────────────────────────────────── */}
         <ToolModal

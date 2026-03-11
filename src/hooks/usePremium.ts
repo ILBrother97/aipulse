@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useAuthStore } from '@/stores/authStore';
+import { useUpgradeModal } from '@/hooks/useUpgradeModal';
 
 /**
  * Return type for the usePremium hook
@@ -44,8 +45,8 @@ export function usePremium(): UsePremiumReturn {
   const { isPremium, isLoading: authLoading } = useAuthStore();
 
   const openUpgradeModal = useCallback(() => {
-    // Dispatch a custom event that the app can listen for to show upgrade modal
-    window.dispatchEvent(new CustomEvent('open-upgrade-modal'));
+    const { openUpgradeModal: openModal } = useUpgradeModal.getState();
+    openModal();
   }, []);
 
   return {
