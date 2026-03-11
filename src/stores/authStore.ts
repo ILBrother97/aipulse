@@ -181,12 +181,18 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true, error: null });
         try {
           console.log('Calling supabase.auth.signOut()...');
-          const { error } = await supabase.auth.signOut();
+          
+          // Add timeout to prevent hanging
+          const signOutPromise = supabase.auth.signOut();
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Sign out timeout')), 5000)
+          );
+          
+          const { error } = await Promise.race([signOutPromise, timeoutPromise]) as any;
           console.log('Supabase sign out result:', { error });
           
           if (error) {
             console.error('Supabase sign out error:', error);
-            throw error;
           }
 
           console.log('Clearing auth state...');
@@ -199,9 +205,14 @@ export const useAuthStore = create<AuthStore>()(
           console.log('Auth store: state cleared successfully');
         } catch (error) {
           console.error('Auth store: sign out error:', error);
-          const authError = error as AuthError;
-          set({ error: authError.message, isLoading: false });
-          throw error;
+          // Even if Supabase fails, clear local state
+          set({
+            user: null,
+            isPremium: false,
+            isLoading: false,
+            error: null,
+          });
+          console.log('Auth store: state cleared despite error');
         }
       },
 
