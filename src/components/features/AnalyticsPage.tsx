@@ -6,8 +6,10 @@ import {
 } from 'recharts';
 import { TrendingUp, Clock, Calendar, Award, Download, AlertCircle } from 'lucide-react';
 import { useToolsStore } from '../../stores/toolsStore';
+import { usePremium } from '@/hooks/usePremium';
 import { cn } from '../../utils/cn';
 import { Button } from '../ui';
+import { PremiumGate } from '@/components/premium';
 
 const COLORS = ['#00D9FF', '#A855F7', '#F97316', '#22C55E', '#3B82F6', '#EF4444', '#F59E0B'];
 
@@ -16,6 +18,7 @@ type DateRange = 7 | 30 | 90 | 0;
 export default function AnalyticsPage() {
   const [range, setRange] = useState<DateRange>(30);
   const { getUsageStats, tools } = useToolsStore();
+  const { isPremium } = usePremium();
 
   const stats = useMemo(() => getUsageStats(range), [range, tools]);
 
@@ -74,9 +77,11 @@ export default function AnalyticsPage() {
               </button>
             ))}
           </div>
-          <Button variant="secondary" size="sm" onClick={handleExportCSV} leftIcon={<Download className="w-4 h-4" />}>
-            Export
-          </Button>
+          <PremiumGate feature="Analytics Export" variant="blur">
+            <Button variant="secondary" size="sm" onClick={handleExportCSV} leftIcon={<Download className="w-4 h-4" />}>
+              Export
+            </Button>
+          </PremiumGate>
         </div>
       </div>
 
@@ -99,6 +104,22 @@ export default function AnalyticsPage() {
           </motion.div>
         ))}
       </div>
+
+      {/* Free User Notice */}
+      {!isPremium && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 flex items-center gap-3"
+        >
+          <span className="text-2xl">📊</span>
+          <div>
+            <p className="text-yellow-800 font-medium">
+              Showing last 7 days · Upgrade for full history, trends & exports
+            </p>
+          </div>
+        </motion.div>
+      )}
 
       {/* Top Tool Hero */}
       {stats.topTools.length > 0 && (
@@ -129,127 +150,139 @@ export default function AnalyticsPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Usage Timeline */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl p-6"
-          >
-            <h3 className="font-semibold text-gray-900 dark:text-text-primary mb-4">Usage Timeline</h3>
-            <ResponsiveContainer width="100%" height={200}>
-              <LineChart data={stats.dailyTimeline}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" />
-                <XAxis
-                  dataKey="date"
-                  tick={{ fill: '#737373', fontSize: 11 }}
-                  tickFormatter={(v) => v.slice(5)}
-                  interval={Math.floor(stats.dailyTimeline.length / 6)}
-                />
-                <YAxis tick={{ fill: '#737373', fontSize: 11 }} />
-                <Tooltip
-                  contentStyle={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: 8, color: '#E5E5E5' }}
-                />
-                <Line type="monotone" dataKey="count" stroke="#00D9FF" strokeWidth={2} dot={false} />
-              </LineChart>
-            </ResponsiveContainer>
-          </motion.div>
+        <PremiumGate feature="Full Analytics History" variant="soft">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Usage Timeline */}
+            <PremiumGate feature="Advanced Analytics" variant="blur">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl p-6"
+              >
+                <h3 className="font-semibold text-gray-900 dark:text-text-primary mb-4">Usage Timeline</h3>
+                <ResponsiveContainer width="100%" height={200}>
+                  <LineChart data={stats.dailyTimeline}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" />
+                    <XAxis
+                      dataKey="date"
+                      tick={{ fill: '#737373', fontSize: 11 }}
+                      tickFormatter={(v) => v.slice(5)}
+                      interval={Math.floor(stats.dailyTimeline.length / 6)}
+                    />
+                    <YAxis tick={{ fill: '#737373', fontSize: 11 }} />
+                    <Tooltip
+                      contentStyle={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: 8, color: '#E5E5E5' }}
+                    />
+                    <Line type="monotone" dataKey="count" stroke="#00D9FF" strokeWidth={2} dot={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </motion.div>
+            </PremiumGate>
 
-          {/* Category Breakdown */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl p-6"
-          >
-            <h3 className="font-semibold text-gray-900 dark:text-text-primary mb-4">Category Breakdown</h3>
-            {stats.categoryBreakdown.length > 0 ? (
-              <ResponsiveContainer width="100%" height={200}>
-                <PieChart>
-                  <Pie
-                    data={stats.categoryBreakdown}
-                    dataKey="count"
-                    nameKey="category"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={75}
-                    label={(entry: any) => `${entry.category} ${((entry.percent || 0) * 100).toFixed(0)}%`}
-                    labelLine={false}
-                  >
-                    {stats.categoryBreakdown.map((_, i) => (
-                      <Cell key={i} fill={COLORS[i % COLORS.length]} />
+            {/* Category Breakdown */}
+            <PremiumGate feature="Advanced Analytics" variant="blur">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl p-6"
+              >
+                <h3 className="font-semibold text-gray-900 dark:text-text-primary mb-4">Category Breakdown</h3>
+                {stats.categoryBreakdown.length > 0 ? (
+                  <ResponsiveContainer width="100%" height={200}>
+                    <PieChart>
+                      <Pie
+                        data={stats.categoryBreakdown}
+                        dataKey="count"
+                        nameKey="category"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={75}
+                        label={(entry: any) => `${entry.category} ${((entry.percent || 0) * 100).toFixed(0)}%`}
+                        labelLine={false}
+                      >
+                        {stats.categoryBreakdown.map((_, i) => (
+                          <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip contentStyle={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: 8, color: '#E5E5E5' }} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : <p className="text-gray-500 dark:text-text-muted text-sm">No data</p>}
+              </motion.div>
+            </PremiumGate>
+
+            {/* Top Tools Bar Chart */}
+            <PremiumGate feature="Advanced Analytics" variant="blur">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+                className="bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl p-6 lg:col-span-2"
+              >
+                <h3 className="font-semibold text-gray-900 dark:text-text-primary mb-4">Most Used Tools</h3>
+                <ResponsiveContainer width="100%" height={220}>
+                  <BarChart data={stats.topTools} layout="vertical">
+                    <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" />
+                    <XAxis type="number" tick={{ fill: '#737373', fontSize: 11 }} />
+                    <YAxis type="category" dataKey="name" width={120} tick={{ fill: '#A3A3A3', fontSize: 12 }} />
+                    <Tooltip contentStyle={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: 8, color: '#E5E5E5' }} />
+                    <Bar dataKey="count" fill="#00D9FF" radius={[0, 6, 6, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </motion.div>
+            </PremiumGate>
+
+            {/* Weekly Pattern */}
+            <PremiumGate feature="Advanced Analytics" variant="blur">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl p-6"
+              >
+                <h3 className="font-semibold text-gray-900 dark:text-text-primary mb-4">Weekly Patterns</h3>
+                <ResponsiveContainer width="100%" height={180}>
+                  <BarChart data={stats.weekdayBreakdown}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" />
+                    <XAxis dataKey="day" tick={{ fill: '#737373', fontSize: 11 }} />
+                    <YAxis tick={{ fill: '#737373', fontSize: 11 }} />
+                    <Tooltip contentStyle={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: 8, color: '#E5E5E5' }} />
+                    <Bar dataKey="count" fill="#A855F7" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </motion.div>
+            </PremiumGate>
+
+            {/* Unused Tools */}
+            {stats.unusedTools.length > 0 && (
+              <PremiumGate feature="Advanced Analytics" variant="blur">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.45 }}
+                  className="bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl p-6"
+                >
+                  <h3 className="font-semibold text-gray-900 dark:text-text-primary mb-4">
+                    Unused Tools <span className="text-gray-500 dark:text-text-muted text-sm font-normal">(30+ days)</span>
+                  </h3>
+                  <div className="flex flex-col gap-2">
+                    {stats.unusedTools.slice(0, 5).map((t) => (
+                      <div key={t.id} className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600 dark:text-text-secondary">{t.name}</span>
+                        <span className="text-xs text-gray-500 dark:text-text-muted">{t.category}</span>
+                      </div>
                     ))}
-                  </Pie>
-                  <Tooltip contentStyle={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: 8, color: '#E5E5E5' }} />
-                </PieChart>
-              </ResponsiveContainer>
-            ) : <p className="text-gray-500 dark:text-text-muted text-sm">No data</p>}
-          </motion.div>
-
-          {/* Top Tools Bar Chart */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
-            className="bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl p-6 lg:col-span-2"
-          >
-            <h3 className="font-semibold text-gray-900 dark:text-text-primary mb-4">Most Used Tools</h3>
-            <ResponsiveContainer width="100%" height={220}>
-              <BarChart data={stats.topTools} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" />
-                <XAxis type="number" tick={{ fill: '#737373', fontSize: 11 }} />
-                <YAxis type="category" dataKey="name" width={120} tick={{ fill: '#A3A3A3', fontSize: 12 }} />
-                <Tooltip contentStyle={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: 8, color: '#E5E5E5' }} />
-                <Bar dataKey="count" fill="#00D9FF" radius={[0, 6, 6, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </motion.div>
-
-          {/* Weekly Pattern */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl p-6"
-          >
-            <h3 className="font-semibold text-gray-900 dark:text-text-primary mb-4">Weekly Patterns</h3>
-            <ResponsiveContainer width="100%" height={180}>
-              <BarChart data={stats.weekdayBreakdown}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" />
-                <XAxis dataKey="day" tick={{ fill: '#737373', fontSize: 11 }} />
-                <YAxis tick={{ fill: '#737373', fontSize: 11 }} />
-                <Tooltip contentStyle={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: 8, color: '#E5E5E5' }} />
-                <Bar dataKey="count" fill="#A855F7" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </motion.div>
-
-          {/* Unused Tools */}
-          {stats.unusedTools.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45 }}
-              className="bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl p-6"
-            >
-              <h3 className="font-semibold text-gray-900 dark:text-text-primary mb-4">
-                Unused Tools <span className="text-gray-500 dark:text-text-muted text-sm font-normal">(30+ days)</span>
-              </h3>
-              <div className="flex flex-col gap-2">
-                {stats.unusedTools.slice(0, 5).map((t) => (
-                  <div key={t.id} className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600 dark:text-text-secondary">{t.name}</span>
-                    <span className="text-xs text-gray-500 dark:text-text-muted">{t.category}</span>
+                    {stats.unusedTools.length > 5 && (
+                      <p className="text-xs text-gray-500 dark:text-text-muted mt-1">+{stats.unusedTools.length - 5} more</p>
+                    )}
                   </div>
-                ))}
-                {stats.unusedTools.length > 5 && (
-                  <p className="text-xs text-gray-500 dark:text-text-muted mt-1">+{stats.unusedTools.length - 5} more</p>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </div>
+                </motion.div>
+              </PremiumGate>
+            )}
+          </div>
+        </PremiumGate>
       )}
     </motion.div>
   );
