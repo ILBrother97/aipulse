@@ -174,7 +174,7 @@ export default function AnalyticsPage() {
                     cx="50%"
                     cy="50%"
                     outerRadius={75}
-                    label={({ category, percent }) => `${category} ${(percent * 100).toFixed(0)}%`}
+                    label={(entry: any) => `${entry.category} ${((entry.percent || 0) * 100).toFixed(0)}%`}
                     labelLine={false}
                   >
                     {stats.categoryBreakdown.map((_, i) => (
