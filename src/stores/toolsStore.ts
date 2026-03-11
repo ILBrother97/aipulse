@@ -7,6 +7,8 @@ import type {
   Collection,
   UsageEvent,
   Workflow,
+  WorkflowStep,
+  WorkflowExecution,
   AppSettings,
   ActivityEntry,
   ToolsState,
@@ -97,8 +99,6 @@ function calcStats(events: UsageEvent[], tools: AITool[], days: number): UsageSt
     dailyTimeline.push({ date: key, count: dayMap[key] || 0 });
   }
 
-  // accessed tool ids
-  const accessedIds = new Set(events.map((e) => e.toolId));
   const thirtyDaysAgo = now - 30 * 86_400_000;
   const unusedTools = tools.filter(
     (t) => !t.lastAccessed || t.lastAccessed < thirtyDaysAgo
