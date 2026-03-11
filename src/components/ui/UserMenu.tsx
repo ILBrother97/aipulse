@@ -48,14 +48,8 @@ export default function UserMenu({
   }, []);
 
   const handleSignOut = async () => {
-    console.log('Sign out clicked');
-    try {
-      await signOut();
-      console.log('Sign out successful');
-      setIsOpen(false);
-    } catch (error) {
-      console.error('Sign out error:', error);
-    }
+    await signOut();
+    setIsOpen(false);
   };
 
   const userEmail = user?.email || 'User';
