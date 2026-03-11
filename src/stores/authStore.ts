@@ -262,24 +262,40 @@ export const useAuthStore = create<AuthStore>()(
  * }
  * ```
  */
-export function initializeAuthListener(): () => void {
-  const { setUser } = useAuthStore.getState();
+export const initializeAuthListener = () => {
+  const { setUser, fetchProfile } = useAuthStore.getState();
 
   // Set initial user
-  supabase.auth.getUser().then(({ data: { user } }) => {
+  supabase.auth.getUser().then(({ data: { user } }: any) => {
     setUser(user);
   });
 
   // Listen for auth state changes
   const { data: subscription } = supabase.auth.onAuthStateChange(
-    async (_event, session) => {
+    async (_event: any, session: any) => {
       const currentUser = session?.user ?? null;
       setUser(currentUser);
+      
+      // If user exists, fetch their profile
+      if (currentUser) {
+        const { fetchProfile } = useAuthStore.getState();
+        await fetchProfile();
+      }
     }
   );
+
+  // Check initial session
+  (async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      setUser(session.user);
+      const { fetchProfile } = useAuthStore.getState();
+      await fetchProfile();
+    }
+  })();
 
   // Return unsubscribe function
   return () => {
     subscription.subscription.unsubscribe();
   };
-}
+};
