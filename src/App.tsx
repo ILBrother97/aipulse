@@ -160,8 +160,8 @@ function App() {
         <Routes>
           {/* Main App Route */}
           <Route path="/" element={
-            <main className="pt-24 pb-20 px-4 sm:px-6 lg:px-8">
-              <div className="max-w-7xl mx-auto">
+            <main className="pt-20 pb-16 px-3 sm:px-4 lg:px-6 min-h-screen">
+              <div className="w-full max-w-none sm:max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto">
                 <AnimatePresence mode="wait">
                   {/* ── HOME PAGE ──────────────────────────────────────── */}
                   {currentPage === 'home' && (
