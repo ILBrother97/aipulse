@@ -5,12 +5,14 @@ import {
   Plus, Play, Edit2, Trash2, ArrowRight, Star, Search,
   Clock, BarChart2, Copy, ChevronRight, X, Zap, Check,
   PanelRight, ClipboardCopy, ExternalLink, Variable, MoreVertical,
-  ChevronUp, ChevronDown, GripVertical,
+  ChevronUp, ChevronDown, GripVertical, Lock,
 } from 'lucide-react';
 import { useToolsStore } from '../../stores/toolsStore';
+import { usePremium } from '@/hooks/usePremium';
 import { toast } from '../../stores/toastStore';
 import { cn } from '../../utils/cn';
 import { Button } from '../ui';
+import { PremiumGate } from '@/components/premium';
 import type { Workflow, WorkflowStep, AITool } from '../../types/index';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -46,11 +48,15 @@ export default function WorkflowsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showRunner, setShowRunner] = useState(false);
 
+  const FREE_LIMIT = 1;
+
   const {
     workflows, addWorkflow, updateWorkflow, deleteWorkflow, tools,
     activeExecution, startWorkflowExecution, setExecutionStep, setStepOutput,
     getStepInput, endWorkflowExecution,
   } = useToolsStore();
+
+  const { isPremium, openUpgradeModal } = usePremium();
 
   const filtered = workflows.filter((w) =>
     w.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -58,6 +64,10 @@ export default function WorkflowsPage() {
   );
 
   const handleCreateNew = () => {
+    if (!isPremium && workflows.length >= FREE_LIMIT) {
+      openUpgradeModal();
+      return;
+    }
     setEditingWorkflow({
       id: '',
       name: 'New Workflow',
@@ -132,14 +142,19 @@ export default function WorkflowsPage() {
   const runningWorkflow = activeExecution ? workflows.find((w) => w.id === activeExecution.workflowId) : null;
 
   if (view === 'builder' && editingWorkflow) {
+    // Allow viewing the 1 free workflow, but gate additional editing
+    const shouldGate = !isPremium && workflows.length > FREE_LIMIT;
+    
     return (
-      <WorkflowBuilder
-        workflow={editingWorkflow}
-        onChange={setEditingWorkflow}
-        onSave={handleSave}
-        onCancel={() => { setView('list'); setEditingWorkflow(null); }}
-        tools={tools}
-      />
+      <PremiumGate feature="Workflow Automation" variant={shouldGate ? 'blur' : 'soft'}>
+        <WorkflowBuilder
+          workflow={editingWorkflow}
+          onChange={setEditingWorkflow}
+          onSave={handleSave}
+          onCancel={() => { setView('list'); setEditingWorkflow(null); }}
+          tools={tools}
+        />
+      </PremiumGate>
     );
   }
 
@@ -151,9 +166,18 @@ export default function WorkflowsPage() {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-text-primary">Workflows</h1>
           <p className="text-gray-600 dark:text-text-secondary text-sm mt-1">Chain AI tools with data passing</p>
         </div>
-        <Button onClick={handleCreateNew} leftIcon={<Plus className="w-5 h-5" />}>
-          Create Workflow
-        </Button>
+        <div className="relative">
+          <Button 
+            onClick={handleCreateNew} 
+            leftIcon={<Plus className="w-5 h-5" />}
+            disabled={!isPremium && workflows.length >= FREE_LIMIT}
+            className={!isPremium && workflows.length >= FREE_LIMIT ? 'opacity-50 cursor-not-allowed' : ''}
+            title={!isPremium && workflows.length >= FREE_LIMIT ? 'Upgrade to create unlimited workflows' : ''}
+          >
+            {!isPremium && workflows.length >= FREE_LIMIT && <Lock className="w-4 h-4 mr-1" />}
+            Create Workflow
+          </Button>
+        </div>
       </div>
 
       {/* Search */}
@@ -211,7 +235,13 @@ export default function WorkflowsPage() {
             {searchQuery ? `No workflows match "${searchQuery}"` : 'Create a workflow to chain AI tools into powerful sequences.'}
           </p>
           {!searchQuery && (
-            <Button onClick={handleCreateNew} leftIcon={<Plus className="w-4 h-4" />}>
+            <Button 
+              onClick={handleCreateNew} 
+              leftIcon={<Plus className="w-4 h-4" />}
+              disabled={!isPremium && workflows.length >= FREE_LIMIT}
+              className={!isPremium && workflows.length >= FREE_LIMIT ? 'opacity-50 cursor-not-allowed' : ''}
+            >
+              {!isPremium && workflows.length >= FREE_LIMIT && <Lock className="w-4 h-4 mr-1" />}
               Create Your First Workflow
             </Button>
           )}
@@ -226,8 +256,18 @@ export default function WorkflowsPage() {
             {TEMPLATES.map((t) => (
               <button
                 key={t.name}
-                onClick={() => handleTemplateCreate(t)}
-                className="text-left p-4 bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200 group"
+                onClick={() => {
+                  if (!isPremium && workflows.length >= FREE_LIMIT) {
+                    openUpgradeModal();
+                    return;
+                  }
+                  handleTemplateCreate(t);
+                }}
+                disabled={!isPremium && workflows.length >= FREE_LIMIT}
+                className={cn(
+                  "text-left p-4 bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200 group",
+                  (!isPremium && workflows.length >= FREE_LIMIT) ? "opacity-50 cursor-not-allowed" : ""
+                )}
               >
                 <h4 className="font-medium text-gray-900 dark:text-text-primary mb-1 group-hover:text-primary transition-colors">{t.name}</h4>
                 <p className="text-xs text-gray-500 dark:text-text-muted">{t.description}</p>
@@ -235,6 +275,16 @@ export default function WorkflowsPage() {
             ))}
           </div>
         </div>
+      )}
+
+      {/* Premium Limit Banner */}
+      {!isPremium && workflows.length >= FREE_LIMIT && (
+        <PremiumGate 
+          feature="Unlimited Workflows" 
+          variant="limit" 
+          limitCurrent={workflows.length} 
+          limitMax={FREE_LIMIT} 
+        />
       )}
     </motion.div>
   );

@@ -1,8 +1,11 @@
 import { motion } from 'framer-motion';
-import { Star, Plus, Settings2, Trash2, FolderOpen } from 'lucide-react';
+import { Star, Plus, Settings2, Trash2, FolderOpen, Lock } from 'lucide-react';
 import { useState } from 'react';
 import { useToolsStore } from '../../stores/toolsStore';
+import { usePremium } from '@/hooks/usePremium';
+import { useUpgradeModal } from '@/hooks/useUpgradeModal';
 import { cn } from '../../utils/cn';
+import { PremiumGate } from '@/components/premium';
 import type { Collection } from '../../types/index';
 
 interface CategoryTabsProps {
@@ -11,6 +14,8 @@ interface CategoryTabsProps {
 }
 
 export default function CategoryTabs({ onCreateCollection, onEditCollection }: CategoryTabsProps) {
+  const FREE_LIMIT = 3;
+  
   const {
     categories, collections, tools,
     selectedCategory, selectedCollectionId,
@@ -18,6 +23,9 @@ export default function CategoryTabs({ onCreateCollection, onEditCollection }: C
     deleteCollection,
     settings,
   } = useToolsStore();
+  
+  const { isPremium } = usePremium();
+  const { openUpgradeModal } = useUpgradeModal();
   
   // Animation based on intensity
   const animationVariants = {
@@ -116,15 +124,52 @@ export default function CategoryTabs({ onCreateCollection, onEditCollection }: C
 
         {/* Create Collection */}
         <motion.button
-          onClick={onCreateCollection}
+          onClick={() => {
+            if (!isPremium && collections.length >= FREE_LIMIT) {
+              openUpgradeModal();
+              return;
+            }
+            onCreateCollection();
+          }}
           whileHover={{ scale: settings.animationIntensity === 'none' ? 1 : 1.05 }}
           whileTap={{ scale: settings.animationIntensity === 'none' ? 1 : 0.95 }}
-          className="flex items-center gap-1 px-2 py-1 rounded-full text-xs text-gray-500 dark:text-text-muted hover:text-primary hover:bg-primary/10 transition-all border-2 border-dashed border-gray-300 dark:border-border hover:border-primary flex-shrink-0 ml-1 mr-1"
+          disabled={!isPremium && collections.length >= FREE_LIMIT}
+          className={cn(
+            "flex items-center gap-1 px-2 py-1 rounded-full text-xs transition-all border-2 border-dashed flex-shrink-0 ml-1 mr-1",
+            (!isPremium && collections.length >= FREE_LIMIT)
+              ? "text-gray-400 dark:text-text-muted border-gray-400 dark:border-gray-600 cursor-not-allowed"
+              : "text-gray-500 dark:text-text-muted hover:text-primary hover:bg-primary/10 border-gray-300 dark:border-border hover:border-primary"
+          )}
         >
-          <Plus className="w-3 h-3" />
+          {!isPremium && collections.length >= FREE_LIMIT ? (
+            <Lock className="w-3 h-3" />
+          ) : (
+            <Plus className="w-3 h-3" />
+          )}
           New Collection
         </motion.button>
       </div>
+
+      {/* Collections Limit Banner */}
+      {!isPremium && collections.length >= FREE_LIMIT && (
+        <div className="mt-2">
+          <PremiumGate 
+            feature="Unlimited Collections" 
+            variant="limit" 
+            limitCurrent={collections.length} 
+            limitMax={FREE_LIMIT} 
+          />
+        </div>
+      )}
+
+      {/* Inline message for limit reached */}
+      {!isPremium && collections.length >= FREE_LIMIT && (
+        <div className="mt-2 px-3 py-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg">
+          <p className="text-xs text-yellow-800 dark:text-yellow-200 font-medium">
+            You've used {FREE_LIMIT}/{FREE_LIMIT} free collections — Upgrade for unlimited
+          </p>
+        </div>
+      )}
     </div>
   );
 }
