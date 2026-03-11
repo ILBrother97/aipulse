@@ -81,22 +81,22 @@ export default function ToolCard({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         className={cn(
-          `group flex items-center gap-4 px-4 py-3 bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border ${cardRadius} transition-all`,
+          `group flex items-center gap-3 px-3 py-2 bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border ${cardRadius} transition-all`,
           'hover:border-primary/50',
           isDragging && 'opacity-50'
         )}
         whileHover={{ y: hoverLift[settings.animationIntensity], scale: settings.animationIntensity === 'bold' ? 1.02 : 1 }}
       >
         <div {...attributes} {...listeners} className="cursor-grab text-gray-400 dark:text-text-muted">
-          <GripVertical className="w-4 h-4" />
+          <GripVertical className="w-3.5 h-3.5" />
         </div>
-        <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-          {IconComponent ? <IconComponent className="w-5 h-5 text-primary" /> : <LucideIcons.Zap className="w-5 h-5 text-primary" />}
+        <div className="w-7 h-7 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
+          {IconComponent ? <IconComponent className="w-4 h-4 text-primary" /> : <LucideIcons.Zap className="w-4 h-4 text-primary" />}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-gray-900 dark:text-text-primary truncate">{tool.name}</span>
-            <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full flex-shrink-0">{tool.category}</span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-sm font-medium text-gray-900 dark:text-text-primary truncate">{tool.name}</span>
+            <span className="text-xs text-primary bg-primary/10 px-1.5 py-0.5 rounded-full flex-shrink-0">{tool.category}</span>
           </div>
           {tool.description && <p className="text-xs text-gray-500 dark:text-text-muted truncate mt-0.5">{tool.description}</p>}
         </div>
@@ -141,32 +141,32 @@ export default function ToolCard({
         )}
         whileHover={{ y: hoverLift[settings.animationIntensity], scale: settings.animationIntensity === 'bold' ? 1.03 : 1 }}
       >
-        <div className="p-6">
-          <div className="flex items-start gap-4 mb-4">
-            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-              {IconComponent ? <IconComponent className="w-7 h-7 text-primary" /> : <LucideIcons.Zap className="w-7 h-7 text-primary" />}
+        <div className="p-4">
+          <div className="flex items-start gap-3 mb-3">
+            <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+              {IconComponent ? <IconComponent className="w-5.5 h-5.5 text-primary" /> : <LucideIcons.Zap className="w-5.5 h-5.5 text-primary" />}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-lg text-gray-900 dark:text-text-primary">{tool.name}</h3>
-              <span className="text-sm text-primary font-medium">{tool.category}</span>
+              <h3 className="font-semibold text-base text-gray-900 dark:text-text-primary">{tool.name}</h3>
+              <span className="text-xs text-primary font-medium">{tool.category}</span>
             </div>
             <div className="flex items-center gap-1">
-              <button onClick={handleFavorite} className="p-2 rounded-lg hover:bg-primary/10 transition-colors">
-                <Star className={cn('w-5 h-5', tool.isFavorite ? 'fill-yellow-400 text-yellow-400' : 'text-gray-500 dark:text-text-muted')} />
+              <button onClick={handleFavorite} className="p-1.5 rounded-lg hover:bg-primary/10 transition-colors">
+                <Star className={cn('w-4 h-4', tool.isFavorite ? 'fill-yellow-400 text-yellow-400' : 'text-gray-500 dark:text-text-muted')} />
               </button>
-              <div {...attributes} {...listeners} className="p-2 rounded-lg cursor-grab text-gray-400 dark:text-text-muted hover:text-gray-600 dark:hover:text-text-secondary">
-                <GripVertical className="w-4 h-4" />
+              <div {...attributes} {...listeners} className="p-1.5 rounded-lg cursor-grab text-gray-400 dark:text-text-muted hover:text-gray-600 dark:hover:text-text-secondary">
+                <GripVertical className="w-3.5 h-3.5" />
               </div>
             </div>
           </div>
-          {tool.description && <p className="text-sm text-gray-600 dark:text-text-secondary mb-4 leading-relaxed">{tool.description}</p>}
+          {tool.description && <p className="text-xs text-gray-600 dark:text-text-secondary mb-3 leading-relaxed">{tool.description}</p>}
           {tool.lastAccessed && (
-            <p className="text-xs text-gray-500 dark:text-text-muted mb-4">
+            <p className="text-xs text-gray-500 dark:text-text-muted mb-3">
               Last used: {new Date(tool.lastAccessed).toLocaleDateString()}
             </p>
           )}
           <div className="flex items-center gap-2">
-            <button onClick={() => onEdit(tool)} className="p-2 rounded-lg text-gray-500 dark:text-text-muted hover:text-primary hover:bg-primary/10 transition-colors">
+            <button onClick={() => onEdit(tool)} className="p-1.5 rounded-lg text-gray-500 dark:text-text-muted hover:text-primary hover:bg-primary/10 transition-colors">
               <Pencil className="w-4 h-4" />
             </button>
             <button onClick={() => onDelete(tool)} className="p-2 rounded-lg text-gray-500 dark:text-text-muted hover:text-red-500 hover:bg-red-500/10 transition-colors">
@@ -209,12 +209,12 @@ export default function ToolCard({
       whileHover={{ y: hoverLift[settings.animationIntensity], scale: settings.animationIntensity === 'bold' ? 1.03 : 1 }}
     >
       {/* Favorite + Drag */}
-      <div className="absolute top-3 right-3 flex items-center gap-1 z-10">
+      <div className="absolute top-2 right-2 flex items-center gap-1 z-10">
         <motion.button
           onClick={handleFavorite}
           whileTap={{ scale: settings.animationIntensity === 'none' ? 1 : 0.8 }}
           className={cn(
-            'p-1.5 rounded-lg transition-all',
+            'p-1 rounded-lg transition-all',
             tool.isFavorite ? 'opacity-100' : isHovered ? 'opacity-100' : 'opacity-0'
           )}
           aria-label={tool.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
@@ -226,7 +226,7 @@ export default function ToolCard({
           >
             <Star
               className={cn(
-                'w-4 h-4 transition-all',
+                'w-3.5 h-3.5 transition-all',
                 tool.isFavorite ? 'fill-yellow-400 text-yellow-400' : 'text-text-muted hover:text-yellow-400'
               )}
             />
@@ -236,40 +236,40 @@ export default function ToolCard({
           {...attributes}
           {...listeners}
           className={cn(
-            'p-1.5 rounded-lg cursor-grab active:cursor-grabbing transition-opacity duration-200',
+            'p-1 rounded-lg cursor-grab active:cursor-grabbing transition-opacity duration-200',
             isHovered ? 'opacity-100' : 'opacity-0'
           )}
         >
-          <GripVertical className="w-4 h-4 text-text-muted" />
+          <GripVertical className="w-3.5 h-3.5 text-text-muted" />
         </div>
       </div>
 
-      <div className="p-5">
-        <div className="flex items-start gap-4 mb-3">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-            {IconComponent ? <IconComponent className="w-6 h-6 text-primary" /> : <LucideIcons.Zap className="w-6 h-6 text-primary" />}
+      <div className="p-4">
+        <div className="flex items-start gap-3 mb-2">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+            {IconComponent ? <IconComponent className="w-5 h-5 text-primary" /> : <LucideIcons.Zap className="w-5 h-5 text-primary" />}
           </div>
-          <div className="flex-1 min-w-0 pr-8">
-            <h3 className="font-semibold text-gray-900 dark:text-text-primary truncate">{tool.name}</h3>
+          <div className="flex-1 min-w-0 pr-6">
+            <h3 className="font-semibold text-sm text-gray-900 dark:text-text-primary truncate">{tool.name}</h3>
             <span className="text-xs text-primary font-medium">{tool.category}</span>
           </div>
         </div>
 
         {tool.description && (
-          <p className="text-sm text-gray-600 dark:text-text-secondary line-clamp-2 mb-4">{tool.description}</p>
+          <p className="text-xs text-gray-600 dark:text-text-secondary line-clamp-2 mb-3">{tool.description}</p>
         )}
 
         <div className="flex items-center justify-between">
           <div className={cn('flex items-center gap-1 transition-opacity duration-200', isHovered ? 'opacity-100' : 'opacity-0')}>
-            <button onClick={() => onEdit(tool)} className="p-2 rounded-lg text-gray-500 dark:text-text-muted hover:text-primary hover:bg-primary/10 transition-colors" aria-label="Edit tool">
-              <Pencil className="w-4 h-4" />
+            <button onClick={() => onEdit(tool)} className="p-1.5 rounded-lg text-gray-500 dark:text-text-muted hover:text-primary hover:bg-primary/10 transition-colors" aria-label="Edit tool">
+              <Pencil className="w-3.5 h-3.5" />
             </button>
-            <button onClick={() => onDelete(tool)} className="p-2 rounded-lg text-gray-500 dark:text-text-muted hover:text-red-500 hover:bg-red-500/10 transition-colors" aria-label="Delete tool">
-              <Trash2 className="w-4 h-4" />
+            <button onClick={() => onDelete(tool)} className="p-1.5 rounded-lg text-gray-500 dark:text-text-muted hover:text-red-500 hover:bg-red-500/10 transition-colors" aria-label="Delete tool">
+              <Trash2 className="w-3.5 h-3.5" />
             </button>
             {onAddToCollection && (
-              <button onClick={() => onAddToCollection(tool)} className="p-2 rounded-lg text-gray-500 dark:text-text-muted hover:text-primary hover:bg-primary/10 transition-colors" aria-label="Add to collection">
-                <Plus className="w-4 h-4" />
+              <button onClick={() => onAddToCollection(tool)} className="p-1.5 rounded-lg text-gray-500 dark:text-text-muted hover:text-primary hover:bg-primary/10 transition-colors" aria-label="Add to collection">
+                <Plus className="w-3.5 h-3.5" />
               </button>
             )}
           </div>
@@ -277,8 +277,7 @@ export default function ToolCard({
             onClick={handleLaunch}
             whileHover={{ scale: settings.animationIntensity === 'none' ? 1 : 1.05 }}
             whileTap={{ scale: settings.animationIntensity === 'none' ? 1 : 0.95 }}
-            transition={currentAnimation}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg font-medium text-sm hover:bg-primary-light transition-colors shadow-lg shadow-primary/25"
+            className="ml-auto flex items-center gap-1.5 px-3 py-2 bg-primary text-black rounded-lg font-medium text-xs hover:bg-primary-light transition-colors shadow-lg shadow-primary/25"
           >
             Launch <ExternalLink className="w-4 h-4" />
           </motion.button>

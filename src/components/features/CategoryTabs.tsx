@@ -38,7 +38,7 @@ export default function CategoryTabs({ onCreateCollection, onEditCollection }: C
 
   return (
     <div className="w-full">
-      <div className="category-tabs-container flex items-center gap-1.5 pb-2 overflow-x-auto pb-2">
+      <div className="category-tabs-container flex items-center gap-1 pb-1.5 overflow-x-auto pb-1.5">
         {/* All */}
         <TabButton active={isNoneSelected} onClick={() => setSelectedCategory(null)}>
           All
@@ -50,7 +50,7 @@ export default function CategoryTabs({ onCreateCollection, onEditCollection }: C
           <TabButton
             active={selectedCategory === 'Favorites'}
             onClick={() => setSelectedCategory('Favorites')}
-            icon={<Star className="w-3.5 h-3.5" />}
+            icon={<Star className="w-3 h-3" />}
           >
             Favorites
             <Badge active={selectedCategory === 'Favorites'}>{favCount}</Badge>
@@ -72,7 +72,7 @@ export default function CategoryTabs({ onCreateCollection, onEditCollection }: C
 
         {/* Divider */}
         {collections.length > 0 && (
-          <div className="w-px h-6 bg-gray-300 dark:bg-border mx-1 flex-shrink-0" />
+          <div className="w-px h-4 bg-gray-300 dark:bg-border mx-1 flex-shrink-0" />
         )}
 
         {/* Collections */}
@@ -89,7 +89,7 @@ export default function CategoryTabs({ onCreateCollection, onEditCollection }: C
                 active={isActive}
                 onClick={() => setSelectedCollection(isActive ? null : col.id)}
                 accent={col.color}
-                icon={<FolderOpen className="w-3.5 h-3.5" />}
+                icon={<FolderOpen className="w-3 h-3" />}
               >
                 {col.name}
                 <Badge active={isActive}>{col.toolIds.length}</Badge>
@@ -100,13 +100,13 @@ export default function CategoryTabs({ onCreateCollection, onEditCollection }: C
                     onClick={(e) => { e.stopPropagation(); onEditCollection(col); }}
                     className="p-0.5 text-gray-500 dark:text-text-muted hover:text-primary transition-colors"
                   >
-                    <Settings2 className="w-3 h-3" />
+                    <Settings2 className="w-2.5 h-2.5" />
                   </button>
                   <button
                     onClick={(e) => { e.stopPropagation(); deleteCollection(col.id); }}
                     className="p-0.5 text-gray-500 dark:text-text-muted hover:text-red-500 transition-colors"
                   >
-                    <Trash2 className="w-3 h-3" />
+                    <Trash2 className="w-2.5 h-2.5" />
                   </button>
                 </div>
               )}
@@ -119,9 +119,9 @@ export default function CategoryTabs({ onCreateCollection, onEditCollection }: C
           onClick={onCreateCollection}
           whileHover={{ scale: settings.animationIntensity === 'none' ? 1 : 1.05 }}
           whileTap={{ scale: settings.animationIntensity === 'none' ? 1 : 0.95 }}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm text-gray-500 dark:text-text-muted hover:text-primary hover:bg-primary/10 transition-all border-2 border-dashed border-gray-300 dark:border-border hover:border-primary flex-shrink-0 ml-2 mr-2"
+          className="flex items-center gap-1 px-2 py-1 rounded-full text-xs text-gray-500 dark:text-text-muted hover:text-primary hover:bg-primary/10 transition-all border-2 border-dashed border-gray-300 dark:border-border hover:border-primary flex-shrink-0 ml-1 mr-1"
         >
-          <Plus className="w-3.5 h-3.5" />
+          <Plus className="w-3 h-3" />
           New Collection
         </motion.button>
       </div>
@@ -142,7 +142,7 @@ function TabButton({
     <button
       onClick={onClick}
       className={cn(
-        'relative flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex-shrink-0',
+        'relative flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 flex-shrink-0',
         active ? 'text-black' : 'text-gray-600 dark:text-text-secondary hover:text-gray-900 dark:hover:text-text-primary'
       )}
       style={active && accent ? { backgroundColor: accent } : undefined}
@@ -154,7 +154,7 @@ function TabButton({
           transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
         />
       )}
-      <span className="relative z-10 flex items-center gap-1.5">
+      <span className="relative z-10 flex items-center gap-1">
         {icon}
         {children}
       </span>
@@ -164,7 +164,7 @@ function TabButton({
 
 function Badge({ active, children }: { active: boolean; children: React.ReactNode }) {
   return (
-    <span className={cn('px-1.5 py-0.5 rounded-full text-xs', active ? 'bg-black/20' : 'bg-gray-100 dark:bg-background-card')}>
+    <span className={cn('px-1 py-0.5 rounded-full text-xs', active ? 'bg-black/20' : 'bg-gray-100 dark:bg-background-card')}>
       {children}
     </span>
   );

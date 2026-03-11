@@ -59,14 +59,14 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
       transition={currentAnimation}
       className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-background-dark/80 backdrop-blur-xl border-b border-border-light dark:border-border"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+        <div className="flex items-center justify-between h-12 gap-3">
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1, ...currentAnimation }}
-            className="flex items-center gap-3 flex-shrink-0"
+            className="flex items-center gap-2 flex-shrink-0"
           >
             <button
               onClick={() => {
@@ -76,14 +76,14 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
                   setCurrentPage('home');
                 }
               }}
-              className="logo-3d-container flex items-center gap-3 hover:opacity-80 transition-opacity"
+              className="logo-3d-container flex items-center gap-2 hover:opacity-80 transition-opacity"
             >
-              <img src="/logo.svg" alt="AIPulse" className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl" />
-              <span className="text-xl font-bold text-gray-900 dark:text-text-primary hidden sm:block">AIPulse</span>
+              <img src="/logo.svg" alt="AIPulse" className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg" />
+              <span className="text-lg font-bold text-gray-900 dark:text-text-primary hidden sm:block">AIPulse</span>
             </button>
 
             {/* Nav links — desktop */}
-            <nav className="hidden md:flex items-center gap-1 ml-2">
+            <nav className="hidden md:flex items-center gap-1 ml-1">
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -96,13 +96,13 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
                     }
                   }}
                   className={cn(
-                    'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200',
+                    'flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all duration-200',
                     (!isResourcePage && currentPage === item.id)
                       ? 'text-primary bg-primary/10'
                       : 'text-text-secondary dark:text-text-mutedDark hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-100 dark:hover:bg-background-card'
                   )}
                 >
-                  <item.icon className="w-4 h-4" />
+                  <item.icon className="w-3.5 h-3.5" />
                   {item.label}
                 </button>
               ))}
@@ -112,7 +112,7 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
                 <button
                   onClick={() => setIsResourcesOpen(!isResourcesOpen)}
                   className={cn(
-                    'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200',
+                    'flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all duration-200',
                     isResourcesOpen
                       ? 'text-primary bg-primary/10'
                       : 'text-text-secondary dark:text-text-mutedDark hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-100 dark:hover:bg-background-card'
@@ -183,21 +183,21 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
             {/* Activity log */}
             <button
               onClick={onShowActivity}
-              className="p-2 rounded-xl text-text-secondary dark:text-text-mutedDark hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-100 dark:hover:bg-background-card transition-colors"
+              className="p-1.5 rounded-xl text-text-secondary dark:text-text-muted hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-100 dark:hover:bg-background-card transition-colors"
               title="Activity Log"
               aria-label="Activity Log"
             >
-              <Clock className="w-4 h-4" />
+              <Clock className="w-3.5 h-3.5" />
             </button>
 
             {/* Keyboard shortcuts */}
             <button
               onClick={onShowShortcuts}
-              className="p-2 rounded-xl text-gray-600 dark:text-text-muted hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-100 dark:hover:bg-background-card transition-colors hidden sm:flex items-center"
+              className="p-1.5 rounded-xl text-gray-600 dark:text-text-muted hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-100 dark:hover:bg-background-card transition-colors hidden sm:flex items-center"
               title="Keyboard shortcuts (?)"
               aria-label="Keyboard shortcuts"
             >
-              <Keyboard className="w-4 h-4" />
+              <Keyboard className="w-3.5 h-3.5" />
             </button>
 
             {/* Settings */}
@@ -211,15 +211,15 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
                 }
               }}
               className={cn(
-                'p-2 rounded-xl transition-colors',
+                'p-1.5 rounded-xl transition-colors',
                 (!isResourcePage && currentPage === 'settings')
                   ? 'text-primary bg-primary/10'
-                  : 'text-text-secondary dark:text-text-mutedDark hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-100 dark:hover:bg-background-card'
+                  : 'text-text-secondary dark:text-text-muted hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-100 dark:hover:bg-background-card'
               )}
               title="Settings"
               aria-label="Settings"
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-3.5 h-3.5" />
             </button>
 
             {/* Add Tool — only on home */}
@@ -269,7 +269,7 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
         </div>
 
         {/* Mobile nav */}
-        <div className="md:hidden flex items-center gap-1 pb-2 overflow-x-auto scrollbar-hide">
+        <div className="md:hidden flex items-center gap-1 pb-1 overflow-x-auto scrollbar-hide">
           <button
             onClick={() => {
               if (isResourcePage) {
@@ -279,11 +279,11 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
               }
             }}
             className={cn(
-              'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all flex-shrink-0',
+              'flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-all flex-shrink-0',
               (!isResourcePage && currentPage === 'home') ? 'text-primary bg-primary/10' : 'text-text-secondary dark:text-text-mutedDark'
             )}
           >
-            <span className="w-3.5 h-3.5">🏠</span> Home
+            <span className="w-3 h-3">🏠</span> Home
           </button>
           {navItems.map((item) => (
             <button

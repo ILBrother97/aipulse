@@ -75,12 +75,12 @@ export default function ToolGrid({ onEditTool, onDeleteTool, onAddTool, onAddToC
 
   const gridClass =
     viewMode === 'list'
-      ? 'flex flex-col gap-2'
+      ? 'flex flex-col gap-1.5'
       : viewMode === 'expanded'
-      ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6'
+      ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4'
       : viewMode === 'kanban'
       ? '' // handled separately
-      : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6';
+      : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4';
 
   // ── Kanban View ─────────────────────────────────────────
   if (viewMode === 'kanban') {

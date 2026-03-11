@@ -160,10 +160,10 @@ function App() {
         <Routes>
           {/* Main App Route */}
           <Route path="/" element={
-            <main className="pt-24 pb-20 px-4 sm:px-6 lg:px-8">
+            <main className="pt-16 pb-16 px-3 sm:px-4 lg:px-6">
               <div className="max-w-7xl mx-auto">
                 <AnimatePresence mode="wait">
-                  {/* ── HOME PAGE ──────────────────────────────────────── */}
+                  {/* ── HOME PAGE ──────────────────────────────── */}
                   {currentPage === 'home' && (
                     <motion.div
                       key="home"
@@ -177,7 +177,7 @@ function App() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.1 }}
-                        className="mb-6"
+                        className="mb-4"
                       >
                         <CategoryTabs
                           onCreateCollection={() => {
