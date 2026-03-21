@@ -1911,37 +1911,83 @@ export default function AIAssistant() {
         )}
       </AnimatePresence>
 
-      {/* Floating button */}
+      {/* FAB Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.92 }}
         className={cn(
-          'fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center transition-all duration-300 relative',
+          'ai-fab fixed z-[1000] flex items-center justify-center rounded-full transition-all duration-300',
+          'focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/50',
           isOpen
-            ? 'bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border text-gray-900 dark:text-text-primary'
-            : 'bg-primary text-black shadow-primary/40'
+            ? 'ai-fab--active'
+            : 'ai-fab--default'
         )}
-        aria-label="Open AI Assistant"
+        aria-label={isOpen ? 'Close AI Assistant' : 'Open AI Assistant'}
+        aria-expanded={isOpen}
+        style={{
+          width: 'clamp(48px, 6vw, 56px)',
+          height: 'clamp(48px, 6vw, 56px)',
+          bottom: 'clamp(16px, 3vw, 24px)',
+          right: 'clamp(16px, 3vw, 24px)',
+        }}
       >
-        {/* PRO badge for free users */}
-        {!isPremium && !isOpen && (
-          <div className="absolute -top-1 -right-1 bg-violet-600 text-white text-xs px-1.5 py-0.5 rounded-full font-bold">
-            ✨ PRO
-          </div>
+        {/* Pulse ring animation */}
+        {!isOpen && (
+          <span className="ai-fab__pulse" aria-hidden="true" />
         )}
         
-        <AnimatePresence mode="wait">
-          {isOpen ? (
-            <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-              <X className="w-6 h-6" />
-            </motion.div>
-          ) : (
-            <motion.div key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-              <img src="/logo.svg" alt="AIPulse" className="w-6 h-6" />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Glow effect */}
+        <span className="ai-fab__glow" aria-hidden="true" />
+        
+        {/* Icon container */}
+        <span className="ai-fab__icon-wrapper relative z-10">
+          <AnimatePresence mode="wait">
+            {isOpen ? (
+              <motion.span
+                key="close"
+                initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                className="flex"
+              >
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              </motion.span>
+            ) : (
+              <motion.span
+                key="open"
+                initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                className="flex"
+              >
+                <img 
+                  src="/logo.svg" 
+                  alt="AIPulse AI" 
+                  className="w-5 h-5 sm:w-6 sm:h-6" 
+                />
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </span>
+
+        {/* Premium badge */}
+        {!isPremium && !isOpen && (
+          <motion.span
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="ai-fab__badge"
+          >
+            PRO
+          </motion.span>
+        )}
+
+        {/* Loading indicator */}
+        {isTyping && (
+          <span className="ai-fab__loading" aria-hidden="true" />
+        )}
       </motion.button>
     </>
   );
