@@ -1376,4 +1376,15 @@ section {
     min-width: 220px;
     right: -8px;
   }
+  
+  .workflows-premium-fab {
+    right: 60px;
+  }
+}
+
+/* Desktop stacked positioning for workflows FAB */
+@media (min-width: 641px) {
+  .workflows-premium-fab {
+    right: 80px;
+  }
 }

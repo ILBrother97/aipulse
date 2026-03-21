@@ -892,7 +892,7 @@ function WorkflowBuilder({ workflow, onChange, onSave, onCancel, tools }: Workfl
       </div>
       
       {/* Premium Workflows FAB */}
-      {!usePremium().isPremium && <WorkflowsPremiumButton className="fixed bottom-24 right-4 sm:right-6 z-40" />}
+      {!usePremium().isPremium && <WorkflowsPremiumButton className="fixed bottom-24 right-20 sm:right-24 z-40" />}
     </motion.div>
   );
 }
