@@ -589,3 +589,70 @@ html {
     animation: none;
   }
 }
+
+/* ─── Zoom-Aware FAB Styles ───────────────────────────────────────── */
+.ai-fab--zoom-aware {
+  will-change: transform, bottom, right;
+  transform-origin: bottom right;
+}
+
+@media screen and (min-resolution: 1.25dppx) {
+  .ai-fab--zoom-aware {
+    transform: scale(0.95);
+  }
+}
+
+@media screen and (min-resolution: 1.5dppx) {
+  .ai-fab--zoom-aware {
+    transform: scale(0.9);
+  }
+}
+
+@media screen and (min-resolution: 2dppx) {
+  .ai-fab--zoom-aware {
+    transform: scale(0.85);
+  }
+}
+
+/* High zoom levels (150%+) */
+@media screen and (min-resolution: 2.5dppx) {
+  .ai-fab--zoom-aware {
+    transform: scale(0.8);
+  }
+}
+
+/* Layout container with overflow protection */
+.layout-container,
+#root,
+.app-root {
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Safe zone for fixed elements */
+.safe-zone-fab {
+  --fab-safe-bottom: 24px;
+  --fab-safe-right: 24px;
+}
+
+/* Viewport-based adjustments for iOS Safari */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .ai-fab--zoom-aware {
+    bottom: calc(var(--fab-safe-bottom, 24px) + env(safe-area-inset-bottom));
+    right: calc(var(--fab-safe-right, 24px) + env(safe-area-inset-right));
+  }
+}
+
+/* Collision protection with common UI elements */
+@media (max-width: 640px) {
+  .ai-fab--zoom-aware {
+    bottom: max(16px, env(safe-area-inset-bottom, 16px));
+    right: max(16px, env(safe-area-inset-right, 16px));
+  }
+}
+
+/* Ensure button stays within viewport bounds */
+.ai-fab--zoom-aware {
+  position: fixed;
+  contain: layout style;
+}

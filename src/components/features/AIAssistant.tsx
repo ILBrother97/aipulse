@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Minimize2, Maximize2, Trash2, Zap, ExternalLink, Sparkles } from 'lucide-react';
 import { useToolsStore } from '../../stores/toolsStore';
 import { usePremium } from '@/hooks/usePremium';
+import { useZoomDetection } from '@/hooks/useZoomDetection';
 import { cn } from '../../utils/cn';
 import type { AITool } from '../../types/index';
 
@@ -1584,6 +1585,37 @@ export default function AIAssistant() {
 
   const { tools, recordUsage, recentlyUsed } = useToolsStore();
   const { isPremium, openUpgradeModal } = usePremium();
+  const { level: zoomLevel, isZoomed, visualViewport } = useZoomDetection();
+
+  const fabStyles = useMemo(() => {
+    const baseMargin = 24;
+    const mobileMargin = 16;
+    const scaleFactor = 1 / Math.min(Math.max(zoomLevel, 0.5), 2);
+    const scaledBaseMargin = baseMargin * scaleFactor;
+    const scaledMobileMargin = mobileMargin * scaleFactor;
+
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+    const margin = isMobile ? scaledMobileMargin : scaledBaseMargin;
+    const buttonSize = Math.max(48, 56 * scaleFactor);
+
+    let bottomOffset = margin;
+    let rightOffset = margin;
+
+    if (visualViewport && isZoomed) {
+      const viewportScale = visualViewport.scale;
+      bottomOffset = margin / viewportScale;
+      rightOffset = margin / viewportScale;
+    }
+
+    return {
+      width: buttonSize,
+      height: buttonSize,
+      bottom: bottomOffset,
+      right: rightOffset,
+      zIndex: isZoomed ? 2000 : 1000,
+      scale: Math.min(scaleFactor, 1),
+    };
+  }, [zoomLevel, isZoomed, visualViewport]);
 
   // Free query tracking
   const getFreeQueryKey = () => `aipulse_free_queries_${new Date().toISOString().split('T')[0]}`;
@@ -1917,8 +1949,9 @@ export default function AIAssistant() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.92 }}
         className={cn(
-          'ai-fab fixed z-[1000] flex items-center justify-center rounded-full transition-all duration-300',
+          'ai-fab fixed flex items-center justify-center rounded-full transition-all duration-300',
           'focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/50',
+          'ai-fab--zoom-aware',
           isOpen
             ? 'ai-fab--active'
             : 'ai-fab--default'
@@ -1926,10 +1959,11 @@ export default function AIAssistant() {
         aria-label={isOpen ? 'Close AI Assistant' : 'Open AI Assistant'}
         aria-expanded={isOpen}
         style={{
-          width: 'clamp(48px, 6vw, 56px)',
-          height: 'clamp(48px, 6vw, 56px)',
-          bottom: 'clamp(16px, 3vw, 24px)',
-          right: 'clamp(16px, 3vw, 24px)',
+          width: fabStyles.width,
+          height: fabStyles.height,
+          bottom: fabStyles.bottom,
+          right: fabStyles.right,
+          zIndex: fabStyles.zIndex,
         }}
       >
         {/* Pulse ring animation */}
