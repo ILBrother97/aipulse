@@ -1708,7 +1708,7 @@ export default function AIAssistant() {
   };
 
   const chatWidth = isExpanded ? 'w-[480px]' : 'w-[360px]';
-  const chatHeight = isExpanded ? 'max-h-[80vh] min-h-[400px]' : 'max-h-[75vh] min-h-[500px]';
+  const chatHeight = isExpanded ? 'max-h-[calc(85vh-80px)] min-h-[400px]' : 'max-h-[calc(80vh-80px)] min-h-[500px]';
 
   // Show teaser for free users, full assistant for premium
   if (!isPremium && isOpen) {
@@ -1719,7 +1719,12 @@ export default function AIAssistant() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
           transition={{ type: 'spring', bounce: 0.25, duration: 0.4 }}
-          className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50 w-[380px] bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl shadow-2xl overflow-hidden sm:right-6 max-sm:right-2 max-sm:left-2 max-sm:w-auto"
+          style={{
+            bottom: 'clamp(80px, 12vh, 120px)',
+            right: 'clamp(12px, 2vw, 24px)',
+            maxHeight: 'min(calc(100dvh - 140px), 500px)',
+          }}
+          className="fixed z-50 w-[380px] bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl shadow-2xl overflow-hidden max-sm:right-2 max-sm:left-2 max-sm:w-auto"
         >
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-border bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20">
@@ -1793,10 +1798,15 @@ export default function AIAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', bounce: 0.25, duration: 0.4 }}
+            style={{
+              bottom: 'clamp(80px, 12vh, 120px)',
+              right: 'clamp(12px, 2vw, 24px)',
+              maxHeight: 'min(calc(100dvh - 140px), 600px)',
+            }}
             className={cn(
-              'fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50 bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden',
+              'fixed z-50 bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden',
               chatWidth, chatHeight,
-              'sm:right-6 max-sm:right-2 max-sm:left-2 max-sm:w-auto max-sm:max-h-[90vh]'
+              'max-sm:right-2 max-sm:left-2 max-sm:w-auto max-sm:max-h-[calc(85dvh-80px)]'
             )}
           >
             {/* Header */}

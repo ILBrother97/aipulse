@@ -40,65 +40,65 @@ export function UpgradeModal() {
           />
           
           {/* Modal */}
-          <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 flex items-center justify-center z-50 p-4 overflow-auto">
             <motion.div
               variants={modalVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+              className="upgrade-modal bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-auto my-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex flex-col lg:flex-row h-full">
+              <div className="upgrade-modal-content flex flex-col lg:flex-row h-full">
                 {/* Left Panel */}
-                <div className="bg-violet-700 text-white p-8 lg:p-12 flex-1">
+                <div className="upgrade-modal-left bg-violet-700 text-white p-6 sm:p-8 lg:p-12 flex-1">
                   <div className="max-w-md mx-auto">
-                    <h2 className="text-3xl lg:text-4xl font-bold mb-6">
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
                       Upgrade to AIPulse Premium
                     </h2>
                     
-                    <div className="mb-8">
-                      <div className="text-4xl lg:text-5xl font-bold mb-2">
+                    <div className="mb-6 sm:mb-8">
+                      <div className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2">
                         $4.99
-                        <span className="text-xl lg:text-2xl font-normal text-violet-200"> / month</span>
+                        <span className="text-lg sm:text-xl lg:text-2xl font-normal text-violet-200"> / month</span>
                       </div>
                       <div className="inline-block bg-yellow-400 text-violet-900 px-3 py-1 rounded-full text-sm font-semibold">
                         $1 first month
                       </div>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                       <div className="flex items-start space-x-3">
-                        <span className="text-green-400 text-xl">✓</span>
-                        <span className="text-lg">Unlimited Collections</span>
+                        <span className="text-green-400 text-lg sm:text-xl">✓</span>
+                        <span className="text-base sm:text-lg">Unlimited Collections</span>
                       </div>
                       <div className="flex items-start space-x-3">
-                        <span className="text-green-400 text-xl">✓</span>
-                        <span className="text-lg">Advanced Analytics & exports</span>
+                        <span className="text-green-400 text-lg sm:text-xl">✓</span>
+                        <span className="text-base sm:text-lg">Advanced Analytics & exports</span>
                       </div>
                       <div className="flex items-start space-x-3">
-                        <span className="text-green-400 text-xl">✓</span>
-                        <span className="text-lg">Unlimited Workflows</span>
+                        <span className="text-green-400 text-lg sm:text-xl">✓</span>
+                        <span className="text-base sm:text-lg">Unlimited Workflows</span>
                       </div>
                       <div className="flex items-start space-x-3">
-                        <span className="text-green-400 text-xl">✓</span>
-                        <span className="text-lg">AI Assistant & Recommendations</span>
+                        <span className="text-green-400 text-lg sm:text-xl">✓</span>
+                        <span className="text-base sm:text-lg">AI Assistant & Recommendations</span>
                       </div>
                       <div className="flex items-start space-x-3">
-                        <span className="text-green-400 text-xl">✓</span>
-                        <span className="text-lg">All Themes & Customization</span>
+                        <span className="text-green-400 text-lg sm:text-xl">✓</span>
+                        <span className="text-base sm:text-lg">All Themes & Customization</span>
                       </div>
                       <div className="flex items-start space-x-3">
-                        <span className="text-green-400 text-xl">✓</span>
-                        <span className="text-lg">Priority support</span>
+                        <span className="text-green-400 text-lg sm:text-xl">✓</span>
+                        <span className="text-base sm:text-lg">Priority support</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Right Panel */}
-                <div className="bg-white p-8 lg:p-12 flex-1 relative">
+                <div className="upgrade-modal-right bg-white p-6 sm:p-8 lg:p-12 flex-1 relative">
                   {/* Close Button */}
                   <button
                     onClick={closeUpgradeModal}
@@ -110,43 +110,45 @@ export function UpgradeModal() {
                   </button>
 
                   <div className="max-w-md mx-auto">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-8">What you get</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 sm:mb-8">What you get</h3>
                     
                     {/* Feature Cards */}
-                    <div className="space-y-4 mb-8">
-                      <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                      <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                         <h4 className="font-semibold text-gray-900 mb-1">Unlimited Collections</h4>
                         <p className="text-sm text-gray-600">Create as many collections as you need to organize your AI tools perfectly.</p>
                       </div>
                       
-                      <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                         <h4 className="font-semibold text-gray-900 mb-1">Advanced Analytics</h4>
                         <p className="text-sm text-gray-600">Deep insights into your tool usage, export data, and track productivity trends.</p>
                       </div>
                       
-                      <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                         <h4 className="font-semibold text-gray-900 mb-1">AI Assistant</h4>
                         <p className="text-sm text-gray-600">Get personalized recommendations and help finding the perfect AI tools for your needs.</p>
                       </div>
                       
-                      <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                         <h4 className="font-semibold text-gray-900 mb-1">Priority Support</h4>
                         <p className="text-sm text-gray-600">Get faster response times and dedicated support from our team.</p>
                       </div>
                     </div>
 
-                    {/* CTA Button */}
-                    <button
-                      onClick={handleUpgrade}
-                      className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-4 px-6 rounded-lg transition-colors text-lg"
-                    >
-                      Start for $1 →
-                    </button>
+                    {/* CTA Button - Always visible */}
+                    <div className="sticky bottom-0 bg-white pt-4 border-t border-gray-100">
+                      <button
+                        onClick={handleUpgrade}
+                        className="upgrade-cta w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-3 sm:py-4 px-6 rounded-lg transition-colors text-base sm:text-lg"
+                      >
+                        Start for $1 →
+                      </button>
 
-                    {/* Fine Print */}
-                    <p className="text-xs text-gray-500 text-center mt-4">
-                      Cancel anytime · Secure payment by Stripe
-                    </p>
+                      {/* Fine Print */}
+                      <p className="text-xs text-gray-500 text-center mt-3 sm:mt-4">
+                        Cancel anytime · Secure payment by Stripe
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>

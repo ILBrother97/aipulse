@@ -765,3 +765,101 @@ section {
     padding-right: env(safe-area-inset-right);
   }
 }
+
+/* ─── Popup & Modal Visibility Fixes ───────────────────────────────── */
+.upgrade-modal {
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+.upgrade-modal-content {
+  max-height: calc(90vh - 2rem);
+  max-height: calc(90dvh - 2rem);
+}
+
+@media (max-height: 700px) {
+  .upgrade-modal-content {
+    max-height: calc(100vh - 60px);
+    max-height: calc(100dvh - 60px);
+  }
+}
+
+.upgrade-modal-left,
+.upgrade-modal-right {
+  min-height: auto;
+}
+
+.upgrade-cta {
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.upgrade-cta:hover {
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+}
+
+/* Ensure sticky CTA is always visible */
+.sticky {
+  position: sticky;
+  background: linear-gradient(to top, white 80%, transparent);
+}
+
+/* Chat window header always visible */
+.chat-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+/* AI window fixes */
+.ai-window {
+  overscroll-behavior: contain;
+}
+
+@media (max-height: 600px) {
+  .ai-window {
+    max-height: calc(100vh - 120px) !important;
+  }
+}
+
+/* Premium teaser window */
+.premium-teaser {
+  overscroll-behavior: contain;
+}
+
+@media (max-height: 500px) {
+  .premium-teaser {
+    max-height: calc(100vh - 100px) !important;
+  }
+}
+
+/* Ensure modals don't get cut off */
+.modal-overlay {
+  overscroll-behavior: contain;
+  padding: env(safe-area-inset-bottom, 16px);
+}
+
+/* Viewport-safe positioning for all fixed elements */
+.viewport-safe {
+  bottom: max(16px, env(safe-area-inset-bottom));
+  right: max(16px, env(safe-area-inset-right));
+}
+
+/* Fix for zoom levels */
+@media (max-resolution: 1dppx) and (max-height: 800px) {
+  .upgrade-modal-content {
+    max-height: calc(100vh - 80px);
+  }
+}
+
+@media (max-resolution: 1dppx) and (max-height: 600px) {
+  .upgrade-modal-left {
+    padding: 1rem;
+  }
+  
+  .upgrade-modal-right {
+    padding: 1rem;
+  }
+}
