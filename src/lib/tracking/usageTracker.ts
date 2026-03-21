@@ -1,21 +1,17 @@
 import { supabase } from '@/lib/supabase'
-import { validateUsage } from '../api/usageValidation'
+import { validateUserUsage, incrementUsage } from '../api/usageValidation'
 
 export async function trackUsage(feature: string): Promise<boolean> {
-  const validation = await validateUsage(feature)
-  
-  if (!validation.allowed) {
-    throw new Error(`Usage limit exceeded for ${feature}`)
-  }
-
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
 
-  await (supabase.from('usage_events') as any).insert({
-    user_id: user.id,
-    event_type: 'usage',
-    feature_type: feature
-  })
+  const validation = await validateUserUsage(user.id, feature)
+  
+  if (!validation.canAccess) {
+    throw new Error(`Usage limit exceeded for ${feature}`)
+  }
+
+  await incrementUsage(user.id, feature)
 
   return true
 }

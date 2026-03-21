@@ -1,46 +1,24 @@
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useAuthStore } from '@/stores/authStore';
 import { useUpgradeModal } from '@/hooks/useUpgradeModal';
+import { validateUserUsage, incrementUsage, ValidationResponse } from '@/lib/api/usageValidation';
 
-/**
- * Return type for the usePremium hook
- */
 export interface UsePremiumReturn {
-  /** Whether the current user has premium access */
   isPremium: boolean;
-  /** Whether the premium status is being loaded/fetched */
   isLoading: boolean;
-  /** Opens the upgrade modal for non-premium users */
   openUpgradeModal: () => void;
 }
 
-/**
- * Hook to access and manage premium user status.
- * Provides premium status, loading state, and a function to open the upgrade modal.
- *
- * @returns {UsePremiumReturn} Object containing premium status, loading state, and modal control
- *
- * @example
- * ```tsx
- * import { usePremium } from '@/hooks/usePremium';
- *
- * function PremiumFeature() {
- *   const { isPremium, isLoading, openUpgradeModal } = usePremium();
- *
- *   if (isLoading) return <div>Loading...</div>;
- *
- *   if (!isPremium) {
- *     return (
- *       <button onClick={openUpgradeModal}>
- *         Upgrade to Premium
- *       </button>
- *     );
- *   }
- *
- *   return <div>Premium content here</div>;
- * }
- * ```
- */
+export interface UseFeatureAccessReturn {
+  canAccess: boolean;
+  isLoading: boolean;
+  isPremium: boolean;
+  currentUsage: number;
+  limit: number;
+  promptUpgrade: () => void;
+  trackUsage: () => Promise<void>;
+}
+
 export function usePremium(): UsePremiumReturn {
   const { isPremium, isLoading: authLoading } = useAuthStore();
 
@@ -56,33 +34,85 @@ export function usePremium(): UsePremiumReturn {
   };
 }
 
-/**
- * Hook to check if a feature is accessible based on premium status.
- * Returns the feature availability and a function to prompt upgrade if not available.
- *
- * @param {boolean} requiresPremium - Whether the feature requires premium access
- * @returns {object} Feature availability state and upgrade prompt function
- *
- * @example
- * ```tsx
- * import { useFeatureAccess } from '@/hooks/usePremium';
- *
- * function FeatureComponent() {
- *   const { canAccess, promptUpgrade } = useFeatureAccess(true);
- *
- *   const handleClick = () => {
- *     if (!canAccess) {
- *       promptUpgrade();
- *       return;
- *     }
- *     // Execute premium feature
- *   };
- *
- *   return <button onClick={handleClick}>Use Feature</button>;
- * }
- * ```
- */
-export function useFeatureAccess(requiresPremium: boolean = true): {
+export function useFeatureAccess(feature: string): UseFeatureAccessReturn {
+  const { user } = useAuthStore();
+  const [validation, setValidation] = useState<ValidationResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user) {
+      setValidation({
+        canAccess: false,
+        isPremium: false,
+        currentUsage: 0,
+        limit: 0,
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    const checkAccess = async () => {
+      setIsLoading(true);
+      try {
+        const result = await validateUserUsage(user.id, feature);
+        if (!cancelled) {
+          setValidation(result);
+        }
+      } catch {
+        if (!cancelled) {
+          setValidation({
+            canAccess: false,
+            isPremium: false,
+            currentUsage: 0,
+            limit: 0,
+          });
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    checkAccess();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user, feature]);
+
+  const promptUpgrade = useCallback(() => {
+    console.log('Premium feature required:', feature);
+  }, [feature]);
+
+  const trackUsage = useCallback(async () => {
+    if (!user || !validation?.canAccess) return;
+    
+    try {
+      await incrementUsage(user.id, feature);
+      setValidation(prev => prev ? {
+        ...prev,
+        currentUsage: prev.currentUsage + 1,
+      } : prev);
+    } catch (error) {
+      console.error('Failed to track usage:', error);
+    }
+  }, [user, feature, validation]);
+
+  return {
+    canAccess: validation?.canAccess ?? false,
+    isLoading,
+    isPremium: validation?.isPremium ?? false,
+    currentUsage: validation?.currentUsage ?? 0,
+    limit: validation?.limit ?? 0,
+    promptUpgrade,
+    trackUsage,
+  };
+}
+
+export function useFeatureAccessSimple(requiresPremium: boolean = true): {
   canAccess: boolean;
   promptUpgrade: () => void;
   isLoading: boolean;
@@ -90,7 +120,6 @@ export function useFeatureAccess(requiresPremium: boolean = true): {
   const { isPremium, isLoading } = usePremium();
 
   const promptUpgrade = useCallback(() => {
-    // This can be extended to show a modal or toast notification
     console.log('Premium feature required');
   }, []);
 

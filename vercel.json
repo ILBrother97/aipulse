@@ -19,19 +19,5 @@
         }
       ]
     }
-  ],
-  "functions": {
-    "api/**/*.ts": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  },
-  "regions": ["iad1", "sfo1", "fra1"],
-  "cache-control": [
-    {
-      "path": "/api/health",
-      "maxAge": "0s",
-      "swr": "60s"
-    }
   ]
 }
