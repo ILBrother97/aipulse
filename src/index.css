@@ -1224,3 +1224,156 @@ section {
     border-top: 1px solid rgba(102, 126, 234, 0.2);
   }
 }
+
+/* ─── Workflows Premium Button ─────────────────────────────────────────── */
+.workflows-premium-fab {
+  position: relative;
+  width: clamp(48px, 6vw, 56px);
+  height: clamp(48px, 6vw, 56px);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  overflow: visible;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.workflows-premium-fab:hover {
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+}
+
+.workflows-premium-fab__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  animation: fabPulse 2.5s ease-out infinite;
+  z-index: -1;
+}
+
+.workflows-premium-fab__glow {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(102, 126, 234, 0.4) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  filter: blur(8px);
+}
+
+.workflows-premium-fab:hover .workflows-premium-fab__glow {
+  opacity: 1;
+}
+
+.workflows-premium-fab__icon {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.workflows-premium-fab__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  font-size: 7px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.5), 0 0 0 2px white;
+  text-transform: uppercase;
+  line-height: 1.2;
+  z-index: 20;
+}
+
+.dark .workflows-premium-fab__badge {
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.5), 0 0 0 2px #1a1a1a;
+}
+
+/* Tooltip for workflows */
+.workflows-premium-fab__tooltip {
+  position: absolute;
+  bottom: calc(100% + 16px);
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  min-width: 260px;
+  max-width: 300px;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.dark .workflows-premium-fab__tooltip {
+  background: #1a1a1a;
+}
+
+.workflows-premium-fab__tooltip .tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.workflows-premium-fab__tooltip .tooltip-features {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.workflows-premium-fab__tooltip .tooltip-feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #374151;
+}
+
+.dark .workflows-premium-fab__tooltip .tooltip-feature {
+  color: #e5e5e5;
+}
+
+.workflows-premium-fab__tooltip .tooltip-cta {
+  padding: 12px 16px;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.dark .workflows-premium-fab__tooltip .tooltip-cta {
+  background: #262626;
+  border-top-color: #404040;
+}
+
+/* Inline Upgrade Card for Workflows */
+.workflows-upgrade-inline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 12px;
+}
+
+/* Mobile responsive for workflows */
+@media (max-width: 640px) {
+  .workflows-premium-fab__tooltip {
+    min-width: 220px;
+    right: -8px;
+  }
+}

@@ -13,7 +13,9 @@ import { toast } from '../../stores/toastStore';
 import { cn } from '../../utils/cn';
 import { Button } from '../ui';
 import { PremiumGate } from '@/components/premium';
+import { WorkflowsPremiumButton } from '../workflows';
 import type { Workflow, WorkflowStep, AITool } from '../../types/index';
+import { useUpgradeModal } from '@/hooks/useUpgradeModal';
 import { v4 as uuidv4 } from 'uuid';
 
 // ── Pre-built Templates ───────────────────────────────────────────────
@@ -888,6 +890,9 @@ function WorkflowBuilder({ workflow, onChange, onSave, onCancel, tools }: Workfl
           </div>
         </div>
       </div>
+      
+      {/* Premium Workflows FAB */}
+      {!usePremium().isPremium && <WorkflowsPremiumButton className="fixed bottom-24 right-4 sm:right-6 z-40" />}
     </motion.div>
   );
 }
