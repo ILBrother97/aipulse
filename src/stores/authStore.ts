@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { User, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { premiumCache } from '@/lib/cache/premiumCache';
 
 /**
  * Profile data from the profiles table
@@ -75,6 +76,11 @@ interface AuthActions {
    * Clear any error messages
    */
   clearError: () => void;
+
+  /**
+   * Invalidate the premium status cache for the current user
+   */
+  invalidatePremiumCache: () => void;
 }
 
 /**
@@ -212,6 +218,13 @@ export const useAuthStore = create<AuthStore>()(
           return;
         }
 
+        const cacheKey = `premium:${user.id}`;
+        const cached = premiumCache.get<boolean>(cacheKey);
+        if (cached !== null) {
+          set({ isPremium: cached });
+          return;
+        }
+
         try {
           const { data, error } = await supabase
             .from('profiles')
@@ -221,13 +234,17 @@ export const useAuthStore = create<AuthStore>()(
 
           if (error) {
             console.error('Error fetching profile:', error);
+            premiumCache.set(cacheKey, false);
             set({ isPremium: false });
             return;
           }
 
-          set({ isPremium: data?.is_premium ?? false });
+          const isPremium = data?.is_premium ?? false;
+          premiumCache.set(cacheKey, isPremium);
+          set({ isPremium });
         } catch (err) {
           console.error('Failed to fetch profile:', err);
+          premiumCache.set(cacheKey, false);
           set({ isPremium: false });
         }
       },
@@ -242,6 +259,13 @@ export const useAuthStore = create<AuthStore>()(
       },
 
       clearError: () => set({ error: null }),
+
+      invalidatePremiumCache: () => {
+        const { user } = get();
+        if (user) {
+          premiumCache.invalidateUser(user.id);
+        }
+      },
     }),
     {
       name: 'auth-storage',

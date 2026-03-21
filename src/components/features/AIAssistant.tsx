@@ -1609,8 +1609,8 @@ export default function AIAssistant() {
     }
   }, [isOpen]);
 
-  const handleSend = async () => {
-    const query = input.trim();
+  const handleSend = async (text?: string) => {
+    const query = text ?? input.trim();
     if (!query) return;
 
     // Check free query limit for non-premium users

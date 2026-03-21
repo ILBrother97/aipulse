@@ -2,7 +2,7 @@ import React from 'react';
 import { usePremium } from '@/hooks/usePremium';
 
 interface PremiumGateProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   feature: string;
   variant?: 'blur' | 'soft' | 'limit';
   limitCurrent?: number;
