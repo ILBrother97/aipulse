@@ -10,6 +10,7 @@ import { usePremium } from '@/hooks/usePremium';
 import { cn } from '../../utils/cn';
 import { Button } from '../ui';
 import { PremiumGate } from '@/components/premium';
+import { AnalyticsPremiumButton } from '../analytics';
 
 const COLORS = ['#00D9FF', '#A855F7', '#F97316', '#22C55E', '#3B82F6', '#EF4444', '#F59E0B'];
 
@@ -284,6 +285,9 @@ export default function AnalyticsPage() {
           </div>
         </PremiumGate>
       )}
+      
+      {/* Premium Analytics FAB */}
+      {!isPremium && <AnalyticsPremiumButton className="fixed bottom-24 right-4 sm:right-6 z-40" />}
     </motion.div>
   );
 }

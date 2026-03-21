@@ -948,3 +948,279 @@ section {
     padding: 1rem;
   }
 }
+
+/* ─── Analytics Premium Button ─────────────────────────────────────────── */
+.analytics-premium-fab {
+  position: relative;
+  width: clamp(48px, 6vw, 56px);
+  height: clamp(48px, 6vw, 56px);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  overflow: visible;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.analytics-premium-fab:hover {
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+}
+
+.analytics-premium-fab__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  animation: fabPulse 2.5s ease-out infinite;
+  z-index: -1;
+}
+
+.analytics-premium-fab__glow {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(102, 126, 234, 0.4) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  filter: blur(8px);
+}
+
+.analytics-premium-fab:hover .analytics-premium-fab__glow {
+  opacity: 1;
+}
+
+.analytics-premium-fab__icon {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.analytics-premium-fab__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  font-size: 7px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.5), 0 0 0 2px white;
+  text-transform: uppercase;
+  line-height: 1.2;
+  z-index: 20;
+}
+
+.dark .analytics-premium-fab__badge {
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.5), 0 0 0 2px #1a1a1a;
+}
+
+/* Tooltip */
+.analytics-premium-fab__tooltip {
+  position: absolute;
+  bottom: calc(100% + 16px);
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  min-width: 260px;
+  max-width: 300px;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.dark .analytics-premium-fab__tooltip {
+  background: #1a1a1a;
+}
+
+.tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.tooltip-features {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tooltip-feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #374151;
+}
+
+.dark .tooltip-feature {
+  color: #e5e5e5;
+}
+
+.tooltip-feature svg {
+  flex-shrink: 0;
+}
+
+.tooltip-cta {
+  padding: 12px 16px;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.dark .tooltip-cta {
+  background: #262626;
+  border-top-color: #404040;
+}
+
+.tooltip-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.price-old {
+  font-size: 14px;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.price-new {
+  font-size: 20px;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.price-period {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.tooltip-button {
+  width: 100%;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tooltip-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Inline Upgrade Card */
+.analytics-upgrade-inline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 12px;
+}
+
+.upgrade-inline__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.upgrade-inline__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.upgrade-inline__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 2px;
+}
+
+.dark .upgrade-inline__title {
+  color: #f3f4f6;
+}
+
+.upgrade-inline__description {
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.dark .upgrade-inline__description {
+  color: #9ca3af;
+}
+
+.upgrade-inline__pricing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.upgrade-inline__button {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upgrade-inline__button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .analytics-premium-fab__tooltip {
+    min-width: 220px;
+    right: -8px;
+  }
+  
+  .analytics-upgrade-inline {
+    flex-wrap: wrap;
+  }
+  
+  .upgrade-inline__pricing {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(102, 126, 234, 0.2);
+  }
+}
