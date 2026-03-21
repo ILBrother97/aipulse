@@ -1837,7 +1837,7 @@ export default function AIAssistant() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 min-h-0 chat-messages">
               {messages.map((msg) => (
                 <motion.div
                   key={msg.id}
@@ -1915,7 +1915,7 @@ export default function AIAssistant() {
 
             {/* Suggestions */}
             {messages.length <= 1 && (
-              <div className="px-4 pb-2 flex gap-1.5 flex-wrap flex-shrink-0 max-h-32 overflow-y-auto">
+              <div className="px-4 pb-2 flex gap-1.5 flex-wrap flex-shrink-0 max-h-24 overflow-y-auto chat-suggestions">
                 {SUGGESTIONS.map((s) => (
                   <button
                     key={s}
