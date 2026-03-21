@@ -78,11 +78,19 @@ export default function AnalyticsPage() {
               </button>
             ))}
           </div>
-          <PremiumGate feature="Analytics Export" variant="blur">
-            <Button variant="secondary" size="sm" onClick={handleExportCSV} leftIcon={<Download className="w-4 h-4" />}>
-              Export
-            </Button>
-          </PremiumGate>
+          <Button 
+            variant="secondary" 
+            size="sm" 
+            onClick={handleExportCSV}
+            disabled={!isPremium}
+            leftIcon={<Download className="w-4 h-4" />}
+            className={cn(
+              !isPremium && "opacity-60 cursor-not-allowed"
+            )}
+          >
+            {isPremium ? 'Export' : 'Export'}
+            {!isPremium && <span className="ml-1">🔒</span>}
+          </Button>
         </div>
       </div>
 
