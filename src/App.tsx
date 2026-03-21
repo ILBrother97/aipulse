@@ -150,7 +150,7 @@ function App() {
 
   return (
     <Router>
-      <div className={`min-h-screen bg-background-light dark:bg-background-dark text-text-primaryLight dark:text-text-primary transition-colors duration-300 ${settings.reduceMotion ? 'reduce-motion' : ''} animation-${settings.animationIntensity}`}>
+      <div className={`app-layout min-h-screen min-h-[100dvh] bg-background-light dark:bg-background-dark text-text-primaryLight dark:text-text-primary transition-colors duration-300 ${settings.reduceMotion ? 'reduce-motion' : ''} animation-${settings.animationIntensity}`}>
         {/* Dynamic Theme Styles */}
         <style>{dynamicStyles}</style>
 
@@ -164,7 +164,7 @@ function App() {
         <Routes>
           {/* Main App Route */}
           <Route path="/" element={
-            <main className="pt-16 pb-16 px-3 sm:px-4 lg:px-6">
+            <main className="app-main pt-16 pb-16 px-3 sm:px-4 lg:px-6 overflow-x-hidden">
               <div className="max-w-7xl mx-auto">
                 <AnimatePresence mode="wait">
                   {/* ── HOME PAGE ──────────────────────────────── */}
@@ -175,6 +175,7 @@ function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.25 }}
+                      className="page-container"
                     >
                       {/* Category Tabs */}
                       <motion.section
@@ -225,6 +226,7 @@ function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.25 }}
+                      className="page-container"
                     >
                       <AnalyticsPage />
                     </motion.div>
@@ -238,6 +240,7 @@ function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.25 }}
+                      className="page-container"
                     >
                       <WorkflowsPage />
                     </motion.div>
@@ -251,6 +254,7 @@ function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.25 }}
+                      className="page-container"
                     >
                       <SettingsPage />
                     </motion.div>
@@ -262,22 +266,22 @@ function App() {
 
           {/* Resource Pages Routes */}
           <Route path="/docs" element={
-            <main className="pt-24 pb-20 px-4 sm:px-6 lg:px-8">
+            <main className="app-main pt-24 pb-20 px-4 sm:px-6 lg:px-8 page-container">
               <Documentation />
             </main>
           } />
           <Route path="/api" element={
-            <main className="pt-24 pb-20 px-4 sm:px-6 lg:px-8">
+            <main className="app-main pt-24 pb-20 px-4 sm:px-6 lg:px-8 page-container">
               <APIReference />
             </main>
           } />
           <Route path="/guides" element={
-            <main className="pt-24 pb-20 px-4 sm:px-6 lg:px-8">
+            <main className="app-main pt-24 pb-20 px-4 sm:px-6 lg:px-8 page-container">
               <Guides />
             </main>
           } />
           <Route path="/support" element={
-            <main className="pt-24 pb-20 px-4 sm:px-6 lg:px-8">
+            <main className="app-main pt-24 pb-20 px-4 sm:px-6 lg:px-8 page-container">
               <Support />
             </main>
           } />
