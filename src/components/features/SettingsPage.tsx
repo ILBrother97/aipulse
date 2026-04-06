@@ -161,13 +161,13 @@ export default function SettingsPage() {
     >
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 ">Settings</h1>
-        <p className="text-gray-600  text-sm mt-1">Customize your AIPulse experience</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-[#f1f5f9]">Settings</h1>
+        <p className="text-gray-600 dark:text-[#64748b] text-sm mt-1">Customize your AIPulse experience</p>
       </div>
 
       <div className="flex gap-6 flex-col lg:flex-row">
         {/* Sidebar Tabs */}
-        <div className="lg:w-48 flex-shrink-0">
+        <div className="lg:w-48 flex-shrink-0 dark:bg-[#0d1117] dark:border-r dark:border-[rgba(255,255,255,0.06)] lg:rounded-xl lg:p-2">
           <nav className="flex lg:flex-col gap-1">
             {tabs.map((tab) => (
               <button
@@ -176,8 +176,8 @@ export default function SettingsPage() {
                 className={cn(
                   'flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 text-left w-full',
                   activeTab === tab.id
-                    ? 'bg-primary/15 text-primary'
-                    : 'text-gray-600  hover:text-gray-900  hover:bg-gray-100 '
+                    ? 'bg-primary/15 text-primary dark:bg-[rgba(var(--color-primary-rgb),0.06)] dark:border-l-2 dark:border-[var(--color-primary)]'
+                    : 'text-gray-600 dark:text-[#64748b] hover:text-gray-900 dark:hover:text-[var(--color-primary)] hover:bg-gray-100 dark:hover:bg-transparent'
                 )}
               >
                 <tab.icon className="w-4 h-4 flex-shrink-0" />
@@ -209,15 +209,15 @@ export default function SettingsPage() {
                           key={theme.key}
                           onClick={() => handleSettingChange('themeAccent', theme.key)}
                           className={cn(
-                            'relative flex items-center gap-3 p-3 rounded-xl border-2 transition-all duration-200 text-left',
+                            'relative flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 text-left',
                             settings.themeAccent === theme.key
-                              ? 'bg-white '
-                              : 'border-gray-200  hover:border-gray-400 dark:hover:border-border-hover bg-white '
+                              ? 'border-2 border-[var(--color-primary)]'
+                              : 'border-gray-200 dark:border-[rgba(255,255,255,0.08)] bg-white dark:bg-[#111827]'
                           )}
                           style={settings.themeAccent === theme.key ? { borderColor: accentColor, backgroundColor: `${accentColor}15` } : undefined}
                         >
                           <div className="w-8 h-8 rounded-full flex-shrink-0 shadow-lg" style={{ backgroundColor: theme.color }} />
-                          <span className="text-sm font-medium text-gray-900  truncate">{theme.label}</span>
+                          <span className="text-sm font-medium text-gray-900 dark:text-[#94a3b8] truncate">{theme.label}</span>
                           {settings.themeAccent === theme.key && (
                             <Check className="w-4 h-4 absolute top-2 right-2" style={{ color: accentColor }} />
                           )}
@@ -270,23 +270,23 @@ export default function SettingsPage() {
                     <div className="flex gap-3">
                       <button
                         onClick={() => handleSettingChange('defaultLaunchBehavior', 'new-tab')}
-                        className={cn('px-4 py-2.5 rounded-xl border-2 text-sm font-medium transition-all',
+                        className={cn('px-4 py-2.5 rounded-lg border text-sm font-medium transition-all',
                           settings.defaultLaunchBehavior === 'new-tab'
-                            ? ''
-                            : 'border-gray-200  text-gray-600  hover:border-gray-400 dark:hover:border-border-hover'
+                            ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-transparent'
+                            : 'border-gray-200 dark:border-[rgba(255,255,255,0.08)] text-gray-600 dark:text-[#64748b] hover:border-gray-400 dark:bg-[#111827]'
                         )}
-                        style={settings.defaultLaunchBehavior === 'new-tab' ? { borderColor: accentColor, backgroundColor: `${accentColor}15`, color: accentColor } : undefined}
+                        style={settings.defaultLaunchBehavior === 'new-tab' ? { borderColor: accentColor, color: accentColor } : undefined}
                       >
                         Open in New Tab
                       </button>
                       <button
                         onClick={() => handleSettingChange('defaultLaunchBehavior', 'current-tab')}
-                        className={cn('px-4 py-2.5 rounded-xl border-2 text-sm font-medium transition-all',
+                        className={cn('px-4 py-2.5 rounded-lg border text-sm font-medium transition-all',
                           settings.defaultLaunchBehavior === 'current-tab'
-                            ? ''
-                            : 'border-gray-200  text-gray-600  hover:border-gray-400 dark:hover:border-border-hover'
+                            ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-transparent'
+                            : 'border-gray-200 dark:border-[rgba(255,255,255,0.08)] text-gray-600 dark:text-[#64748b] hover:border-gray-400 dark:bg-[#111827]'
                         )}
-                        style={settings.defaultLaunchBehavior === 'current-tab' ? { borderColor: accentColor, backgroundColor: `${accentColor}15`, color: accentColor } : undefined}
+                        style={settings.defaultLaunchBehavior === 'current-tab' ? { borderColor: accentColor, color: accentColor } : undefined}
                       >
                         Open in Current Tab
                       </button>
@@ -350,14 +350,14 @@ export default function SettingsPage() {
                   <Section title="Danger Zone">
                     <div className="space-y-3">
                       {[
-                        { key: 'tools', label: 'Clear All Tools', desc: 'Remove all tools but keep collections and settings', color: 'text-orange-500 dark:text-orange-400' },
-                        { key: 'analytics', label: 'Clear Analytics', desc: 'Delete all usage history', color: 'text-yellow-600 dark:text-yellow-400' },
-                        { key: 'all', label: 'Factory Reset', desc: 'Remove everything and start fresh', color: 'text-red-600 dark:text-red-500' },
+                        { key: 'tools', label: 'Clear All Tools', desc: 'Remove all tools but keep collections and settings', color: 'text-[#f59e0b]' },
+                        { key: 'analytics', label: 'Clear Analytics', desc: 'Delete all usage history', color: 'text-[#f59e0b]' },
+                        { key: 'all', label: 'Factory Reset', desc: 'Remove everything and start fresh', color: 'text-[#ef4444]' },
                       ].map((action) => (
-                        <div key={action.key} className="flex items-center justify-between p-4 bg-gray-100  border-2 border-gray-200  rounded-xl gap-4">
+                        <div key={action.key} className="flex items-center justify-between p-4 bg-gray-100 dark:bg-[#111827] border-2 dark:border border-gray-200 dark:border-[rgba(255,255,255,0.06)] rounded-xl gap-4">
                           <div>
-                            <p className={cn('text-sm font-medium', action.color)}>{action.label}</p>
-                            <p className="text-xs text-gray-500  mt-0.5">{action.desc}</p>
+                            <p className={`font-medium ${action.color}`}>{action.label}</p>
+                            <p className="text-xs text-gray-500 dark:text-[#64748b] mt-0.5">{action.desc}</p>
                           </div>
                           {showClearConfirm === action.key ? (
                             <div className="flex gap-2">
@@ -547,13 +547,13 @@ export default function SettingsPage() {
               {activeTab === 'about' && (
                 <Section title="About AIPulse">
                   <div className="space-y-4">
-                    <div className="flex items-center gap-4 p-4 bg-gray-100  border-2 border-gray-200  rounded-xl">
+                    <div className="flex items-center gap-4 p-4 bg-gray-100 dark:bg-[#111827] border-2 dark:border border-gray-200 dark:border-[rgba(255,255,255,0.08)] rounded-xl">
                       <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
                         <Zap className="w-6 h-6 text-black" />
                       </div>
                       <div>
-                        <h3 className="font-bold text-gray-900  text-lg">AIPulse</h3>
-                        <p className="text-gray-500  text-sm">Version 2.0.0 · March 2026</p>
+                        <h3 className="font-bold text-gray-900 dark:text-[#94a3b8] text-lg">AIPulse</h3>
+                        <p className="text-gray-500 dark:text-[#64748b] text-sm">Version 2.0.0 · March 2026</p>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
@@ -561,9 +561,9 @@ export default function SettingsPage() {
                         { label: 'Tools', value: tools.length },
                         { label: 'Collections', value: collections.length },
                       ].map((s) => (
-                        <div key={s.label} className="p-4 bg-gray-100  border-2 border-gray-200  rounded-xl">
-                          <p className="text-2xl font-bold text-primary">{s.value}</p>
-                          <p className="text-sm text-gray-500 ">{s.label}</p>
+                        <div key={s.label} className="p-4 bg-gray-100 dark:bg-[#111827] border-2 dark:border border-gray-200 dark:border-[rgba(255,255,255,0.08)] rounded-xl">
+                          <p className="text-2xl font-bold text-primary dark:text-[var(--color-primary)]">{s.value}</p>
+                          <p className="text-sm text-gray-500 dark:text-[#64748b]">{s.label}</p>
                         </div>
                       ))}
                     </div>
@@ -592,8 +592,8 @@ export default function SettingsPage() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white  border-2 border-gray-200  rounded-2xl p-5">
-      <h3 className="font-semibold text-gray-900  mb-4 text-sm uppercase tracking-wide">{title}</h3>
+    <div className="bg-white dark:bg-[#0d1117] border-2 dark:border border-gray-200 dark:border-[rgba(255,255,255,0.08)] rounded-2xl p-5">
+      <h3 className="font-semibold text-gray-900 dark:text-[#475569] mb-4 text-[11px] uppercase tracking-[0.08em]">{title}</h3>
       {children}
     </div>
   );
@@ -603,8 +603,8 @@ function Toggle({ label, description, value, onChange }: { label: string; descri
   return (
     <div className="flex items-center justify-between gap-4 py-2">
       <div>
-        <p className="text-sm font-medium text-gray-900 ">{label}</p>
-        {description && <p className="text-xs text-gray-500  mt-0.5">{description}</p>}
+        <p className="text-sm font-medium text-gray-900 dark:text-[#94a3b8]">{label}</p>
+        {description && <p className="text-xs text-gray-500 dark:text-[#94a3b8] mt-0.5">{description}</p>}
       </div>
       <button
         role="switch"
@@ -612,7 +612,7 @@ function Toggle({ label, description, value, onChange }: { label: string; descri
         onClick={() => onChange(!value)}
         className={cn(
           'relative w-11 h-6 rounded-full transition-all duration-200 flex-shrink-0',
-          value ? 'bg-primary' : 'bg-gray-300 dark:bg-border'
+          value ? 'bg-primary' : 'bg-gray-300 dark:bg-[#1e293b]'
         )}
       >
         <div className={cn(

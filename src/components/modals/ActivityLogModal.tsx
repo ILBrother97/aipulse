@@ -109,7 +109,7 @@ export default function ActivityLogModal({ isOpen, onClose }: ActivityLogModalPr
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm"
           />
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
             <motion.div
@@ -117,43 +117,43 @@ export default function ActivityLogModal({ isOpen, onClose }: ActivityLogModalPr
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
-              className="pointer-events-auto w-full max-w-2xl bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl shadow-2xl flex flex-col max-h-[85vh]"
+              className="pointer-events-auto w-full max-w-2xl bg-white dark:bg-[#0d1117] border border-[#e2e8f0] dark:border-[rgba(255,255,255,0.1)] rounded-lg shadow-2xl flex flex-col max-h-[85vh]"
             >
               {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-border flex-shrink-0">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-[#f1f5f9] dark:border-[rgba(255,255,255,0.06)] bg-white dark:bg-[#0d1117] flex-shrink-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-primary" />
+                  <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-[var(--color-primary)]" />
                   </div>
                   <div>
-                    <h2 className="font-bold text-gray-900 dark:text-text-primary">Activity Log</h2>
-                    <p className="text-xs text-gray-500 dark:text-text-muted">{activityLog.length} total actions</p>
+                    <h2 className="font-semibold text-[#0f172a] dark:text-[#f1f5f9] text-lg">Activity Log</h2>
+                    <p className="text-xs text-[#64748b] dark:text-[#64748b]">{activityLog.length} total actions</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button size="sm" variant="secondary" onClick={handleExportCSV} leftIcon={<Download className="w-3.5 h-3.5" />}>
+                  <Button size="sm" variant="secondary" onClick={handleExportCSV} leftIcon={<Download className="w-3.5 h-3.5" />} className="bg-transparent border border-[#e2e8f0] dark:border-[rgba(255,255,255,0.1)] text-[#64748b] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]">
                     Export
                   </Button>
-                  <button onClick={onClose} className="p-2 rounded-xl text-gray-500 dark:text-text-muted hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-100 dark:hover:bg-background-dark transition-colors">
+                  <button onClick={onClose} className="p-2 rounded-xl text-[#94a3b8] dark:text-[#475569] hover:text-[#0f172a] dark:hover:text-[#f1f5f9] hover:bg-[rgba(0,0,0,0.05)] dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
               </div>
 
               {/* Filters */}
-              <div className="px-6 py-3 border-b border-gray-200 dark:border-border flex-shrink-0">
+              <div className="px-6 py-3 border-b border-[#f1f5f9] dark:border-[rgba(255,255,255,0.06)] bg-white dark:bg-[#0d1117] flex-shrink-0">
                 <div className="flex items-center gap-2 mb-3">
-                  <Filter className="w-4 h-4 text-gray-400 dark:text-text-muted" />
+                  <Filter className="w-4 h-4 text-[#64748b] dark:text-[#64748b]" />
                   <div className="flex gap-1.5 flex-wrap">
                     {filterOptions.map((opt) => (
                       <button
                         key={opt.key}
                         onClick={() => setFilterType(opt.key)}
                         className={cn(
-                          'px-3 py-1 rounded-full text-xs font-medium transition-all',
+                          'px-3 py-1 rounded-[20px] text-xs font-medium transition-all border-0',
                           filterType === opt.key
-                            ? 'bg-primary text-black'
-                            : 'text-gray-500 dark:text-text-muted hover:text-gray-900 dark:hover:text-text-primary bg-gray-100 dark:bg-background-dark'
+                            ? 'bg-[var(--color-primary)] text-white dark:text-[#0a0e1a]'
+                            : 'text-[#475569] hover:text-[#0f172a] dark:hover:text-[#94a3b8] bg-[#f1f5f9] dark:bg-[#111827] hover:bg-[#e2e8f0] dark:hover:bg-[rgba(255,255,255,0.05)]'
                         )}
                       >
                         {opt.label}
@@ -162,29 +162,29 @@ export default function ActivityLogModal({ isOpen, onClose }: ActivityLogModalPr
                   </div>
                 </div>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 dark:text-text-muted" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#94a3b8] dark:text-[#64748b]" />
                   <input
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search activity..."
-                    className="w-full pl-9 pr-4 py-2 bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-border rounded-lg text-xs text-gray-900 dark:text-text-primary focus:border-primary outline-none"
+                    className="w-full pl-9 pr-4 py-2 bg-[#f8fafc] dark:bg-[#111827] border border-[#e2e8f0] dark:border-[rgba(255,255,255,0.08)] rounded-lg text-xs text-[#0f172a] dark:text-[#f1f5f9] placeholder:text-[#94a3b8] focus:border-[var(--color-primary)] outline-none"
                   />
                 </div>
               </div>
 
               {/* Log entries */}
-              <div className="overflow-y-auto flex-1 p-4">
+              <div className="overflow-y-auto flex-1 p-4 bg-white dark:bg-[#0d1117] scrollbar-thin">
                 {grouped.length === 0 ? (
                   <div className="text-center py-12">
-                    <Clock className="w-10 h-10 text-gray-400 dark:text-text-muted mx-auto mb-3" />
-                    <p className="text-gray-600 dark:text-text-secondary text-sm">No activity yet</p>
-                    <p className="text-gray-500 dark:text-text-muted text-xs mt-1">Actions you take will appear here</p>
+                    <Clock className="w-10 h-10 text-[#94a3b8] mx-auto mb-3" />
+                    <p className="text-[#64748b] dark:text-[#94a3b8] text-sm">No activity yet</p>
+                    <p className="text-[#94a3b8] dark:text-[#64748b] text-xs mt-1">Actions you take will appear here</p>
                   </div>
                 ) : (
                   <div className="space-y-6">
                     {grouped.map((group) => (
                       <div key={group.date}>
-                        <h3 className="text-xs font-semibold text-gray-500 dark:text-text-muted uppercase tracking-wider mb-3 sticky top-0 bg-white dark:bg-background-card py-1">
+                        <h3 className="text-[11px] font-semibold text-[#94a3b8] dark:text-[#475569] uppercase tracking-[0.08em] mb-3 sticky top-0 bg-white dark:bg-[#0d1117] py-1 border-b border-[#f1f5f9] dark:border-[rgba(255,255,255,0.04)]">
                           {group.date}
                         </h3>
                         <div className="space-y-1">
@@ -197,16 +197,16 @@ export default function ActivityLogModal({ isOpen, onClose }: ActivityLogModalPr
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: i * 0.02 }}
-                                className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-background-dark transition-colors"
+                                className="flex items-center gap-3 px-3 py-2.5 border-b border-[#f8fafc] dark:border-[rgba(255,255,255,0.04)] hover:bg-[#f8fafc] dark:hover:bg-[rgba(255,255,255,0.03)] transition-colors"
                               >
-                                <div className={cn('w-7 h-7 rounded-lg bg-gray-100 dark:bg-background-dark flex items-center justify-center flex-shrink-0', config.color)}>
+                                <div className={cn('w-7 h-7 rounded-lg bg-[#f1f5f9] dark:bg-[#1e293b] flex items-center justify-center flex-shrink-0 text-[#64748b] dark:text-[#64748b]', config.color)}>
                                   <IconComp className="w-3.5 h-3.5" />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm text-gray-900 dark:text-text-primary truncate">{entry.description}</p>
-                                  <p className="text-xs text-gray-500 dark:text-text-muted">{config.label}</p>
+                                  <p className="text-sm text-[#0f172a] dark:text-[#f1f5f9] truncate">{entry.description}</p>
+                                  <p className="text-xs text-[#64748b] dark:text-[#64748b]">{config.label}</p>
                                 </div>
-                                <span className="text-xs text-gray-500 dark:text-text-muted flex-shrink-0">
+                                <span className="text-xs text-[#94a3b8] dark:text-[#475569] flex-shrink-0">
                                   {formatTime(entry.timestamp)}
                                 </span>
                               </motion.div>

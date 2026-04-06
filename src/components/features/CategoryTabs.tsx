@@ -190,7 +190,11 @@ function TabButton({
       onClick={onClick}
       className={cn(
         'relative flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 flex-shrink-0',
-        active ? 'text-black' : 'text-gray-600 dark:text-text-secondary hover:text-gray-900 dark:hover:text-text-primary'
+        active 
+          ? accent 
+            ? 'text-white border-b-2 border-white/30'
+            : 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]'
+          : 'text-[#64748b] hover:text-[#94a3b8]'
       )}
       style={active && accent ? { backgroundColor: accent } : undefined}
     >
@@ -211,7 +215,12 @@ function TabButton({
 
 function Badge({ active, children }: { active: boolean; children: React.ReactNode }) {
   return (
-    <span className={cn('px-1 py-0.5 rounded-full text-xs', active ? 'bg-black/20' : 'bg-gray-100 dark:bg-background-card')}>
+    <span className={cn(
+      'px-[5px] py-[1px] rounded-[4px] text-[10px] font-medium',
+      active 
+        ? 'bg-[var(--color-primary)] text-[#0a0e1a]' 
+        : 'bg-[rgba(255,255,255,0.08)] text-[#64748b]'
+    )}>
       {children}
     </span>
   );

@@ -43,7 +43,7 @@ export default function RecentlyUsed({ onToolClick }: RecentlyUsedProps) {
       <div className="flex items-center justify-between mb-3">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center gap-2 text-gray-600 dark:text-text-secondary hover:text-gray-900 dark:hover:text-text-primary transition-colors"
+          className="flex items-center gap-2 text-gray-600 dark:text-[#94a3b8] hover:text-gray-900 dark:hover:text-text-primary transition-colors"
         >
           <Clock className="w-4 h-4" />
           <span className="text-sm font-medium">Recently Used</span>
@@ -82,8 +82,8 @@ export default function RecentlyUsed({ onToolClick }: RecentlyUsedProps) {
                     whileTap={{ scale: settings.animationIntensity === 'none' ? 1 : 0.97 }}
                     onClick={() => handleToolClick(tool)}
                     className={cn(
-                      'flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border',
-                      'hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all group'
+                      'flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-[rgba(255,255,255,0.08)]',
+                      'hover:border-[var(--color-primary)] hover:shadow-lg hover:shadow-primary/10 transition-all group'
                     )}
                   >
                     <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -94,10 +94,10 @@ export default function RecentlyUsed({ onToolClick }: RecentlyUsedProps) {
                       )}
                     </div>
                     <div className="text-left">
-                      <p className="text-sm font-medium text-gray-900 dark:text-text-primary whitespace-nowrap">
+                      <p className="text-sm font-medium text-gray-900 dark:text-[#f1f5f9] whitespace-nowrap">
                         {tool.name}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-text-muted">{tool.category}</p>
+                      <p className="text-xs text-primary">{tool.category}</p>
                     </div>
                     <LucideIcons.ExternalLink className="w-4 h-4 text-gray-500 dark:text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
                   </motion.button>

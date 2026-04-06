@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Plus, Settings, BarChart2, Clock, Keyboard } from 'lucide-react';
+import { Plus, Settings, BarChart2, Clock, Keyboard, Sun, Moon } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '../ui';
 import SearchBar from '../features/SearchBar';
@@ -27,7 +27,7 @@ const navItems: { id: Page; label: string; icon: React.ElementType }[] = [
 export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: HeaderProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentPage, setCurrentPage, settings } = useToolsStore();
+  const { currentPage, setCurrentPage, settings, toggleTheme } = useToolsStore();
   const { user } = useAuthStore();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   
@@ -127,6 +127,16 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
               aria-label="Keyboard shortcuts"
             >
               <Keyboard className="w-3.5 h-3.5" />
+            </button>
+
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-1.5 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+              title={settings.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              aria-label={settings.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {settings.isDarkMode ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
             </button>
 
             {/* Settings */}

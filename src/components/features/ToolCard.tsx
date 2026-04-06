@@ -81,8 +81,8 @@ export default function ToolCard({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         className={cn(
-          `group flex items-center gap-3 px-3 py-2 bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border ${cardRadius} transition-all`,
-          'hover:border-primary/50',
+          `group flex items-center gap-3 px-3 py-2 bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-[rgba(255,255,255,0.08)] ${cardRadius} transition-all`,
+          'hover:border-[var(--color-primary)] dark:hover:bg-[#111827]',
           isDragging && 'opacity-50'
         )}
         whileHover={{ y: hoverLift[settings.animationIntensity], scale: settings.animationIntensity === 'bold' ? 1.02 : 1 }}
@@ -95,10 +95,10 @@ export default function ToolCard({
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">
-            <span className="text-sm font-medium text-gray-900 dark:text-text-primary truncate">{tool.name}</span>
+            <span className="text-sm font-medium text-gray-900 dark:text-[#f1f5f9] truncate">{tool.name}</span>
             <span className="text-xs text-primary bg-primary/10 px-1.5 py-0.5 rounded-full flex-shrink-0">{tool.category}</span>
           </div>
-          {tool.description && <p className="text-xs text-gray-500 dark:text-text-muted truncate mt-0.5">{tool.description}</p>}
+          {tool.description && <p className="text-xs text-gray-500 dark:text-[#94a3b8] truncate mt-0.5">{tool.description}</p>}
         </div>
         <div className={cn('flex items-center gap-1 transition-opacity', isHovered ? 'opacity-100' : 'opacity-0')}>
           <button onClick={handleFavorite} className="p-1.5 rounded-lg text-gray-500 dark:text-text-muted hover:text-yellow-400 transition-colors">
@@ -135,8 +135,8 @@ export default function ToolCard({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         className={cn(
-          `group relative bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border ${cardRadius} transition-all`,
-          'hover:border-primary/50',
+          `group relative bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-[rgba(255,255,255,0.08)] ${cardRadius} transition-all`,
+          'hover:border-[var(--color-primary)] dark:hover:bg-[#111827]',
           isDragging && 'opacity-50'
         )}
         whileHover={{ y: hoverLift[settings.animationIntensity], scale: settings.animationIntensity === 'bold' ? 1.03 : 1 }}
@@ -147,7 +147,7 @@ export default function ToolCard({
               {IconComponent ? <IconComponent className="w-5.5 h-5.5 text-primary" /> : <LucideIcons.Zap className="w-5.5 h-5.5 text-primary" />}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-base text-gray-900 dark:text-text-primary">{tool.name}</h3>
+              <h3 className="font-semibold text-base text-gray-900 dark:text-[#f1f5f9]">{tool.name}</h3>
               <span className="text-xs text-primary font-medium">{tool.category}</span>
             </div>
             <div className="flex items-center gap-1">
@@ -159,7 +159,7 @@ export default function ToolCard({
               </div>
             </div>
           </div>
-          {tool.description && <p className="text-xs text-gray-600 dark:text-text-secondary mb-3 leading-relaxed">{tool.description}</p>}
+          {tool.description && <p className="text-xs text-gray-600 dark:text-[#94a3b8] mb-3 leading-relaxed">{tool.description}</p>}
           {tool.lastAccessed && (
             <p className="text-xs text-gray-500 dark:text-text-muted mb-3">
               Last used: {new Date(tool.lastAccessed).toLocaleDateString()}
@@ -202,8 +202,8 @@ export default function ToolCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        `group relative bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border ${cardRadius} overflow-hidden transition-all`,
-        'hover:border-primary/50',
+        `group relative bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-[rgba(255,255,255,0.08)] ${cardRadius} overflow-hidden transition-all`,
+        'hover:border-[var(--color-primary)] dark:hover:bg-[#111827]',
         isDragging && 'opacity-50 rotate-2'
       )}
       whileHover={{ y: hoverLift[settings.animationIntensity], scale: settings.animationIntensity === 'bold' ? 1.03 : 1 }}
@@ -250,13 +250,13 @@ export default function ToolCard({
             {IconComponent ? <IconComponent className="w-5 h-5 text-primary" /> : <LucideIcons.Zap className="w-5 h-5 text-primary" />}
           </div>
           <div className="flex-1 min-w-0 pr-6">
-            <h3 className="font-semibold text-sm text-gray-900 dark:text-text-primary truncate">{tool.name}</h3>
+            <h3 className="font-semibold text-sm text-gray-900 dark:text-[#f1f5f9] truncate">{tool.name}</h3>
             <span className="text-xs text-primary font-medium">{tool.category}</span>
           </div>
         </div>
 
         {tool.description && (
-          <p className="text-xs text-gray-600 dark:text-text-secondary line-clamp-2 mb-3">{tool.description}</p>
+          <p className="text-xs text-gray-600 dark:text-[#94a3b8] line-clamp-2 mb-3">{tool.description}</p>
         )}
 
         <div className="flex items-center justify-between">

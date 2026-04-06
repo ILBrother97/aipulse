@@ -30,6 +30,7 @@ export const defaultSettings: AppSettings = {
   analyticsEnabled: true,
   reduceMotion: false,
   highContrast: false,
+  isDarkMode: false,
 };
 
 // ─── Theme accent colors ──────────────────────────────────
@@ -336,6 +337,18 @@ export const useToolsStore = create<ToolsState>()(
       updateSettings: (updates) => {
         set((state) => ({ settings: { ...state.settings, ...updates } }));
         get().addActivity({ type: 'settings_change', description: 'Updated settings' });
+      },
+      toggleTheme: () => {
+        const newMode = !get().settings.isDarkMode;
+        set((state) => ({ settings: { ...state.settings, isDarkMode: newMode } }));
+        // Apply to HTML element
+        if (newMode) {
+          document.documentElement.classList.add('dark');
+          localStorage.setItem('aipulse-theme', 'dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+          localStorage.setItem('aipulse-theme', 'light');
+        }
       },
       resetSettings: () => set({ settings: defaultSettings }),
 

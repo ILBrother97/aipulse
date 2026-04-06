@@ -69,6 +69,7 @@ export interface AppSettings {
   analyticsEnabled: boolean;
   reduceMotion: boolean;
   highContrast: boolean;
+  isDarkMode: boolean;
 }
 
 // ─── Activity Log (Feature 15) ────────────────────────────
@@ -132,6 +133,7 @@ export interface ToolsState {
 
   // Settings (Feature 10)
   updateSettings: (updates: Partial<AppSettings>) => void;
+  toggleTheme: () => void;
   resetSettings: () => void;
 
   // Navigation

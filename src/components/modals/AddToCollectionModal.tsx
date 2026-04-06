@@ -41,8 +41,8 @@ export default function AddToCollectionModal({ isOpen, onClose, tool, onCreateCo
     >
       {collections.length === 0 ? (
         <div className="flex flex-col items-center py-6 text-center">
-          <FolderOpen className="w-10 h-10 text-gray-400 dark:text-text-muted mb-3" />
-          <p className="text-gray-600 dark:text-text-secondary mb-4">No collections yet.</p>
+          <FolderOpen className="w-10 h-10 text-[#64748b] mb-3" />
+          <p className="text-[#94a3b8] mb-4">No collections yet.</p>
           <Button onClick={() => { onClose(); onCreateCollection(); }} leftIcon={<Plus className="w-4 h-4" />}>
             Create Collection
           </Button>
@@ -55,7 +55,7 @@ export default function AddToCollectionModal({ isOpen, onClose, tool, onCreateCo
               <button
                 key={col.id}
                 onClick={() => handleToggle(col.id)}
-                className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-gray-100 dark:bg-background-dark border-2 border-gray-200 dark:border-border hover:border-primary/50 transition-all duration-200"
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-gray-100 dark:bg-[#111827] border-2 dark:border border-gray-200 dark:border-[rgba(255,255,255,0.08)] hover:border-[var(--color-primary)] transition-all duration-200"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-4 h-4 rounded-full" style={{ backgroundColor: col.color }} />

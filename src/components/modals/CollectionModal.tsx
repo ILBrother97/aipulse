@@ -80,14 +80,19 @@ export default function CollectionModal({ isOpen, onClose, collection }: Collect
           rows={2}
         />
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-text-secondary mb-2">Color</label>
+          <label className="block text-[11px] font-medium text-[#475569] uppercase tracking-[0.08em] mb-2">Color</label>
           <div className="flex items-center gap-2 flex-wrap">
             {PRESET_COLORS.map((c) => (
               <button
                 key={c}
                 onClick={() => setColor(c)}
                 className="w-8 h-8 rounded-full transition-all duration-200 hover:scale-110"
-                style={{ backgroundColor: c, outline: color === c ? `3px solid ${c}` : 'none', outlineOffset: '2px' }}
+                style={{ 
+                  backgroundColor: c, 
+                  outline: color === c ? '2px solid #f1f5f9' : 'none', 
+                  outlineOffset: '2px',
+                  opacity: color === c ? 1 : 0.8 
+                }}
               />
             ))}
           </div>

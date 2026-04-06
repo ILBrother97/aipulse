@@ -7,8 +7,12 @@ import type { AppSettings } from '../types/index';
 export function applyTheme(settings: AppSettings): void {
   const root = document.documentElement;
 
-  // Always remove dark class - light mode only
-  root.classList.remove('dark');
+  // Handle dark mode
+  if (settings.isDarkMode) {
+    root.classList.add('dark');
+  } else {
+    root.classList.remove('dark');
+  }
 
   // Font family
   const fontFamilies = {

@@ -14,7 +14,7 @@ export default function ViewToggle() {
   const { settings, updateSettings } = useToolsStore();
 
   return (
-    <div className="flex items-center gap-1 bg-gray-100 dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-xl p-1">
+    <div className="flex items-center gap-1 bg-gray-100 dark:bg-[#111827] border border-gray-200 dark:border-[rgba(255,255,255,0.08)] rounded-md p-[3px]">
       {views.map(({ mode, icon: Icon, label }) => (
         <button
           key={mode}
@@ -22,10 +22,10 @@ export default function ViewToggle() {
           title={label}
           aria-label={label}
           className={cn(
-            'p-2 rounded-lg transition-all duration-200',
+            'w-8 h-8 rounded flex items-center justify-center transition-all duration-200',
             settings.viewMode === mode
-              ? 'bg-primary text-black'
-              : 'text-gray-500 dark:text-text-muted hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-200 dark:hover:bg-background-cardHover'
+              ? 'bg-[var(--color-primary)] text-[#0a0e1a]'
+              : 'bg-transparent text-[#475569] hover:bg-[rgba(255,255,255,0.06)] hover:text-[#94a3b8]'
           )}
         >
           <Icon className="w-4 h-4" />

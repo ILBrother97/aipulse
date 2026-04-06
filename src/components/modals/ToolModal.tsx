@@ -219,7 +219,7 @@ export default function ToolModal({ isOpen, onClose, tool }: ToolModalProps) {
 
         {/* Icon Selection */}
         <div>
-          <label className="block text-sm font-medium text-gray-600 dark:text-text-secondary mb-2">
+          <label className="block text-[11px] font-medium text-[#475569] uppercase tracking-[0.08em] mb-2">
             Icon
           </label>
           <div className="grid grid-cols-8 gap-2">
@@ -233,10 +233,10 @@ export default function ToolModal({ isOpen, onClose, tool }: ToolModalProps) {
                 <button
                   key={iconName}
                   onClick={() => setFormData((prev) => ({ ...prev, icon: iconName }))}
-                  className={`p-2 rounded-lg transition-all duration-200 ${
+                  className={`p-2 rounded-[6px] transition-all duration-200 border ${
                     isSelected
-                      ? 'bg-primary text-black'
-                      : 'bg-gray-100 dark:bg-background-card text-gray-500 dark:text-text-muted hover:text-primary hover:bg-primary/10'
+                      ? 'bg-[var(--color-primary)] text-[#0a0e1a] border-[var(--color-primary)]'
+                      : 'bg-gray-100 dark:bg-[#111827] border-gray-200 dark:border-[rgba(255,255,255,0.06)] text-[#475569] hover:border-[rgba(255,255,255,0.2)] hover:text-[#94a3b8]'
                   }`}
                   title={iconName}
                 >

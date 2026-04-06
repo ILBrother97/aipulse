@@ -63,7 +63,7 @@ export default function Modal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50"
             onClick={onClose}
           />
 
@@ -75,8 +75,8 @@ export default function Modal({
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className={cn(
-                'w-full bg-white dark:bg-background-card rounded-2xl shadow-2xl pointer-events-auto',
-                'border border-gray-200 dark:border-border',
+                'w-full bg-white dark:bg-[#0d1117] rounded-lg shadow-2xl pointer-events-auto',
+                'border border-gray-200 dark:border-[rgba(255,255,255,0.1)]',
                 'max-h-[85vh] flex flex-col',
                 sizeClasses[size],
                 className
@@ -85,15 +85,15 @@ export default function Modal({
             >
               {/* Header */}
               {(title || showCloseButton) && (
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-border flex-shrink-0">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-[rgba(255,255,255,0.06)] flex-shrink-0">
                   <div>
                     {title && (
-                      <h2 className="text-xl font-semibold text-gray-900 dark:text-text-primary">
+                      <h2 className="text-xl font-semibold text-gray-900 dark:text-[#f1f5f9]">
                         {title}
                       </h2>
                     )}
                     {description && (
-                      <p className="text-sm text-gray-600 dark:text-text-secondary mt-1">{description}</p>
+                      <p className="text-sm text-gray-600 dark:text-[#64748b] mt-1">{description}</p>
                     )}
                   </div>
                   {showCloseButton && (
@@ -101,7 +101,7 @@ export default function Modal({
                       variant="ghost"
                       size="sm"
                       onClick={onClose}
-                      className="p-2"
+                      className="p-2 text-[#475569] hover:text-[#f1f5f9]"
                       aria-label="Close modal"
                     >
                       <X className="w-5 h-5" />
@@ -115,7 +115,7 @@ export default function Modal({
 
               {/* Footer */}
               {footer && (
-                <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-border flex-shrink-0">
+                <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-[rgba(255,255,255,0.06)] flex-shrink-0">
                   {footer}
                 </div>
               )}
