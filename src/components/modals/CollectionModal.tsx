@@ -67,7 +67,7 @@ export default function CollectionModal({ isOpen, onClose, collection }: Collect
       <div className="space-y-4">
         <Input
           label="Name"
-          placeholder="e.g., Daily Workflow"
+          placeholder="e.g., Daily Tools"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required

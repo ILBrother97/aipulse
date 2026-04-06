@@ -1,21 +1,11 @@
-type Feature = 'ai_queries' | 'collections' | 'workflows' | 'analytics' | 'themes'
+// All features are now free for everyone
+// Premium is only for ad-free experience
+// This file is kept for backward compatibility but returns unlimited access
 
-const PREMIUM_FEATURES: Feature[] = ['ai_queries', 'collections', 'workflows', 'analytics', 'themes']
-
-export function isPremiumFeature(feature: string): boolean {
-  return PREMIUM_FEATURES.includes(feature as Feature)
+export function isPremiumFeature(_feature: string): boolean {
+  return false
 }
 
-export function getFeatureLimit(feature: string, isPremium: boolean): number {
-  if (isPremium) return -1 // Unlimited
-  
-  const limits: Record<Feature, number> = {
-    ai_queries: 1,
-    collections: 3,
-    workflows: 1,
-    analytics: 0,
-    themes: 5
-  }
-  
-  return limits[feature as Feature] ?? 0
+export function getFeatureLimit(_feature: string, _isPremium: boolean): number {
+  return -1 // Unlimited for everyone
 }

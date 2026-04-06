@@ -4,13 +4,13 @@ import { useAuthStore } from '../stores/authStore'
 interface PremiumContextValue {
   isPremium: boolean | null
   isLoading: boolean
-  canUseFeature: (feature: string) => boolean
+  isAdFree: boolean
 }
 
 const PremiumContext = createContext<PremiumContextValue>({
   isPremium: null,
   isLoading: true,
-  canUseFeature: () => false
+  isAdFree: false
 })
 
 export function PremiumProvider({ children }: { children: ReactNode }) {
@@ -27,21 +27,11 @@ export function PremiumProvider({ children }: { children: ReactNode }) {
     fetchProfile()
   }, [])
 
-  const canUseFeature = (feature: string): boolean => {
-    if (isPremium === null) return false
-    if (isPremium) return true
-    
-    const freeLimits: Record<string, number> = {
-      ai_queries: 1,
-      collections: 3,
-      workflows: 1
-    }
-    
-    return true // Client-side check - server will validate
-  }
+  // isPremium now means "ad-free user" - all features are free for everyone
+  const isAdFree = isPremium === true
 
   return (
-    <PremiumContext.Provider value={{ isPremium, isLoading, canUseFeature }}>
+    <PremiumContext.Provider value={{ isPremium, isLoading, isAdFree }}>
       {children}
     </PremiumContext.Provider>
   )

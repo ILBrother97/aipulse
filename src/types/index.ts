@@ -42,36 +42,6 @@ export interface UsageEvent {
   timestamp: number;
 }
 
-// ─── Workflow (Feature 11) ────────────────────────────────
-export interface WorkflowStep {
-  id: string;
-  toolId: string;
-  order: number;
-  note?: string;
-  inputVar?: string; // Variable name to use as input (e.g., "{{step1.output}}")
-  outputVar?: string; // Variable name to save output as (e.g., "script")
-  autoFillUrl?: boolean; // Whether to append output to URL as query param
-}
-
-export interface WorkflowExecution {
-  workflowId: string;
-  startedAt: number;
-  currentStepIndex: number;
-  variables: Record<string, string>; // step outputs stored here
-  completedSteps: string[];
-}
-
-export interface Workflow {
-  id: string;
-  name: string;
-  description?: string;
-  steps: WorkflowStep[];
-  createdAt: number;
-  lastUsed?: number;
-  useCount: number;
-  isFavorite?: boolean;
-}
-
 // ─── Theme / Settings (Feature 10) ────────────────────────
 export type ViewMode = 'grid' | 'list' | 'expanded' | 'kanban';
 export type ThemeAccent = 'teal' | 'purple' | 'blue' | 'green' | 'orange' | 'mono';
@@ -104,7 +74,7 @@ export interface AppSettings {
 // ─── Activity Log (Feature 15) ────────────────────────────
 export interface ActivityEntry {
   id: string;
-  type: 'add' | 'delete' | 'edit' | 'favorite' | 'unfavorite' | 'collection_create' | 'collection_delete' | 'workflow_create' | 'workflow_delete' | 'settings_change' | 'import' | 'export';
+  type: 'add' | 'delete' | 'edit' | 'favorite' | 'unfavorite' | 'collection_create' | 'collection_delete' | 'settings_change' | 'import' | 'export';
   description: string;
   timestamp: number;
   metadata?: Record<string, unknown>;
@@ -118,13 +88,11 @@ export interface ToolsState {
   searchQuery: string;
   selectedCategory: string | null;
   selectedCollectionId: string | null;
-  isDarkMode: boolean;
   recentlyUsed: string[];
   usageEvents: UsageEvent[];
-  workflows: Workflow[];
   settings: AppSettings;
   activityLog: ActivityEntry[];
-  currentPage: 'home' | 'analytics' | 'workflows' | 'settings';
+  currentPage: 'home' | 'analytics' | 'settings';
 
   // Tool CRUD
   addTool: (tool: Omit<AITool, 'id' | 'createdAt' | 'order'>) => void;
@@ -139,6 +107,7 @@ export interface ToolsState {
   // Category actions
   addCategory: (name: string) => void;
   deleteCategory: (id: string) => void;
+  reorderCategories: (categoryIds: string[]) => void;
 
   // Collection actions (Feature 3)
   addCollection: (collection: Omit<Collection, 'id' | 'createdAt' | 'order'>) => void;
@@ -153,10 +122,6 @@ export interface ToolsState {
   setSelectedCategory: (category: string | null) => void;
   setSelectedCollection: (id: string | null) => void;
 
-  // Theme
-  toggleTheme: () => void;
-  setDarkMode: (isDark: boolean) => void;
-
   // Recently used
   addToRecentlyUsed: (toolId: string) => void;
 
@@ -164,26 +129,13 @@ export interface ToolsState {
   recordUsage: (toolId: string) => void;
   getUsageStats: (days: number) => UsageStats;
 
-  // Workflows (Feature 11)
-  addWorkflow: (workflow: Omit<Workflow, 'id' | 'createdAt' | 'useCount'>) => void;
-  updateWorkflow: (id: string, updates: Partial<Workflow>) => void;
-  deleteWorkflow: (id: string) => void;
-  executeWorkflow: (id: string) => void;
-
-  // Workflow Execution with Variables
-  activeExecution: WorkflowExecution | null;
-  startWorkflowExecution: (workflowId: string) => WorkflowExecution;
-  setExecutionStep: (stepIndex: number) => void;
-  setStepOutput: (stepId: string, output: string) => void;
-  getStepInput: (step: WorkflowStep) => string;
-  endWorkflowExecution: () => void;
 
   // Settings (Feature 10)
   updateSettings: (updates: Partial<AppSettings>) => void;
   resetSettings: () => void;
 
   // Navigation
-  setCurrentPage: (page: 'home' | 'analytics' | 'workflows' | 'settings') => void;
+  setCurrentPage: (page: 'home' | 'analytics' | 'settings') => void;
 
   // Activity log (Feature 15)
   addActivity: (entry: Omit<ActivityEntry, 'id' | 'timestamp'>) => void;

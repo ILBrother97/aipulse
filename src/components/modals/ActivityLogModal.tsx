@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, Clock, Plus, Trash2, Edit2, Star, FolderOpen,
-  GitBranch, Settings, Download, Upload, Filter, Search,
+  Settings, Download, Upload, Filter, Search,
 } from 'lucide-react';
 import { useToolsStore } from '../../stores/toolsStore';
 import { cn } from '../../utils/cn';
@@ -22,8 +22,6 @@ const typeConfig: Record<ActivityEntry['type'], { icon: React.ElementType; color
   unfavorite: { icon: Star, color: 'text-text-muted', label: 'Unfavorited' },
   collection_create: { icon: FolderOpen, color: 'text-primary', label: 'Collection Created' },
   collection_delete: { icon: FolderOpen, color: 'text-red-400', label: 'Collection Deleted' },
-  workflow_create: { icon: GitBranch, color: 'text-purple-400', label: 'Workflow Created' },
-  workflow_delete: { icon: GitBranch, color: 'text-red-400', label: 'Workflow Deleted' },
   settings_change: { icon: Settings, color: 'text-text-secondary', label: 'Settings Changed' },
   import: { icon: Upload, color: 'text-primary', label: 'Imported' },
   export: { icon: Download, color: 'text-primary', label: 'Exported' },
@@ -38,7 +36,6 @@ const filterOptions: { key: FilterType; label: string }[] = [
   { key: 'edit', label: 'Edited' },
   { key: 'favorite', label: 'Favorites' },
   { key: 'collection_create', label: 'Collections' },
-  { key: 'workflow_create', label: 'Workflows' },
   { key: 'settings_change', label: 'Settings' },
 ];
 
@@ -61,8 +58,7 @@ export default function ActivityLogModal({ isOpen, onClose }: ActivityLogModalPr
     if (filterType !== 'all') {
       list = list.filter((e) => e.type === filterType ||
         (filterType === 'favorite' && (e.type === 'favorite' || e.type === 'unfavorite')) ||
-        (filterType === 'collection_create' && (e.type === 'collection_create' || e.type === 'collection_delete')) ||
-        (filterType === 'workflow_create' && (e.type === 'workflow_create' || e.type === 'workflow_delete'))
+        (filterType === 'collection_create' && (e.type === 'collection_create' || e.type === 'collection_delete'))
       );
     }
     if (searchQuery.trim()) {

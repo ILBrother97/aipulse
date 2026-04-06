@@ -6,9 +6,6 @@ import type {
   Category,
   Collection,
   UsageEvent,
-  Workflow,
-  WorkflowStep,
-  WorkflowExecution,
   AppSettings,
   ActivityEntry,
   ToolsState,
@@ -50,10 +47,8 @@ interface PersistedState {
   tools: AITool[];
   categories: Category[];
   collections: Collection[];
-  isDarkMode: boolean;
   recentlyUsed: string[];
   usageEvents: UsageEvent[];
-  workflows: Workflow[];
   settings: AppSettings;
   activityLog: ActivityEntry[];
 }
@@ -133,10 +128,8 @@ export const useToolsStore = create<ToolsState>()(
       searchQuery: '',
       selectedCategory: null,
       selectedCollectionId: null,
-      isDarkMode: false,
       recentlyUsed: [],
       usageEvents: [],
-      workflows: [],
       settings: defaultSettings,
       activityLog: [],
       currentPage: 'home',
@@ -225,6 +218,15 @@ export const useToolsStore = create<ToolsState>()(
           categories: state.categories.filter((c) => c.id !== id),
         }));
       },
+      reorderCategories: (categoryIds) => {
+        set((state) => {
+          const categoryMap = new Map(state.categories.map((c) => [c.id, c]));
+          const reordered = categoryIds
+            .map((id) => categoryMap.get(id))
+            .filter((c): c is Category => !!c);
+          return { categories: reordered };
+        });
+      },
 
       // ── Collections (Feature 3) ───────────────────────
       addCollection: (collectionData) => {
@@ -300,10 +302,6 @@ export const useToolsStore = create<ToolsState>()(
       setSelectedCategory: (category) => set({ selectedCategory: category, selectedCollectionId: null }),
       setSelectedCollection: (id) => set({ selectedCollectionId: id, selectedCategory: null }),
 
-      // ── Theme ─────────────────────────────────────────
-      toggleTheme: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
-      setDarkMode: (isDark) => set({ isDarkMode: isDark }),
-
       // ── Recently Used ─────────────────────────────────
       addToRecentlyUsed: (toolId) => {
         set((state) => ({
@@ -333,81 +331,6 @@ export const useToolsStore = create<ToolsState>()(
       },
 
       getUsageStats: (days) => calcStats(get().usageEvents, get().tools, days),
-
-      // ── Workflows (Feature 11) ─────────────────────────
-      addWorkflow: (wfData) => {
-        const wf: Workflow = {
-          ...wfData,
-          id: uuidv4(),
-          createdAt: Date.now(),
-          useCount: 0,
-        };
-        set((state) => ({ workflows: [...state.workflows, wf] }));
-        get().addActivity({ type: 'workflow_create', description: `Created workflow "${wf.name}"` });
-      },
-
-      updateWorkflow: (id, updates) => {
-        set((state) => ({
-          workflows: state.workflows.map((w) => (w.id === id ? { ...w, ...updates } : w)),
-        }));
-      },
-
-      deleteWorkflow: (id) => {
-        const wf = get().workflows.find((w) => w.id === id);
-        set((state) => ({ workflows: state.workflows.filter((w) => w.id !== id) }));
-        if (wf) get().addActivity({ type: 'workflow_delete', description: `Deleted workflow "${wf.name}"` });
-      },
-
-      executeWorkflow: (id) => {
-        set((state) => ({
-          workflows: state.workflows.map((w) =>
-            w.id === id
-              ? { ...w, useCount: w.useCount + 1, lastUsed: Date.now() }
-              : w
-          ),
-        }));
-      },
-
-      // ── Workflow Execution with Variables ──────────────
-      activeExecution: null as WorkflowExecution | null,
-      startWorkflowExecution: (workflowId: string) => {
-        const execution: WorkflowExecution = {
-          workflowId,
-          startedAt: Date.now(),
-          currentStepIndex: 0,
-          variables: {},
-          completedSteps: [],
-        };
-        set({ activeExecution: execution });
-        get().executeWorkflow(workflowId);
-        return execution;
-      },
-      setExecutionStep: (stepIndex: number) => {
-        set((state) => ({
-          activeExecution: state.activeExecution
-            ? { ...state.activeExecution, currentStepIndex: stepIndex }
-            : null,
-        }));
-      },
-      setStepOutput: (stepId: string, output: string) => {
-        set((state) => {
-          if (!state.activeExecution) return state;
-          return {
-            activeExecution: {
-              ...state.activeExecution,
-              variables: { ...state.activeExecution.variables, [stepId]: output },
-              completedSteps: [...state.activeExecution.completedSteps, stepId],
-            },
-          };
-        });
-      },
-      getStepInput: (step: WorkflowStep) => {
-        const { activeExecution } = get();
-        if (!activeExecution || !step.inputVar) return '';
-        const varName = step.inputVar.replace('{{', '').replace('}}', '');
-        return activeExecution.variables[varName] || '';
-      },
-      endWorkflowExecution: () => set({ activeExecution: null }),
 
       // ── Settings (Feature 10) ─────────────────────────
       updateSettings: (updates) => {
@@ -455,8 +378,8 @@ export const useToolsStore = create<ToolsState>()(
       },
 
       exportData: () => {
-        const { tools, categories, collections, workflows, settings, activityLog } = get();
-        const data = { tools, categories, collections, workflows, settings, activityLog, exportedAt: Date.now() };
+        const { tools, categories, collections, settings, activityLog } = get();
+        const data = { tools, categories, collections, settings, activityLog, exportedAt: Date.now() };
         get().addActivity({ type: 'export', description: `Exported data (${tools.length} tools)` });
         return JSON.stringify(data, null, 2);
       },
@@ -468,7 +391,6 @@ export const useToolsStore = create<ToolsState>()(
             tools: data.tools || [],
             categories: data.categories || defaultCategories,
             collections: data.collections || [],
-            workflows: data.workflows || [],
             settings: { ...defaultSettings, ...(data.settings || {}) },
           });
           get().addActivity({ type: 'import', description: `Imported data (${data.tools?.length || 0} tools)` });
@@ -483,10 +405,8 @@ export const useToolsStore = create<ToolsState>()(
         tools: state.tools,
         categories: state.categories,
         collections: state.collections,
-        isDarkMode: state.isDarkMode,
         recentlyUsed: state.recentlyUsed,
         usageEvents: state.usageEvents,
-        workflows: state.workflows,
         settings: state.settings,
         activityLog: state.activityLog,
       }),

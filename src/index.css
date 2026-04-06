@@ -122,22 +122,22 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 6px;
   margin: 0 4px;
   opacity: 0.8;
-  box-shadow: inset 0 0 8px rgba(0, 217, 255, 0.3);
+  box-shadow: inset 0 0 8px var(--color-accent-light);
 }
 
 .category-tabs-container::-webkit-scrollbar-thumb {
-  background: rgba(0, 217, 255, 0.6);
+  background: var(--color-accent);
   border-radius: 6px;
-  opacity: 1;
-  box-shadow: 0 0 15px rgba(0, 217, 255, 0.8);
-  border: 2px solid rgba(0, 217, 255, 0.9);
+  opacity: 0.8;
+  box-shadow: 0 0 15px var(--color-accent-light);
+  border: 2px solid var(--color-accent);
   min-width: 60px;
 }
 
 .category-tabs-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 217, 255, 0.8);
-  box-shadow: 0 0 20px rgba(0, 217, 255, 1);
-  border: 2px solid rgba(0, 217, 255, 1);
+  background: var(--color-accent-dark);
+  box-shadow: 0 0 20px var(--color-accent);
+  border: 2px solid var(--color-accent-dark);
 }
 
 /* Hide scrollbar utility */
@@ -1387,4 +1387,117 @@ section {
   .workflows-premium-fab {
     right: 80px;
   }
+}
+
+/* High Contrast Mode Styles */
+.high-contrast {
+  /* Increase contrast for all text */
+  --text-primary: #000000 !important;
+  --text-secondary: #1a1a1a !important;
+  --text-muted: #333333 !important;
+  --border-color: #000000 !important;
+  --bg-primary: #ffffff !important;
+  --bg-secondary: #f5f5f5 !important;
+}
+
+.high-contrast * {
+  border-color: #000000 !important;
+  outline-color: #000000 !important;
+}
+
+.high-contrast p,
+.high-contrast span,
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast h4,
+.high-contrast h5,
+.high-contrast h6,
+.high-contrast label,
+.high-contrast button,
+.high-contrast a,
+.high-contrast li,
+.high-contrast td,
+.high-contrast th {
+  color: #000000 !important;
+  font-weight: 500 !important;
+}
+
+.high-contrast .text-gray-900,
+.high-contrast .text-gray-600,
+.high-contrast .text-gray-500,
+.high-contrast .text-text-primary,
+.high-contrast .text-text-secondary,
+.high-contrast .text-text-muted {
+  color: #000000 !important;
+}
+
+.high-contrast .bg-white,
+.high-contrast .bg-gray-50,
+.high-contrast .bg-gray-100,
+.high-contrast .bg-gray-200 {
+  background-color: #ffffff !important;
+}
+
+.high-contrast .border-gray-200,
+.high-contrast .border-gray-300,
+.high-contrast .border-border {
+  border-color: #000000 !important;
+  border-width: 2px !important;
+}
+
+.high-contrast button,
+.high-contrast .btn,
+.high-contrast [role="button"] {
+  border: 2px solid #000000 !important;
+  font-weight: 600 !important;
+}
+
+.high-contrast input,
+.high-contrast textarea,
+.high-contrast select {
+  border: 2px solid #000000 !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.high-contrast [role="switch"] {
+  border: 2px solid #000000 !important;
+}
+
+.high-contrast [role="switch"][aria-checked="true"] {
+  background-color: #000000 !important;
+}
+
+.high-contrast [role="switch"] > div {
+  background-color: #ffffff !important;
+  border: 1px solid #000000 !important;
+}
+
+.high-contrast .card,
+.high-contrast .section,
+.high-contrast .modal,
+.high-contrast .dropdown {
+  border: 2px solid #000000 !important;
+  box-shadow: 4px 4px 0 #000000 !important;
+}
+
+.high-contrast a {
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+}
+
+.high-contrast a:hover {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+}
+
+.high-contrast:focus-visible {
+  outline: 3px solid #000000 !important;
+  outline-offset: 2px !important;
+}
+
+.high-contrast *:focus {
+  outline: 3px solid #0000ff !important;
+  outline-offset: 2px !important;
 }

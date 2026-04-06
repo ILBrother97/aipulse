@@ -9,7 +9,6 @@ import RecentlyUsed from './components/features/RecentlyUsed';
 import ToolGrid from './components/features/ToolGrid';
 import FavoritesSection from './components/features/FavoritesSection';
 import AnalyticsPage from './components/features/AnalyticsPage';
-import WorkflowsPage from './components/features/WorkflowsPage';
 import SettingsPage from './components/features/SettingsPage';
 import AIAssistant from './components/features/AIAssistant';
 import ToolModal from './components/modals/ToolModal';
@@ -24,10 +23,6 @@ import { ToastContainer } from './components/ui';
 import type { AITool, Collection } from './types/index';
 import { useToolsStore, accentColors } from './stores/toolsStore';
 import { applyTheme } from './utils/theme';
-import Documentation from './pages/Documentation';
-import APIReference from './pages/APIReference';
-import Guides from './pages/Guides';
-import Support from './pages/Support';
 
 function App() {
   const [isToolModalOpen, setIsToolModalOpen] = useState(false);
@@ -40,7 +35,7 @@ function App() {
   const [collectionTarget, setCollectionTarget] = useState<Collection | null>(null);
   const [toolForCollection, setToolForCollection] = useState<AITool | null>(null);
 
-  const { isDarkMode, settings, currentPage, setCurrentPage, updateSettings } = useToolsStore();
+  const { settings, currentPage, setCurrentPage, updateSettings } = useToolsStore();
   const { closeUpgradeModal } = useUpgradeModal();
 
   // Generate dynamic CSS for accent color only
@@ -70,10 +65,10 @@ function App() {
     `;
   }, [settings.themeAccent]);
 
-  // Apply theme on mount and whenever settings/dark mode change
+  // Apply accent color on mount and whenever settings change
   useEffect(() => {
-    applyTheme(settings, isDarkMode);
-  }, [settings, isDarkMode]);
+    applyTheme(settings);
+  }, [settings]);
 
   // Initialize auth state listener on mount
   useEffect(() => {
@@ -94,12 +89,6 @@ function App() {
       if (ctrl && e.key === '/') {
         e.preventDefault();
         setIsShortcutsOpen((o) => !o);
-        return;
-      }
-      if (ctrl && e.key === 'n') {
-        e.preventDefault();
-        setSelectedTool(null);
-        setIsToolModalOpen(true);
         return;
       }
       if (ctrl && e.key === 'd') {
@@ -150,7 +139,7 @@ function App() {
 
   return (
     <Router>
-      <div className={`app-layout min-h-screen min-h-[100dvh] bg-background-light dark:bg-background-dark text-text-primaryLight dark:text-text-primary transition-colors duration-300 ${settings.reduceMotion ? 'reduce-motion' : ''} animation-${settings.animationIntensity}`}>
+      <div className={`app-layout min-h-screen min-h-[100dvh] bg-gray-50 text-gray-900 transition-colors duration-300 ${settings.reduceMotion ? 'reduce-motion' : ''} animation-${settings.animationIntensity}`}>
         {/* Dynamic Theme Styles */}
         <style>{dynamicStyles}</style>
 
@@ -232,20 +221,6 @@ function App() {
                     </motion.div>
                   )}
 
-                  {/* ── WORKFLOWS PAGE ─────────────────────────────────── */}
-                  {currentPage === 'workflows' && (
-                    <motion.div
-                      key="workflows"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.25 }}
-                      className="page-container"
-                    >
-                      <WorkflowsPage />
-                    </motion.div>
-                  )}
-
                   {/* ── SETTINGS PAGE ──────────────────────────────────── */}
                   {currentPage === 'settings' && (
                     <motion.div
@@ -264,27 +239,6 @@ function App() {
             </main>
           } />
 
-          {/* Resource Pages Routes */}
-          <Route path="/docs" element={
-            <main className="app-main pt-24 pb-20 px-4 sm:px-6 lg:px-8 page-container">
-              <Documentation />
-            </main>
-          } />
-          <Route path="/api" element={
-            <main className="app-main pt-24 pb-20 px-4 sm:px-6 lg:px-8 page-container">
-              <APIReference />
-            </main>
-          } />
-          <Route path="/guides" element={
-            <main className="app-main pt-24 pb-20 px-4 sm:px-6 lg:px-8 page-container">
-              <Guides />
-            </main>
-          } />
-          <Route path="/support" element={
-            <main className="app-main pt-24 pb-20 px-4 sm:px-6 lg:px-8 page-container">
-              <Support />
-            </main>
-          } />
         </Routes>
 
         {/* Footer */}

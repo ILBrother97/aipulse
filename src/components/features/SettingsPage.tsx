@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Monitor, Bell, Settings, Database, Info, Shield, FileCheck,
-  Check, RotateCcw, Sun, Moon, Zap, Download,
+  Monitor, Settings, Database, Info, Shield, FileCheck,
+  Check, RotateCcw, Zap, Download,
   Upload, Trash2, AlertTriangle, ChevronRight,
 } from 'lucide-react';
 import { useToolsStore, defaultSettings, accentColors } from '../../stores/toolsStore';
@@ -14,7 +14,6 @@ import type { AppSettings, ThemeAccent } from '../../types/index';
 
 const tabs = [
   { id: 'display', label: 'Display', icon: Monitor },
-  { id: 'notifications', label: 'Notifications', icon: Bell },
   { id: 'behavior', label: 'Behavior', icon: Settings },
   { id: 'data', label: 'Data', icon: Database },
   { id: 'privacy', label: 'Privacy Policy', icon: Shield },
@@ -47,7 +46,7 @@ export default function SettingsPage() {
   const [importText, setImportText] = useState('');
   const [showImport, setShowImport] = useState(false);
 
-  const { settings, updateSettings, resetSettings, isDarkMode, toggleTheme, exportData, importData, tools, collections, currentPage } = useToolsStore();
+  const { settings, updateSettings, resetSettings, exportData, importData, tools, collections, currentPage } = useToolsStore();
 
   // Listen for tab change requests from footer navigation
   useEffect(() => {
@@ -83,13 +82,13 @@ export default function SettingsPage() {
   const handleSettingChange = <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => {
     updateSettings({ [key]: value });
     const newSettings = { ...settings, [key]: value };
-    applyTheme(newSettings, isDarkMode);
+    applyTheme(newSettings);
     toast.success('Preference saved');
   };
 
   const handleReset = () => {
     resetSettings();
-    applyTheme(defaultSettings, isDarkMode);
+    applyTheme(defaultSettings);
     toast.success('Settings reset to defaults');
   };
 
@@ -144,12 +143,11 @@ export default function SettingsPage() {
       useToolsStore.setState({
         tools: [],
         collections: [],
-        workflows: [],
         usageEvents: [],
         activityLog: [],
         settings: defaultSettings,
       });
-      applyTheme(defaultSettings, isDarkMode);
+      applyTheme(defaultSettings);
       toast.success('All data cleared');
     }
     setShowClearConfirm(null);
@@ -163,8 +161,8 @@ export default function SettingsPage() {
     >
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-text-primary">Settings</h1>
-        <p className="text-gray-600 dark:text-text-secondary text-sm mt-1">Customize your AIPulse experience</p>
+        <h1 className="text-2xl font-bold text-gray-900 ">Settings</h1>
+        <p className="text-gray-600  text-sm mt-1">Customize your AIPulse experience</p>
       </div>
 
       <div className="flex gap-6 flex-col lg:flex-row">
@@ -179,7 +177,7 @@ export default function SettingsPage() {
                   'flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 text-left w-full',
                   activeTab === tab.id
                     ? 'bg-primary/15 text-primary'
-                    : 'text-gray-600 dark:text-text-secondary hover:text-gray-900 dark:hover:text-text-primary hover:bg-gray-100 dark:hover:bg-background-card'
+                    : 'text-gray-600  hover:text-gray-900  hover:bg-gray-100 '
                 )}
               >
                 <tab.icon className="w-4 h-4 flex-shrink-0" />
@@ -213,41 +211,18 @@ export default function SettingsPage() {
                           className={cn(
                             'relative flex items-center gap-3 p-3 rounded-xl border-2 transition-all duration-200 text-left',
                             settings.themeAccent === theme.key
-                              ? 'bg-white dark:bg-background-card'
-                              : 'border-gray-200 dark:border-border hover:border-gray-400 dark:hover:border-border-hover bg-white dark:bg-background-card'
+                              ? 'bg-white '
+                              : 'border-gray-200  hover:border-gray-400 dark:hover:border-border-hover bg-white '
                           )}
                           style={settings.themeAccent === theme.key ? { borderColor: accentColor, backgroundColor: `${accentColor}15` } : undefined}
                         >
                           <div className="w-8 h-8 rounded-full flex-shrink-0 shadow-lg" style={{ backgroundColor: theme.color }} />
-                          <span className="text-sm font-medium text-gray-900 dark:text-text-primary truncate">{theme.label}</span>
+                          <span className="text-sm font-medium text-gray-900  truncate">{theme.label}</span>
                           {settings.themeAccent === theme.key && (
                             <Check className="w-4 h-4 absolute top-2 right-2" style={{ color: accentColor }} />
                           )}
                         </button>
                       ))}
-                    </div>
-                  </Section>
-
-                  <Section title="Dark / Light Mode">
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={() => !isDarkMode && toggleTheme()}
-                        className={cn('flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 transition-all text-sm font-medium',
-                          isDarkMode ? 'text-gray-900 dark:text-text-primary' : 'border-gray-200 dark:border-border text-gray-600 dark:text-text-secondary hover:border-gray-400 dark:hover:border-border-hover'
-                        )}
-                        style={isDarkMode ? { borderColor: accentColor, backgroundColor: `${accentColor}15`, color: accentColor } : undefined}
-                      >
-                        <Moon className="w-4 h-4" /> Dark
-                      </button>
-                      <button
-                        onClick={() => isDarkMode && toggleTheme()}
-                        className={cn('flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 transition-all text-sm font-medium',
-                          !isDarkMode ? 'text-gray-900 dark:text-text-primary' : 'border-gray-200 dark:border-border text-gray-600 dark:text-text-secondary hover:border-gray-400 dark:hover:border-border-hover'
-                        )}
-                        style={!isDarkMode ? { borderColor: accentColor, backgroundColor: `${accentColor}15`, color: accentColor } : undefined}
-                      >
-                        <Sun className="w-4 h-4" /> Light
-                      </button>
                     </div>
                   </Section>
 
@@ -288,19 +263,6 @@ export default function SettingsPage() {
                 </>
               )}
 
-              {/* ── NOTIFICATIONS ───────────────────────────────────────── */}
-              {activeTab === 'notifications' && (
-                <Section title="Notification Preferences">
-                  <div className="space-y-3">
-                    <Toggle label="New tool recommendations" description="Get suggestions for new AI tools" value={false} onChange={() => toast.info('Coming soon')} />
-                    <Toggle label="Tool update notifications" description="Know when tools are updated" value={false} onChange={() => toast.info('Coming soon')} />
-                    <Toggle label="Weekly trending summary" description="Weekly digest of trending tools" value={false} onChange={() => toast.info('Coming soon')} />
-                    <Toggle label="Achievement notifications" description="Celebrate usage milestones" value={false} onChange={() => toast.info('Coming soon')} />
-                  </div>
-                  <p className="text-gray-500 dark:text-text-muted text-xs mt-4">Cloud notifications coming in a future update.</p>
-                </Section>
-              )}
-
               {/* ── BEHAVIOR ───────────────────────────────────────────── */}
               {activeTab === 'behavior' && (
                 <>
@@ -311,7 +273,7 @@ export default function SettingsPage() {
                         className={cn('px-4 py-2.5 rounded-xl border-2 text-sm font-medium transition-all',
                           settings.defaultLaunchBehavior === 'new-tab'
                             ? ''
-                            : 'border-gray-200 dark:border-border text-gray-600 dark:text-text-secondary hover:border-gray-400 dark:hover:border-border-hover'
+                            : 'border-gray-200  text-gray-600  hover:border-gray-400 dark:hover:border-border-hover'
                         )}
                         style={settings.defaultLaunchBehavior === 'new-tab' ? { borderColor: accentColor, backgroundColor: `${accentColor}15`, color: accentColor } : undefined}
                       >
@@ -322,7 +284,7 @@ export default function SettingsPage() {
                         className={cn('px-4 py-2.5 rounded-xl border-2 text-sm font-medium transition-all',
                           settings.defaultLaunchBehavior === 'current-tab'
                             ? ''
-                            : 'border-gray-200 dark:border-border text-gray-600 dark:text-text-secondary hover:border-gray-400 dark:hover:border-border-hover'
+                            : 'border-gray-200  text-gray-600  hover:border-gray-400 dark:hover:border-border-hover'
                         )}
                         style={settings.defaultLaunchBehavior === 'current-tab' ? { borderColor: accentColor, backgroundColor: `${accentColor}15`, color: accentColor } : undefined}
                       >
@@ -351,14 +313,14 @@ export default function SettingsPage() {
                       </Button>
                       <label className="cursor-pointer">
                         <input type="file" accept=".json" className="hidden" onChange={handleFileImport} />
-                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border hover:border-gray-400 dark:hover:border-border-hover rounded-xl text-sm font-medium text-gray-600 dark:text-text-secondary hover:text-gray-900 dark:hover:text-text-primary transition-all cursor-pointer">
+                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-white  border-2 border-gray-200  hover:border-gray-400 dark:hover:border-border-hover rounded-xl text-sm font-medium text-gray-600  hover:text-gray-900  transition-all cursor-pointer">
                           <Upload className="w-4 h-4" /> Import from File
                         </span>
                       </label>
                     </div>
-                    <p className="text-xs text-gray-500 dark:text-text-muted mt-3">
-                      Your data: <strong className="text-gray-700 dark:text-text-secondary">{tools.length} tools</strong>,{' '}
-                      <strong className="text-gray-700 dark:text-text-secondary">{collections.length} collections</strong>
+                    <p className="text-xs text-gray-500  mt-3">
+                      Your data: <strong className="text-gray-700 ">{tools.length} tools</strong>,{' '}
+                      <strong className="text-gray-700 ">{collections.length} collections</strong>
                     </p>
                   </Section>
 
@@ -376,7 +338,7 @@ export default function SettingsPage() {
                           onChange={(e) => setImportText(e.target.value)}
                           placeholder='Paste your JSON backup here...'
                           rows={6}
-                          className="w-full bg-gray-100 dark:bg-background-dark border-2 border-gray-200 dark:border-border rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-text-primary font-mono focus:border-primary outline-none resize-none"
+                          className="w-full bg-gray-100  border-2 border-gray-200  rounded-xl px-4 py-3 text-sm text-gray-900  font-mono focus:border-primary outline-none resize-none"
                         />
                         <Button onClick={handleImport} disabled={!importText.trim()} leftIcon={<Upload className="w-4 h-4" />}>
                           Import Data
@@ -392,10 +354,10 @@ export default function SettingsPage() {
                         { key: 'analytics', label: 'Clear Analytics', desc: 'Delete all usage history', color: 'text-yellow-600 dark:text-yellow-400' },
                         { key: 'all', label: 'Factory Reset', desc: 'Remove everything and start fresh', color: 'text-red-600 dark:text-red-500' },
                       ].map((action) => (
-                        <div key={action.key} className="flex items-center justify-between p-4 bg-gray-100 dark:bg-background-dark border-2 border-gray-200 dark:border-border rounded-xl gap-4">
+                        <div key={action.key} className="flex items-center justify-between p-4 bg-gray-100  border-2 border-gray-200  rounded-xl gap-4">
                           <div>
                             <p className={cn('text-sm font-medium', action.color)}>{action.label}</p>
-                            <p className="text-xs text-gray-500 dark:text-text-muted mt-0.5">{action.desc}</p>
+                            <p className="text-xs text-gray-500  mt-0.5">{action.desc}</p>
                           </div>
                           {showClearConfirm === action.key ? (
                             <div className="flex gap-2">
@@ -407,7 +369,7 @@ export default function SettingsPage() {
                               </button>
                               <button
                                 onClick={() => setShowClearConfirm(null)}
-                                className="px-3 py-1.5 bg-white dark:bg-background-card text-gray-600 dark:text-text-secondary text-xs rounded-lg hover:text-gray-900 dark:hover:text-text-primary transition-colors"
+                                className="px-3 py-1.5 bg-white  text-gray-600  text-xs rounded-lg hover:text-gray-900  transition-colors"
                               >
                                 Cancel
                               </button>
@@ -416,7 +378,7 @@ export default function SettingsPage() {
                             <button
                               onClick={() => setShowClearConfirm(action.key)}
                               className={cn('flex items-center gap-1.5 px-3 py-1.5 border-2 rounded-lg text-xs font-medium transition-all',
-                                action.key === 'all' ? 'border-red-500/30 text-red-500 hover:bg-red-500/10' : 'border-gray-200 dark:border-border text-gray-600 dark:text-text-secondary hover:text-orange-400 hover:border-orange-400/30'
+                                action.key === 'all' ? 'border-red-500/30 text-red-500 hover:bg-red-500/10' : 'border-gray-200  text-gray-600  hover:text-orange-400 hover:border-orange-400/30'
                               )}
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -439,29 +401,29 @@ export default function SettingsPage() {
               {/* ── PRIVACY POLICY ─────────────────────────────────────── */}
               {activeTab === 'privacy' && (
                 <Section title="Privacy Policy">
-                  <div className="space-y-4 text-sm text-gray-600 dark:text-text-secondary">
-                    <p className="text-xs text-gray-500 dark:text-text-muted italic">Last updated: March 2026</p>
+                  <div className="space-y-4 text-sm text-gray-600 ">
+                    <p className="text-xs text-gray-500  italic">Last updated: March 2026</p>
                     
-                    <div className="prose dark:prose-invert max-w-none">
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">1. Introduction</h4>
+                    <div className="prose  max-w-none">
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">1. Introduction</h4>
                       <p>
                         AIPulse ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, 
                         and safeguard your information when you use our AI tool management application.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">2. Information We Collect</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">2. Information We Collect</h4>
                       <p>We collect the following types of information:</p>
                       <ul className="list-disc list-inside space-y-1 ml-2 mt-2">
                         <li><strong>Tool Data:</strong> AI tools you add, including names, URLs, categories, and metadata</li>
                         <li><strong>Usage Statistics:</strong> How often you use each tool, favorites, and interaction patterns</li>
-                        <li><strong>Collections:</strong> Custom collections and workflows you create</li>
+                        <li><strong>Collections:</strong> Custom collections you create</li>
                         <li><strong>Preferences:</strong> Theme settings, display preferences, and behavioral settings</li>
                       </ul>
                       <p className="mt-3">
                         All data is stored locally in your browser. We do not collect personal information or transmit your data to external servers.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">3. How We Use Your Information</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">3. How We Use Your Information</h4>
                       <p>Your information is used solely to:</p>
                       <ul className="list-disc list-inside space-y-1 ml-2 mt-2">
                         <li>Provide and maintain the AIPulse application</li>
@@ -470,19 +432,19 @@ export default function SettingsPage() {
                         <li>Improve user experience and application functionality</li>
                       </ul>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">4. Data Storage & Security</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">4. Data Storage & Security</h4>
                       <p>
                         All your data is stored locally in your browser using localStorage technology. You have full control over your data 
                         and can export or delete it at any time through the Settings page.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">5. Third-Party Services</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">5. Third-Party Services</h4>
                       <p>
                         AIPulse may contain links to external AI tool websites. We are not responsible for the privacy practices 
                         or content of these third-party sites.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">6. Your Rights</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">6. Your Rights</h4>
                       <p>You have the right to:</p>
                       <ul className="list-disc list-inside space-y-1 ml-2 mt-2">
                         <li>Access all your stored data</li>
@@ -491,13 +453,13 @@ export default function SettingsPage() {
                         <li>Modify or update your information at any time</li>
                       </ul>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">7. Changes to This Policy</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">7. Changes to This Policy</h4>
                       <p>
                         We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new 
                         Privacy Policy on this page and updating the "Last updated" date.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">8. Contact Us</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">8. Contact Us</h4>
                       <p>
                         If you have any questions about this Privacy Policy, please contact us through the Contact section in Settings.
                       </p>
@@ -509,23 +471,23 @@ export default function SettingsPage() {
               {/* ── TERMS OF SERVICE ───────────────────────────────────── */}
               {activeTab === 'terms' && (
                 <Section title="Terms of Service">
-                  <div className="space-y-4 text-sm text-gray-600 dark:text-text-secondary">
-                    <p className="text-xs text-gray-500 dark:text-text-muted italic">Last updated: March 2026</p>
+                  <div className="space-y-4 text-sm text-gray-600 ">
+                    <p className="text-xs text-gray-500  italic">Last updated: March 2026</p>
                     
-                    <div className="prose dark:prose-invert max-w-none">
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">1. Acceptance of Terms</h4>
+                    <div className="prose  max-w-none">
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">1. Acceptance of Terms</h4>
                       <p>
                         By accessing and using AIPulse, you accept and agree to be bound by the terms and provision of this agreement. 
                         If you do not agree to abide by these terms, please do not use this application.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">2. License to Use</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">2. License to Use</h4>
                       <p>
                         AIPulse grants you a revocable, non-exclusive, non-transferable, limited license to use the software solely 
                         for your personal or internal business purposes.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">3. User Responsibilities</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">3. User Responsibilities</h4>
                       <p>You agree to:</p>
                       <ul className="list-disc list-inside space-y-1 ml-2 mt-2">
                         <li>Use AIPulse only for lawful purposes</li>
@@ -535,44 +497,44 @@ export default function SettingsPage() {
                         <li>Not use the application to store or transmit harmful code</li>
                       </ul>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">4. Intellectual Property</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">4. Intellectual Property</h4>
                       <p>
                         The AIPulse name, logo, and all original content, features, and functionality are owned by AIPulse and are 
                         protected by international copyright, trademark, and other intellectual property laws.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">5. Disclaimer of Warranties</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">5. Disclaimer of Warranties</h4>
                       <p>
                         AIPulse is provided "AS IS" and "AS AVAILABLE" without warranties of any kind, either express or implied. 
                         We do not warrant that the application will be uninterrupted, error-free, or completely secure.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">6. Limitation of Liability</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">6. Limitation of Liability</h4>
                       <p>
                         To the fullest extent permitted by law, AIPulse shall not be liable for any indirect, incidental, special, 
                         consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, 
                         or any loss of data, use, goodwill, or other intangible losses.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">7. Data Backup</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">7. Data Backup</h4>
                       <p>
                         You are responsible for regularly backing up your data. While we provide export functionality, we are not 
                         responsible for any data loss due to browser issues, device failures, or other circumstances.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">8. Modifications to Service</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">8. Modifications to Service</h4>
                       <p>
                         We reserve the right to modify or discontinue, temporarily or permanently, the application with or without notice. 
                         You agree that we shall not be liable to you or to any third party for any modification, suspension, or discontinuance.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">9. Governing Law</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">9. Governing Law</h4>
                       <p>
                         These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which the 
                         developer operates, without regard to its conflict of law provisions.
                       </p>
 
-                      <h4 className="font-semibold text-gray-900 dark:text-text-primary mt-4 mb-2">10. Contact Information</h4>
+                      <h4 className="font-semibold text-gray-900  mt-4 mb-2">10. Contact Information</h4>
                       <p>
                         For any questions regarding these Terms of Service, please use the Contact option in the Settings page.
                       </p>
@@ -585,13 +547,13 @@ export default function SettingsPage() {
               {activeTab === 'about' && (
                 <Section title="About AIPulse">
                   <div className="space-y-4">
-                    <div className="flex items-center gap-4 p-4 bg-gray-100 dark:bg-background-dark border-2 border-gray-200 dark:border-border rounded-xl">
+                    <div className="flex items-center gap-4 p-4 bg-gray-100  border-2 border-gray-200  rounded-xl">
                       <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
                         <Zap className="w-6 h-6 text-black" />
                       </div>
                       <div>
-                        <h3 className="font-bold text-gray-900 dark:text-text-primary text-lg">AIPulse</h3>
-                        <p className="text-gray-500 dark:text-text-muted text-sm">Version 2.0.0 · March 2026</p>
+                        <h3 className="font-bold text-gray-900  text-lg">AIPulse</h3>
+                        <p className="text-gray-500  text-sm">Version 2.0.0 · March 2026</p>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
@@ -599,20 +561,20 @@ export default function SettingsPage() {
                         { label: 'Tools', value: tools.length },
                         { label: 'Collections', value: collections.length },
                       ].map((s) => (
-                        <div key={s.label} className="p-4 bg-gray-100 dark:bg-background-dark border-2 border-gray-200 dark:border-border rounded-xl">
+                        <div key={s.label} className="p-4 bg-gray-100  border-2 border-gray-200  rounded-xl">
                           <p className="text-2xl font-bold text-primary">{s.value}</p>
-                          <p className="text-sm text-gray-500 dark:text-text-muted">{s.label}</p>
+                          <p className="text-sm text-gray-500 ">{s.label}</p>
                         </div>
                       ))}
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-text-secondary">
+                    <p className="text-sm text-gray-600 ">
                       AIPulse is your personal AI tools hub — organize, launch, and track all your AI tools in one place.
                     </p>
                     <div className="flex flex-wrap gap-3">
                       <a href="#" className="text-sm text-primary hover:underline">Privacy Policy</a>
-                      <span className="text-gray-400 dark:text-text-muted">·</span>
+                      <span className="text-gray-400 ">·</span>
                       <a href="#" className="text-sm text-primary hover:underline">Send Feedback</a>
-                      <span className="text-gray-400 dark:text-text-muted">·</span>
+                      <span className="text-gray-400 ">·</span>
                       <a href="#" className="text-sm text-primary hover:underline">Documentation</a>
                     </div>
                   </div>
@@ -630,8 +592,8 @@ export default function SettingsPage() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white dark:bg-background-card border-2 border-gray-200 dark:border-border rounded-2xl p-5">
-      <h3 className="font-semibold text-gray-900 dark:text-text-primary mb-4 text-sm uppercase tracking-wide">{title}</h3>
+    <div className="bg-white  border-2 border-gray-200  rounded-2xl p-5">
+      <h3 className="font-semibold text-gray-900  mb-4 text-sm uppercase tracking-wide">{title}</h3>
       {children}
     </div>
   );
@@ -641,8 +603,8 @@ function Toggle({ label, description, value, onChange }: { label: string; descri
   return (
     <div className="flex items-center justify-between gap-4 py-2">
       <div>
-        <p className="text-sm font-medium text-gray-900 dark:text-text-primary">{label}</p>
-        {description && <p className="text-xs text-gray-500 dark:text-text-muted mt-0.5">{description}</p>}
+        <p className="text-sm font-medium text-gray-900 ">{label}</p>
+        {description && <p className="text-xs text-gray-500  mt-0.5">{description}</p>}
       </div>
       <button
         role="switch"

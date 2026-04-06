@@ -1,9 +1,9 @@
-import { ExternalLink, ChevronRight, BarChart3, Workflow, Home, BookOpen, FileText, GraduationCap, LifeBuoy, Info, Shield, FileCheck, MessageSquare } from 'lucide-react';
+import { ExternalLink, ChevronRight, BarChart3, Home, Info, Shield, FileCheck, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useToolsStore } from '../../stores/toolsStore';
 
-type PageLink = { name: string; page: 'home' | 'analytics' | 'workflows' | 'settings'; icon: React.ElementType; settingsTab?: string; highlight?: 'collections' };
+type PageLink = { name: string; page: 'home' | 'analytics' | 'settings'; icon: React.ElementType; settingsTab?: string; highlight?: 'collections' };
 type ExternalLinkType = { name: string; href: string; icon: React.ElementType };
 type LinkItem = PageLink | ExternalLinkType;
 
@@ -12,20 +12,13 @@ export default function Footer() {
   const location = useLocation();
   const { setCurrentPage } = useToolsStore();
 
-  const isResourcePage = ['/docs', '/api', '/guides', '/support'].includes(location.pathname);
+  const isResourcePage = false;
 
   const footerLinks = {
     product: [
       { name: 'Features', page: 'home' as const, icon: Home, settingsTab: undefined },
       { name: 'Collections', page: 'home' as const, icon: BarChart3, settingsTab: undefined, highlight: 'collections' as const },
       { name: 'Analytics', page: 'analytics' as const, icon: BarChart3 },
-      { name: 'Workflows', page: 'workflows' as const, icon: Workflow },
-    ] as LinkItem[],
-    resources: [
-      { name: 'Documentation', href: '/docs', icon: BookOpen },
-      { name: 'API Reference', href: '/api', icon: FileText },
-      { name: 'Guides', href: '/guides', icon: GraduationCap },
-      { name: 'Support', href: '/support', icon: LifeBuoy },
     ] as LinkItem[],
     company: [
       { name: 'About', page: 'settings' as const, icon: Info, settingsTab: 'about' },
@@ -97,7 +90,7 @@ export default function Footer() {
       
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {/* Product Links */}
           <div>
             <motion.div 
@@ -173,88 +166,13 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Resources Links */}
-          <div>
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              className="mb-4"
-            >
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-text-primary uppercase tracking-wider flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-accent" />
-                Resources
-              </h3>
-            </motion.div>
-            <ul className="space-y-3">
-              {footerLinks.resources.map((link, index) => (
-                <motion.li 
-                  key={link.name}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                >
-                  {'page' in link ? (
-                    <motion.button
-                      variants={linkVariants}
-                      whileHover="hover"
-                      whileTap="tap"
-                      onClick={() => handleNavigation(link)}
-                      className="text-sm text-text-secondary dark:text-text-mutedDark hover:text-accent transition-colors duration-200 inline-flex items-center gap-2 group w-full text-left"
-                    >
-                      <motion.div
-                        variants={iconVariants}
-                        className="w-4 h-4 flex items-center justify-center"
-                      >
-                        <link.icon className="w-4 h-4" />
-                      </motion.div>
-                      <span>{link.name}</span>
-                      <motion.div
-                        initial={{ opacity: 0, x: -5 }}
-                        whileHover={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                      </motion.div>
-                    </motion.button>
-                  ) : (
-                    <motion.button
-                      variants={linkVariants}
-                      whileHover="hover"
-                      whileTap="tap"
-                      onClick={() => navigate(link.href)}
-                      className="text-sm text-text-secondary dark:text-text-mutedDark hover:text-accent transition-colors duration-200 inline-flex items-center gap-2 group w-full text-left cursor-pointer"
-                    >
-                      <motion.div
-                        variants={iconVariants}
-                        className="w-4 h-4 flex items-center justify-center"
-                      >
-                        <link.icon className="w-4 h-4" />
-                      </motion.div>
-                      <span>{link.name}</span>
-                      <motion.div
-                        initial={{ opacity: 0, x: -5 }}
-                        whileHover={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                      </motion.div>
-                    </motion.button>
-                  )}
-                </motion.li>
-              ))}
-            </ul>
-          </div>
-
           {/* Company Links */}
           <div>
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.3 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
               className="mb-4"
             >
               <h3 className="text-sm font-semibold text-gray-900 dark:text-text-primary uppercase tracking-wider flex items-center gap-2">

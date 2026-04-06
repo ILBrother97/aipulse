@@ -4,11 +4,11 @@ import type { AppSettings } from '../types/index';
 /**
  * Apply theme settings to the document root
  */
-export function applyTheme(settings: AppSettings, isDarkMode: boolean): void {
+export function applyTheme(settings: AppSettings): void {
   const root = document.documentElement;
 
-  // Dark/light mode
-  root.classList.toggle('dark', isDarkMode);
+  // Always remove dark class - light mode only
+  root.classList.remove('dark');
 
   // Font family
   const fontFamilies = {
