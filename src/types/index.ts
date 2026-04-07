@@ -44,7 +44,7 @@ export interface UsageEvent {
 
 // ─── Theme / Settings (Feature 10) ────────────────────────
 export type ViewMode = 'grid' | 'list' | 'expanded' | 'kanban';
-export type ThemeAccent = 'teal' | 'purple' | 'blue' | 'green' | 'orange' | 'mono';
+export type ThemeAccent = 'teal' | 'purple' | 'blue' | 'green' | 'orange';
 export type SpacingMode = 'compact' | 'standard' | 'spacious';
 export type TextSize = 'small' | 'standard' | 'large' | 'xlarge';
 export type BorderRadius = 'sharp' | 'rounded' | 'very-rounded';

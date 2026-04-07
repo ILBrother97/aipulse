@@ -18,7 +18,7 @@ export function applyTheme(settings: AppSettings): void {
   const fontFamilies = {
     default: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     serif: "'Georgia', 'Times New Roman', serif",
-    mono: "'Fira Code', 'Courier New', monospace",
+    mono: "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
   };
   root.style.setProperty('--font-family', fontFamilies[settings.fontFamily]);
 

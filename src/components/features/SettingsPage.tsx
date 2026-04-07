@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Monitor, Settings, Database, Info, Shield, FileCheck,
+  Monitor, Settings, Database, Info, Shield, FileCheck, MessageSquare,
   Check, RotateCcw, Zap, Download,
   Upload, Trash2, AlertTriangle, ChevronRight,
 } from 'lucide-react';
@@ -18,6 +18,7 @@ const tabs = [
   { id: 'data', label: 'Data', icon: Database },
   { id: 'privacy', label: 'Privacy Policy', icon: Shield },
   { id: 'terms', label: 'Terms of Service', icon: FileCheck },
+  { id: 'contact', label: 'Contact', icon: MessageSquare },
   { id: 'about', label: 'About', icon: Info },
 ] as const;
 
@@ -29,7 +30,6 @@ const accentThemes: { key: ThemeAccent; label: string; color: string }[] = [
   { key: 'blue', label: 'Ocean Blue', color: '#3B82F6' },
   { key: 'green', label: 'Forest Green', color: '#22C55E' },
   { key: 'orange', label: 'Sunset Orange', color: '#F97316' },
-  { key: 'mono', label: 'Monochrome', color: '#E5E5E5' },
 ];
 
 export default function SettingsPage() {
@@ -576,6 +576,86 @@ export default function SettingsPage() {
                       <a href="#" className="text-sm text-primary hover:underline">Send Feedback</a>
                       <span className="text-gray-400 ">·</span>
                       <a href="#" className="text-sm text-primary hover:underline">Documentation</a>
+                    </div>
+                  </div>
+                </Section>
+              )}
+
+              {/* ── CONTACT ─────────────────────────────────────────────── */}
+              {activeTab === 'contact' && (
+                <Section title="Contact Us">
+                  <div className="space-y-6">
+                    <p className="text-sm text-gray-600 dark:text-[#64748b]">
+                      We'd love to hear from you! Whether you have questions, feedback, or just want to say hello, feel free to reach out.
+                    </p>
+                    
+                    {/* Contact Form */}
+                    <div className="p-4 bg-gray-100 dark:bg-[#111827] border border-gray-200 dark:border-[rgba(255,255,255,0.08)] rounded-xl">
+                      <h4 className="font-semibold text-gray-900 dark:text-[#94a3b8] text-sm mb-4">Send us a message</h4>
+                      <form 
+                        action="https://formspree.io/f/mbdpwpdp" 
+                        method="POST"
+                        className="space-y-4"
+                      >
+                        <div>
+                          <label className="block text-xs font-medium text-gray-700 dark:text-[#64748b] mb-1">Name</label>
+                          <input 
+                            type="text" 
+                            name="name" 
+                            required
+                            className="w-full px-3 py-2 text-sm bg-white dark:bg-[#0d1117] border border-gray-300 dark:border-[rgba(255,255,255,0.1)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-gray-900 dark:text-[#f1f5f9]"
+                            placeholder="Your name"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-gray-700 dark:text-[#64748b] mb-1">Email</label>
+                          <input 
+                            type="email" 
+                            name="email" 
+                            required
+                            className="w-full px-3 py-2 text-sm bg-white dark:bg-[#0d1117] border border-gray-300 dark:border-[rgba(255,255,255,0.1)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-gray-900 dark:text-[#f1f5f9]"
+                            placeholder="your@email.com"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-gray-700 dark:text-[#64748b] mb-1">Message</label>
+                          <textarea 
+                            name="message" 
+                            rows={4} 
+                            required
+                            className="w-full px-3 py-2 text-sm bg-white dark:bg-[#0d1117] border border-gray-300 dark:border-[rgba(255,255,255,0.1)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-gray-900 dark:text-[#f1f5f9] resize-none"
+                            placeholder="Your message..."
+                          ></textarea>
+                        </div>
+                        <button 
+                          type="submit"
+                          className="w-full px-4 py-2 text-sm font-medium bg-[var(--color-primary)] text-[#0a0e1a] dark:text-[#0a0e1a] rounded-lg hover:opacity-90 transition-opacity"
+                        >
+                          Send Message
+                        </button>
+                      </form>
+                    </div>
+                    
+                    <div className="grid gap-4">
+                      <div className="p-4 bg-gray-100 dark:bg-[#111827] border border-gray-200 dark:border-[rgba(255,255,255,0.08)] rounded-xl">
+                        <h4 className="font-semibold text-gray-900 dark:text-[#94a3b8] text-sm mb-2">GitHub</h4>
+                        <a href="https://github.com/swiftpersona2-cell" target="_blank" rel="noopener noreferrer" className="text-sm text-[var(--color-primary)] hover:underline">
+                          github.com/swiftpersona2-cell
+                        </a>
+                      </div>
+                      
+                      <div className="p-4 bg-gray-100 dark:bg-[#111827] border border-gray-200 dark:border-[rgba(255,255,255,0.08)] rounded-xl">
+                        <h4 className="font-semibold text-gray-900 dark:text-[#94a3b8] text-sm mb-2">Twitter / X</h4>
+                        <a href="https://twitter.com/aipulse_1" target="_blank" rel="noopener noreferrer" className="text-sm text-[var(--color-primary)] hover:underline">
+                          @aipulse_1
+                        </a>
+                      </div>
+                    </div>
+                    
+                    <div className="pt-4 border-t border-gray-200 dark:border-[rgba(255,255,255,0.08)]">
+                      <p className="text-xs text-gray-500 dark:text-[#64748b]">
+                        Response time: Typically within 24-48 hours
+                      </p>
                     </div>
                   </div>
                 </Section>

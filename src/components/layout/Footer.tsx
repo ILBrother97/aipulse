@@ -24,7 +24,7 @@ export default function Footer() {
       { name: 'About', page: 'settings' as const, icon: Info, settingsTab: 'about' },
       { name: 'Privacy Policy', page: 'settings' as const, icon: Shield, settingsTab: 'privacy' },
       { name: 'Terms of Service', page: 'settings' as const, icon: FileCheck, settingsTab: 'terms' },
-      { name: 'Contact', page: 'settings' as const, icon: MessageSquare },
+      { name: 'Contact', page: 'settings' as const, icon: MessageSquare, settingsTab: 'contact' },
     ] as LinkItem[],
   };
 

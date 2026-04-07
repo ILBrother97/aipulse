@@ -154,7 +154,7 @@ export default function ToolModal({ isOpen, onClose, tool }: ToolModalProps) {
       <div className="space-y-4">
         <Input
           label="Name"
-          placeholder="e.g., ChatGPT"
+          placeholder="e.g., AI-Pulse"
           value={formData.name}
           onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
           error={errors.name}
@@ -163,7 +163,7 @@ export default function ToolModal({ isOpen, onClose, tool }: ToolModalProps) {
 
         <Input
           label="URL"
-          placeholder="e.g., https://chatgpt.com"
+          placeholder="e.g., https://aipulse-tool.vercel.app/"
           value={formData.url}
           onChange={(e) => setFormData((prev) => ({ ...prev, url: e.target.value }))}
           error={errors.url}
@@ -211,7 +211,7 @@ export default function ToolModal({ isOpen, onClose, tool }: ToolModalProps) {
 
         <TextArea
           label="Description"
-          placeholder="Brief description of the tool (optional)"
+          placeholder="What does this AI tool do?"
           value={formData.description}
           onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
           rows={3}

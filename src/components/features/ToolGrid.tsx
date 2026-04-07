@@ -91,30 +91,38 @@ export default function ToolGrid({ onEditTool, onDeleteTool, onAddTool, onAddToC
       toolsByCategory[tool.category].push(tool);
     }
     return (
-      <div className="flex gap-4 overflow-x-auto pb-4">
-        {Object.entries(toolsByCategory).map(([cat, catTools]) => (
-          <div key={cat} className="flex-shrink-0 w-72 bg-gray-50 dark:bg-background-card rounded-2xl border-2 border-gray-200 dark:border-border p-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900 dark:text-text-primary text-sm">{cat}</h3>
-              <span className="text-xs text-gray-500 dark:text-text-muted bg-gray-200 dark:bg-background-dark px-2 py-0.5 rounded-full">
-                {catTools.length}
-              </span>
+      <div className="bg-[#f1f5f9] dark:bg-[#0a0e1a] min-h-full -mx-4 px-4 py-6">
+        <div className="flex gap-4 overflow-x-auto pb-4">
+          {Object.entries(toolsByCategory).map(([cat, catTools]) => (
+            <div key={cat} className="flex-shrink-0 w-72 bg-white dark:bg-[#0d1117] rounded-xl border border-[#e2e8f0] dark:border-[rgba(255,255,255,0.06)] p-4">
+              <div className="bg-white dark:bg-[#111827] rounded-lg px-3 py-2.5 border-b border-[#f1f5f9] dark:border-[rgba(255,255,255,0.08)] mb-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-[#0f172a] dark:text-[#f1f5f9] font-semibold text-[14px]">{cat}</h3>
+                  <span className="text-[var(--color-primary)] bg-[rgba(var(--color-primary-rgb),0.15)] dark:bg-[rgba(var(--color-primary-rgb),0.15)] text-[11px] font-medium rounded-[4px] px-[7px] py-[1px]">
+                    {catTools.length}
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                {catTools.length === 0 ? (
+                  <p className="text-[#334155] dark:text-[#334155] text-[12px] text-center py-4">No tools</p>
+                ) : (
+                  catTools.map((tool, i) => (
+                    <ToolCard
+                      key={tool.id}
+                      tool={tool}
+                      onEdit={onEditTool}
+                      onDelete={onDeleteTool}
+                      onAddToCollection={onAddToCollection}
+                      index={i}
+                      viewMode="list"
+                    />
+                  ))
+                )}
+              </div>
             </div>
-            <div className="flex flex-col gap-3">
-              {catTools.map((tool, i) => (
-                <ToolCard
-                  key={tool.id}
-                  tool={tool}
-                  onEdit={onEditTool}
-                  onDelete={onDeleteTool}
-                  onAddToCollection={onAddToCollection}
-                  index={i}
-                  viewMode="list"
-                />
-              ))}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     );
   }

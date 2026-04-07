@@ -16,21 +16,21 @@ import { defaultTools, defaultCategories } from '../constants/defaultTools';
 // ─── Default Settings ────────────────────────────────────
 export const defaultSettings: AppSettings = {
   viewMode: 'grid',
-  themeAccent: 'teal',
+  themeAccent: 'orange',
   spacingMode: 'standard',
   textSize: 'standard',
   borderRadius: 'rounded',
-  fontFamily: 'mono',
+  fontFamily: 'default',
   fontWeight: 'bold',
   backgroundPattern: 'grid',
   animationIntensity: 'normal',
   showTooltips: true,
   showKeyboardHints: true,
-  defaultLaunchBehavior: 'current-tab',
+  defaultLaunchBehavior: 'new-tab',
   analyticsEnabled: true,
   reduceMotion: false,
   highContrast: false,
-  isDarkMode: false,
+  isDarkMode: true,
 };
 
 // ─── Theme accent colors ──────────────────────────────────
@@ -40,7 +40,6 @@ export const accentColors: Record<string, string> = {
   blue: '#3B82F6',
   green: '#22C55E',
   orange: '#F97316',
-  mono: '#E5E5E5',
 };
 
 // ─── Persisted State Shape ────────────────────────────────
