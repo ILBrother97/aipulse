@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Monitor, Settings, Database, Info, Shield, FileCheck, MessageSquare,
-  Check, RotateCcw, Zap, Download,
+  Check, RotateCcw, Download,
   Upload, Trash2, AlertTriangle, ChevronRight,
 } from 'lucide-react';
 import { useToolsStore, defaultSettings, accentColors } from '../../stores/toolsStore';
@@ -548,9 +548,7 @@ export default function SettingsPage() {
                 <Section title="About AIPulse">
                   <div className="space-y-4">
                     <div className="flex items-center gap-4 p-4 bg-gray-100 dark:bg-[#111827] border-2 dark:border border-gray-200 dark:border-[rgba(255,255,255,0.08)] rounded-xl">
-                      <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
-                        <Zap className="w-6 h-6 text-black" />
-                      </div>
+                      <img src="/logo.svg" alt="AIPulse Logo" className="w-12 h-12" />
                       <div>
                         <h3 className="font-bold text-gray-900 dark:text-[#94a3b8] text-lg">AIPulse</h3>
                         <p className="text-gray-500 dark:text-[#64748b] text-sm">Version 2.0.0 · March 2026</p>
@@ -571,11 +569,9 @@ export default function SettingsPage() {
                       AIPulse is your personal AI tools hub — organize, launch, and track all your AI tools in one place.
                     </p>
                     <div className="flex flex-wrap gap-3">
-                      <a href="#" className="text-sm text-primary hover:underline">Privacy Policy</a>
+                      <button onClick={() => setActiveTab('privacy')} className="text-sm text-primary hover:underline text-left">Privacy Policy</button>
                       <span className="text-gray-400 ">·</span>
-                      <a href="#" className="text-sm text-primary hover:underline">Send Feedback</a>
-                      <span className="text-gray-400 ">·</span>
-                      <a href="#" className="text-sm text-primary hover:underline">Documentation</a>
+                      <button onClick={() => setActiveTab('contact')} className="text-sm text-primary hover:underline text-left">Send Feedback</button>
                     </div>
                   </div>
                 </Section>
