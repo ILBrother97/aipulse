@@ -68,7 +68,6 @@ export interface AppSettings {
   defaultLaunchBehavior: 'new-tab' | 'current-tab';
   analyticsEnabled: boolean;
   reduceMotion: boolean;
-  highContrast: boolean;
   isDarkMode: boolean;
 }
 

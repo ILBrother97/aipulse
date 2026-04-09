@@ -52,9 +52,6 @@ export function applyTheme(settings: AppSettings): void {
   root.style.setProperty('--color-accent-dark', darken(accent, 30));
   root.style.setProperty('--color-accent-light', lighten(accent, 30));
 
-  // High contrast
-  root.classList.toggle('high-contrast', settings.highContrast);
-
   // Reduce motion
   root.classList.toggle('reduce-motion', settings.reduceMotion);
 }

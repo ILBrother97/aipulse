@@ -29,7 +29,6 @@ export const defaultSettings: AppSettings = {
   defaultLaunchBehavior: 'new-tab',
   analyticsEnabled: true,
   reduceMotion: false,
-  highContrast: false,
   isDarkMode: true,
 };
 

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Plus, Settings, BarChart2, Clock, Keyboard, Sun, Moon } from 'lucide-react';
+import { Plus, Settings, BarChart2, Clock, Keyboard, Sun, Moon, Menu } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '../ui';
 import SearchBar from '../features/SearchBar';
@@ -8,13 +8,14 @@ import { useToolsStore } from '../../stores/toolsStore';
 import { useAuthStore } from '../../stores/authStore';
 import { cn } from '../../utils/cn';
 import { useState } from 'react';
-import AuthModal from '../ui/AuthModal';
 import UserMenu from '../ui/UserMenu';
+import MobileDrawer from './MobileDrawer';
 
 interface HeaderProps {
   onAddTool: () => void;
   onShowShortcuts: () => void;
   onShowActivity: () => void;
+  onCreateCollection: () => void;
 }
 
 type Page = 'home' | 'analytics' | 'settings';
@@ -24,12 +25,12 @@ const navItems: { id: Page; label: string; icon: React.ElementType }[] = [
 ];
 
 
-export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: HeaderProps) {
+export default function Header({ onAddTool, onShowShortcuts, onShowActivity, onCreateCollection }: HeaderProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentPage, setCurrentPage, settings, toggleTheme } = useToolsStore();
   const { user } = useAuthStore();
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   
   // Animation based on intensity
   const animationVariants = {
@@ -50,13 +51,43 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         <div className="flex items-center justify-between h-12 gap-3">
-          {/* Logo */}
+          {/* Left Section: Hamburger + Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1, ...currentAnimation }}
             className="flex items-center gap-2 flex-shrink-0"
           >
+            {/* Hamburger Menu - Mobile/Tablet */}
+            <button
+              onClick={() => setDrawerOpen(true)}
+              className="block xl:hidden"
+              style={{
+                width: '36px',
+                height: '36px',
+                background: 'transparent',
+                border: '1px solid rgba(255,255,255,0.12)',
+                borderRadius: '6px',
+                color: '#94a3b8',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-accent)';
+                e.currentTarget.style.color = 'var(--color-accent)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                e.currentTarget.style.color = '#94a3b8';
+              }}
+              aria-label="Open menu"
+            >
+              <Menu className="w-4 h-4" />
+            </button>
+
             <button
               onClick={() => setCurrentPage('home')}
               className="logo-3d-container flex items-center gap-2 hover:opacity-80 transition-opacity"
@@ -183,7 +214,7 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
               />
             ) : (
               <Button
-                onClick={() => setIsAuthModalOpen(true)}
+                onClick={() => navigate('/signin')}
                 variant="primary"
                 size="sm"
               >
@@ -202,7 +233,7 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
               currentPage === 'home' ? 'text-primary bg-primary/10' : 'text-text-secondary'
             )}
           >
-            <span className="w-3 h-3">🏠</span> Home
+            Home
           </button>
           {navItems.map((item) => (
             <button
@@ -219,11 +250,12 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity }: H
         </div>
       </div>
 
-      {/* Auth Modal */}
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        defaultTab="signin"
+      {/* Mobile Drawer */}
+      <MobileDrawer
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        onCreateCollection={onCreateCollection}
+        onEditCollection={() => {}}
       />
     </motion.header>
   );

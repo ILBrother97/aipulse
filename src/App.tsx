@@ -10,6 +10,7 @@ import ToolGrid from './components/features/ToolGrid';
 import FavoritesSection from './components/features/FavoritesSection';
 import AnalyticsPage from './components/features/AnalyticsPage';
 import SettingsPage from './components/features/SettingsPage';
+import SignInPage from './components/features/SignInPage';
 import AIAssistant from './components/features/AIAssistant';
 import ToolModal from './components/modals/ToolModal';
 import DeleteModal from './components/modals/DeleteModal';
@@ -148,12 +149,16 @@ function App() {
           onAddTool={handleAddTool}
           onShowShortcuts={() => setIsShortcutsOpen(true)}
           onShowActivity={() => setIsActivityOpen(true)}
+          onCreateCollection={() => {
+            setCollectionTarget(null);
+            setIsCollectionModalOpen(true);
+          }}
         />
 
         <Routes>
           {/* Main App Route */}
           <Route path="/" element={
-            <main className="app-main pt-16 pb-16 px-3 sm:px-4 lg:px-6 overflow-x-hidden">
+            <main className="app-main pt-20 sm:pt-16 pb-16 px-3 sm:px-4 lg:px-6 overflow-x-hidden">
               <div className="max-w-7xl mx-auto">
                 <AnimatePresence mode="wait">
                   {/* ── HOME PAGE ──────────────────────────────── */}
@@ -238,6 +243,9 @@ function App() {
               </div>
             </main>
           } />
+
+          {/* Sign In Page */}
+          <Route path="/signin" element={<SignInPage />} />
 
         </Routes>
 

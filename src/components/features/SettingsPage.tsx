@@ -160,15 +160,15 @@ export default function SettingsPage() {
       className="max-w-4xl mx-auto"
     >
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-[#f1f5f9]">Settings</h1>
-        <p className="text-gray-600 dark:text-[#64748b] text-sm mt-1">Customize your AIPulse experience</p>
+      <div className="mt-4 sm:mt-2 lg:mt-0 mb-6 lg:mb-8 px-1">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-[#f1f5f9] leading-tight pt-2 sm:pt-1">Settings</h1>
+        <p className="text-gray-600 dark:text-[#64748b] text-sm mt-1.5 leading-relaxed">Customize your AIPulse experience</p>
       </div>
 
       <div className="flex gap-6 flex-col lg:flex-row">
-        {/* Sidebar Tabs */}
+        {/* Sidebar Tabs - Vertical on all screen sizes */}
         <div className="lg:w-48 flex-shrink-0 dark:bg-[#0d1117] dark:border-r dark:border-[rgba(255,255,255,0.06)] lg:rounded-xl lg:p-2">
-          <nav className="flex lg:flex-col gap-1">
+          <nav className="flex flex-col gap-1">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -181,8 +181,9 @@ export default function SettingsPage() {
                 )}
               >
                 <tab.icon className="w-4 h-4 flex-shrink-0" />
-                {tab.label}
-                {activeTab === tab.id && <ChevronRight className="w-3.5 h-3.5 ml-auto hidden lg:block" />}
+                <span className="hidden sm:inline">{tab.label}</span>
+                <span className="sm:hidden">{tab.id === 'privacy' ? 'Privacy' : tab.id === 'terms' ? 'Terms' : tab.label}</span>
+                {activeTab === tab.id && <ChevronRight className="w-3.5 h-3.5 ml-auto" />}
               </button>
             ))}
           </nav>
@@ -228,12 +229,6 @@ export default function SettingsPage() {
 
                   <Section title="Accessibility">
                     <div className="space-y-3">
-                      <Toggle
-                        label="High Contrast Mode"
-                        description="Increases contrast for better readability"
-                        value={settings.highContrast}
-                        onChange={(v) => handleSettingChange('highContrast', v)}
-                      />
                       <Toggle
                         label="Reduce Motion"
                         description="Disable animations for users with motion sensitivity"
@@ -560,7 +555,7 @@ export default function SettingsPage() {
                         { label: 'Collections', value: collections.length },
                       ].map((s) => (
                         <div key={s.label} className="p-4 bg-gray-100 dark:bg-[#111827] border-2 dark:border border-gray-200 dark:border-[rgba(255,255,255,0.08)] rounded-xl">
-                          <p className="text-2xl font-bold text-primary dark:text-[var(--color-primary)]">{s.value}</p>
+                          <p className="text-2xl font-bold text-primary dark:text-[var(--color-accent)]">{s.value}</p>
                           <p className="text-sm text-gray-500 dark:text-[#64748b]">{s.label}</p>
                         </div>
                       ))}
@@ -569,9 +564,9 @@ export default function SettingsPage() {
                       AIPulse is your personal AI tools hub — organize, launch, and track all your AI tools in one place.
                     </p>
                     <div className="flex flex-wrap gap-3">
-                      <button onClick={() => setActiveTab('privacy')} className="text-sm text-primary hover:underline text-left">Privacy Policy</button>
-                      <span className="text-gray-400 ">·</span>
-                      <button onClick={() => setActiveTab('contact')} className="text-sm text-primary hover:underline text-left">Send Feedback</button>
+                      <a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('privacy'); }} className="text-sm text-primary hover:underline text-left">Privacy Policy</a>
+                      <span className="text-gray-400 dark:text-[#64748b]">·</span>
+                      <a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('contact'); }} className="text-sm text-primary hover:underline text-left">Send Feedback</a>
                     </div>
                   </div>
                 </Section>

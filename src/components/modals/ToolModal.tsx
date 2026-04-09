@@ -222,28 +222,56 @@ export default function ToolModal({ isOpen, onClose, tool }: ToolModalProps) {
           <label className="block text-[11px] font-medium text-[#475569] uppercase tracking-[0.08em] mb-2">
             Icon
           </label>
-          <div className="grid grid-cols-8 gap-2">
-            {iconOptions.slice(0, 16).map((iconName) => {
-              const IconComponent = LucideIcons[iconName as keyof typeof LucideIcons] as React.ComponentType<{
-                className?: string;
-              }>;
-              const isSelected = formData.icon === iconName;
+          {/* Icon Grid - Mobile: 2 columns side by side (8 left, 8 right), Desktop: 8 columns */}
+          <div className="flex sm:grid sm:grid-cols-4 md:grid-cols-8 gap-2">
+            {/* Left column - first 8 icons (mobile) */}
+            <div className="flex flex-col gap-2 w-1/2 sm:w-auto sm:contents">
+              {iconOptions.slice(0, 8).map((iconName) => {
+                const IconComponent = LucideIcons[iconName as keyof typeof LucideIcons] as React.ComponentType<{
+                  className?: string;
+                }>;
+                const isSelected = formData.icon === iconName;
 
-              return (
-                <button
-                  key={iconName}
-                  onClick={() => setFormData((prev) => ({ ...prev, icon: iconName }))}
-                  className={`p-2 rounded-[6px] transition-all duration-200 border ${
-                    isSelected
-                      ? 'bg-[var(--color-primary)] text-[#0a0e1a] border-[var(--color-primary)]'
-                      : 'bg-gray-100 dark:bg-[#111827] border-gray-200 dark:border-[rgba(255,255,255,0.06)] text-[#475569] hover:border-[rgba(255,255,255,0.2)] hover:text-[#94a3b8]'
-                  }`}
-                  title={iconName}
-                >
-                  {IconComponent && <IconComponent className="w-5 h-5 mx-auto" />}
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={iconName}
+                    onClick={() => setFormData((prev) => ({ ...prev, icon: iconName }))}
+                    className={`p-2.5 sm:p-2 rounded-lg sm:rounded-[6px] transition-all duration-200 border flex items-center justify-center ${
+                      isSelected
+                        ? 'bg-[var(--color-accent)] text-[#0a0e1a] border-[var(--color-accent)]'
+                        : 'bg-gray-100 dark:bg-[#111827] border-gray-200 dark:border-[rgba(255,255,255,0.06)] text-[#475569] hover:border-[rgba(255,255,255,0.2)] hover:text-[#94a3b8]'
+                    }`}
+                    title={iconName}
+                  >
+                    {IconComponent && <IconComponent className="w-5 h-5" />}
+                  </button>
+                );
+              })}
+            </div>
+            {/* Right column - next 8 icons (mobile) */}
+            <div className="flex flex-col gap-2 w-1/2 sm:w-auto sm:contents">
+              {iconOptions.slice(8, 16).map((iconName) => {
+                const IconComponent = LucideIcons[iconName as keyof typeof LucideIcons] as React.ComponentType<{
+                  className?: string;
+                }>;
+                const isSelected = formData.icon === iconName;
+
+                return (
+                  <button
+                    key={iconName}
+                    onClick={() => setFormData((prev) => ({ ...prev, icon: iconName }))}
+                    className={`p-2.5 sm:p-2 rounded-lg sm:rounded-[6px] transition-all duration-200 border flex items-center justify-center ${
+                      isSelected
+                        ? 'bg-[var(--color-accent)] text-[#0a0e1a] border-[var(--color-accent)]'
+                        : 'bg-gray-100 dark:bg-[#111827] border-gray-200 dark:border-[rgba(255,255,255,0.06)] text-[#475569] hover:border-[rgba(255,255,255,0.2)] hover:text-[#94a3b8]'
+                    }`}
+                    title={iconName}
+                  >
+                    {IconComponent && <IconComponent className="w-5 h-5" />}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
