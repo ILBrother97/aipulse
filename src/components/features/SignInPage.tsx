@@ -113,7 +113,7 @@ export default function SignInPage() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen bg-gray-50 dark:bg-[#0a0e1a] flex items-center justify-center p-4"
+      className="min-h-screen bg-gray-50 dark:bg-[#0a0e1a] flex items-start sm:items-center justify-center p-4 pt-28 sm:pt-4 lg:pt-4"
     >
       <div className="w-full max-w-md">
         {/* Card - Polished with enhanced styling */}
