@@ -136,11 +136,12 @@ export default function UserMenu({
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
             transition={{ duration: 0.2 }}
             className={cn(
-              'absolute right-0 top-full mt-2 w-64',
+              'fixed right-4 left-auto w-64',
+              'top-[4.5rem] sm:top-16',
               'bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl',
               'rounded-2xl shadow-2xl shadow-black/10 dark:shadow-black/40',
               'border border-gray-200/50 dark:border-gray-700/50',
-              'z-50 overflow-hidden'
+              'z-[60] overflow-hidden'
             )}
           >
             {/* User Info Header */}

@@ -224,27 +224,27 @@ export default function Header({ onAddTool, onShowShortcuts, onShowActivity, onC
           </motion.div>
         </div>
 
-        {/* Mobile nav */}
-        <div className="md:hidden flex items-center gap-1 pb-1 overflow-x-auto scrollbar-hide">
+        {/* Mobile nav - no scroll, hamburger menu handles navigation */}
+        <div className="md:hidden flex items-center justify-center gap-2 py-1">
           <button
             onClick={() => setCurrentPage('home')}
             className={cn(
-              'flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-all flex-shrink-0',
+              'px-3 py-1 rounded-md text-xs font-medium transition-all',
               currentPage === 'home' ? 'text-primary bg-primary/10' : 'text-text-secondary'
             )}
           >
             Home
           </button>
-          {navItems.map((item) => (
+          {navItems.slice(0, 2).map((item) => (
             <button
               key={item.id}
               onClick={() => setCurrentPage(item.id)}
               className={cn(
-                'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all flex-shrink-0',
+                'px-3 py-1 rounded-md text-xs font-medium transition-all',
                 currentPage === item.id ? 'text-primary bg-primary/10' : 'text-gray-600'
               )}
             >
-              <item.icon className="w-3.5 h-3.5" /> {item.label}
+              {item.label}
             </button>
           ))}
         </div>
