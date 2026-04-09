@@ -8,7 +8,8 @@ import {
   Sparkles,
   ArrowRight,
   AlertCircle,
-  ArrowLeft
+  ArrowLeft,
+  X
 } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { useAuthStore } from '@/stores/authStore';
@@ -120,22 +121,33 @@ export default function SignInPage() {
       className="min-h-screen bg-gray-50 dark:bg-[#0a0e1a] flex items-center justify-center p-4"
     >
       <div className="w-full max-w-md">
-        {/* Back Button */}
-        <button
-          onClick={handleBack}
-          className="mb-6 flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span className="text-sm font-medium">Back</span>
-        </button>
+        {/* Back Button - Mobile/Tablet only */}
+        <div className="mb-6 flex items-center lg:hidden">
+          <button
+            onClick={handleBack}
+            className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-sm font-medium">Back</span>
+          </button>
+        </div>
 
-        {/* Card */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden">
+        {/* Card - Polished with enhanced styling */}
+        <div className="bg-white dark:bg-[#0d1117] rounded-3xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] dark:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] overflow-hidden relative border border-gray-200 dark:border-[rgba(255,255,255,0.08)] lg:mt-12">
+          {/* X Close Button - Desktop only, positioned at top right of card */}
+          <button
+            onClick={() => navigate('/')}
+            className="hidden lg:flex absolute top-4 right-4 z-10 items-center justify-center w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 text-white/90 hover:text-white transition-all duration-300 backdrop-blur-md border border-white/20 hover:border-white/40 hover:scale-110"
+            aria-label="Close"
+          >
+            <X className="w-5 h-5" />
+          </button>
           {/* Gradient Header */}
-          <div className="relative bg-gradient-to-br from-primary via-primary-dark to-primary px-6 py-8">
-            {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-black/10 rounded-full blur-xl" />
+          <div className="relative bg-gradient-to-br from-[var(--color-accent)] via-[var(--color-accent-dark)] to-[var(--color-accent)] px-6 py-10">
+            {/* Decorative elements - enhanced */}
+            <div className="absolute top-0 right-0 w-40 h-40 bg-white/15 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/20 rounded-full blur-2xl" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
             
             {/* Logo & Title */}
             <div className="relative text-center">
@@ -170,17 +182,17 @@ export default function SignInPage() {
           </div>
 
           {/* Content */}
-          <div className="p-6">
+          <div className="p-6 sm:p-8">
             {/* Tab Switcher */}
-            <div className="flex p-1 bg-gray-100 dark:bg-gray-800 rounded-xl mb-6">
+            <div className="flex p-1.5 bg-gray-100/80 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl mb-6 border border-gray-200/50 dark:border-gray-700/50">
               {(['signin', 'signup'] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => handleTabChange(tab)}
                   className={cn(
-                    'flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all duration-300',
+                    'flex-1 py-3 text-sm font-semibold rounded-xl transition-all duration-300',
                     activeTab === tab
-                      ? 'bg-white dark:bg-gray-700 text-primary shadow-md'
+                      ? 'bg-white dark:bg-gray-700 text-[var(--color-accent)] shadow-lg shadow-black/5 dark:shadow-black/20'
                       : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                   )}
                 >
