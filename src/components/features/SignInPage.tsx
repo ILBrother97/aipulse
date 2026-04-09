@@ -8,7 +8,6 @@ import {
   Sparkles,
   ArrowRight,
   AlertCircle,
-  ArrowLeft,
   X
 } from 'lucide-react';
 import { cn } from '@/utils/cn';
@@ -31,10 +30,6 @@ export default function SignInPage() {
     setLocalError(null);
     clearError();
   }, [clearError]);
-
-  const handleBack = useCallback(() => {
-    navigate(-1);
-  }, [navigate]);
 
   const validateForm = useCallback(() => {
     if (!email.trim()) {
@@ -121,23 +116,12 @@ export default function SignInPage() {
       className="min-h-screen bg-gray-50 dark:bg-[#0a0e1a] flex items-center justify-center p-4"
     >
       <div className="w-full max-w-md">
-        {/* Back Button - Mobile/Tablet only */}
-        <div className="mb-6 flex items-center lg:hidden">
-          <button
-            onClick={handleBack}
-            className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Back</span>
-          </button>
-        </div>
-
         {/* Card - Polished with enhanced styling */}
         <div className="bg-white dark:bg-[#0d1117] rounded-3xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] dark:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] overflow-hidden relative border border-gray-200 dark:border-[rgba(255,255,255,0.08)] lg:mt-12">
-          {/* X Close Button - Desktop only, positioned at top right of card */}
+          {/* X Close Button - All devices, positioned at top right of card */}
           <button
             onClick={() => navigate('/')}
-            className="hidden lg:flex absolute top-4 right-4 z-10 items-center justify-center w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 text-white/90 hover:text-white transition-all duration-300 backdrop-blur-md border border-white/20 hover:border-white/40 hover:scale-110"
+            className="flex absolute top-4 right-4 z-10 items-center justify-center w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 text-white/90 hover:text-white transition-all duration-300 backdrop-blur-md border border-white/20 hover:border-white/40 hover:scale-110"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
